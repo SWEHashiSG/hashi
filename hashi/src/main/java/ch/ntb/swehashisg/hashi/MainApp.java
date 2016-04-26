@@ -1,4 +1,4 @@
-package ch.ntb.test;
+package ch.ntb.swehashisg.hashi;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

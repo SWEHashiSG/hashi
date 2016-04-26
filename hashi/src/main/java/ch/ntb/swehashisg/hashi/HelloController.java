@@ -1,4 +1,4 @@
-package ch.ntb.test;
+package ch.ntb.swehashisg.hashi;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
