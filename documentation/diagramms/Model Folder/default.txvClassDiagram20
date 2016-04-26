@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhinhf90yhm7utqa">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="visibility" value="public"/>
+		<reference referencedUin="jdt:e_class:src:Control">
+			<property name="bounds" value="304,114,101,81"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:Control:fieldModel">
+				<property name="sourceAnchor" value="380,200"/>
+				<property name="targetAnchor" value="380,271"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:Control:lnkXMLHandler">
+				<property name="sourceAnchor" value="410,159"/>
+				<property name="targetAnchor" value="560,159"/>
+				<property name="bendpoints" value=""/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:Control:lnkView">
+				<property name="sourceAnchor" value="309,180"/>
+				<property name="targetAnchor" value="200,180"/>
+				<property name="bendpoints" value=""/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:View">
+			<property name="bounds" value="115,115,80,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:View:lnkControl">
+				<property name="sourceAnchor" value="200,160"/>
+				<property name="targetAnchor" value="309,160"/>
+				<property name="bendpoints" value=""/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:Node">
+			<property name="bounds" value="291,515,145,101"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:Bridge">
+			<property name="bounds" value="536,515,90,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:Bridge:node2">
+				<property name="sourceAnchor" value="541,570"/>
+				<property name="targetAnchor" value="441,570"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:Bridge:node1">
+				<property name="sourceAnchor" value="541,560"/>
+				<property name="targetAnchor" value="441,560"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:XMLHandler">
+			<property name="bounds" value="555,94,161,121"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:File">
+			<property name="bounds" value="755,276,122,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:FieldModel">
+			<property name="bounds" value="291,266,127,130"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:e_field:src:FieldModel.nodeList">
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:FieldModel:control">
+				<property name="sourceAnchor" value="360,271"/>
+				<property name="targetAnchor" value="360,200"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:FieldModel:nodeList">
+				<property name="sourceAnchor" value="359,401"/>
+				<property name="targetAnchor" value="359,520"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:FieldModel:bridgeList">
+				<property name="sourceAnchor" value="423,399"/>
+				<property name="targetAnchor" value="545,520"/>
+			</reference>
+			<reference referencedUin="jdt:e_field:src:FieldModel.gameSize">
+			</reference>
+		</reference>
+	</view>
+</nodeSet>
