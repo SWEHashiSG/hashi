@@ -71,39 +71,41 @@ public class TestGraph {
 					}
 				}
 			}
-			setBridges(new Field(0, 1, 1), g);
-			setBridges(new Field(0, 3, 2), g);
-			setBridges(new Field(0, 5, 3), g);
-			setBridges(new Field(0, 7, 1), g);
+			setBridges(new Field(0, 1, 1, null), g);
+			setBridges(new Field(0, 3, 2, null), g);
+			setBridges(new Field(0, 5, 3, null), g);
+			setBridges(new Field(0, 7, 1, null), g);
 
-			setBridges(new Field(1, 0, 3), g);
-			setBridges(new Field(1, 2, 5), g);
-			setBridges(new Field(1, 4, 3), g);
+			setBridges(new Field(1, 0, 3, null), g);
+			setBridges(new Field(1, 2, 5, null), g);
+			setBridges(new Field(1, 4, 3, null), g);
 
-			setBridges(new Field(2, 5, 4), g);
-			setBridges(new Field(2, 7, 1), g);
+			setBridges(new Field(2, 5, 4, null), g);
+			setBridges(new Field(2, 7, 1, null), g);
 
-			setBridges(new Field(3, 2, 4), g);
-			setBridges(new Field(3, 4, 4), g);
+			setBridges(new Field(3, 2, 4, null), g);
+			setBridges(new Field(3, 4, 4, null), g);
 
-			setBridges(new Field(4, 0, 4), g);
-			setBridges(new Field(4, 3, 5), g);
-			setBridges(new Field(4, 5, 8), g);
-			setBridges(new Field(4, 7, 3), g);
+			setBridges(new Field(4, 0, 4, null), g);
+			setBridges(new Field(4, 3, 5, null), g);
+			setBridges(new Field(4, 5, 8, null), g);
+			setBridges(new Field(4, 7, 3, null), g);
 
-			setBridges(new Field(5, 6, 1), g);
+			setBridges(new Field(5, 6, 1, null), g);
 
-			setBridges(new Field(6, 0, 3), g);
-			setBridges(new Field(6, 2, 1), g);
-			setBridges(new Field(6, 7, 1), g);
-			setBridges(new Field(6, 5, 2), g);
+			setBridges(new Field(6, 0, 3, null), g);
+			setBridges(new Field(6, 2, 1, null), g);
+			setBridges(new Field(6, 7, 1, null), g);
+			setBridges(new Field(6, 5, 2, null), g);
 
-			setBridges(new Field(7, 1, 1), g);
-			setBridges(new Field(7, 3, 4), g);
-			setBridges(new Field(7, 6, 2), g);
+			setBridges(new Field(7, 1, 1, null), g);
+			setBridges(new Field(7, 3, 4, null), g);
+			setBridges(new Field(7, 6, 2, null), g);
 
 			g.io(IoCore.graphson()).writeGraph("test.json");
 			g.io(IoCore.graphml()).writeGraph("test.xml");
+
+			getRelevantFields(g);
 
 			g.close();
 		} catch (Exception ex) {
@@ -146,18 +148,22 @@ public class TestGraph {
 		int x = (int) v.property("x").value();
 		int y = (int) v.property("y").value();
 		int bridges = (int) v.property("bridges").value();
-		return new Field(x, y, bridges);
+		Set<Vertex> neighbors = getNeighbors(v);
+		Set<Field> neighborFields = convertVerticesToFields(neighbors);
+		return new Field(x, y, bridges, neighborFields);
 	}
 
 	private static class Field {
 		private int x;
 		private int y;
 		private int bridges;
+		private Set<Field> neighbors;
 
-		public Field(int x, int y, int bridges) {
+		public Field(int x, int y, int bridges, Set<Field> neighbors) {
 			this.x = x;
 			this.y = y;
 			this.bridges = bridges;
+			this.neighbors = neighbors;
 		}
 
 		public int getX() {
@@ -170,6 +176,10 @@ public class TestGraph {
 
 		public int getBridges() {
 			return bridges;
+		}
+
+		public Set<Field> getNeighbors() {
+			return neighbors;
 		}
 
 		@Override
@@ -264,6 +274,20 @@ public class TestGraph {
 	private static boolean needsBridge(Vertex node) {
 		return (long) node.property("bridges").value() >= node.graph().traversal().V(node).bothE("bridge").count()
 				.toList().get(0);
+	}
+
+	private static Set<Vertex> getNeighbors(Vertex node) {
+		Set<Vertex> vertices = new HashSet<>();
+		Graph g = node.graph();
+		vertices.addAll(g.traversal().V(node).repeat(__.in("row"))
+				.until(__.values("bridges").is((Predicate<Object>) t -> (int) t != 0)).toSet());
+		vertices.addAll(g.traversal().V(node).repeat(__.out("row"))
+				.until(__.values("bridges").is((Predicate<Object>) t -> (int) t != 0)).toSet());
+		vertices.addAll(g.traversal().V(node).repeat(__.in("column"))
+				.until(__.values("bridges").is((Predicate<Object>) t -> (int) t != 0)).toSet());
+		vertices.addAll(g.traversal().V(node).repeat(__.out("column"))
+				.until(__.values("bridges").is((Predicate<Object>) t -> (int) t != 0)).toSet());
+		return vertices;
 	}
 
 	private static boolean areNeighbors(Vertex node1, Vertex node2) {
