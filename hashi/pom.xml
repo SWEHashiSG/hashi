@@ -24,11 +24,18 @@
 		<log4j.version>1.2.17</log4j.version>
 		<miglayout-javafx.version>5.0</miglayout-javafx.version>
 		<javafx-maven-plugin.version>8.1.5</javafx-maven-plugin.version>
+		<tinkergraph-gremlin.version>3.2.0-incubating</tinkergraph-gremlin.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
+		<!-- TinkerPop -->
+		<dependency>
+			<groupId>org.apache.tinkerpop</groupId>
+			<artifactId>tinkergraph-gremlin</artifactId>
+			<version>${tinkergraph-gremlin.version}</version>
+		</dependency>
 		<!-- MigLayout -->
 		<dependency>
 			<groupId>com.miglayout</groupId>
