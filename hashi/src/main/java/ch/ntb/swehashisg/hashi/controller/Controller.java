@@ -1,31 +1,26 @@
 package ch.ntb.swehashisg.hashi.controller;
 
+import java.util.ArrayList;
+
 import ch.ntb.swehashisg.hashi.model.FieldModel;
 
 import ch.ntb.swehashisg.hashi.xml.XMLHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
+import javafx.scene.layout.Pane;
 import javafx.event.ActionEvent;
 
 public class Controller {
 
 	private FieldModel fieldModel;
 	private XMLHandler xmlHandler;
-
 	private int gameSize = 10;
+	private ArrayList<GraphicalNode> graphicalNodes = new ArrayList<GraphicalNode>();
+	private ArrayList<GraphicalBridge> graphicalBrides = new ArrayList<GraphicalBridge>();
 
 	@FXML
-	private GridPane gridPane;
+	private Pane gameFieldPane;
 	@FXML
 	private Button buttonTest;
 
@@ -35,51 +30,63 @@ public class Controller {
 		System.out.println("Started");
 		buttonTest.setDisable(true);
 		buttonTest.setText("Game is Started");
-		initGridPane(gameSize);
+		initCanvas(gameSize);
 		addNode(0, 0, 3);
 		addNode(0, 5, 1);
 		addNode(5, 5, 8);
 		addNode(8, 0, 5);
 		addNode(8, 5, 6);
-
-		addBridge(5, 0, 5, 8);
-		addBridge(0, 0, 0, 8);
-		addBridge(0, 8, 5, 8);
-		addBridge(5, 5, 5, 8);
+	}
+	
+	@FXML
+	public void addBridge(ActionEvent event){
+		System.out.println("Add Bridge Test");
+		addBridge(graphicalNodes.get(0), graphicalNodes.get(1));
+	}
+	
+	@FXML
+	public void addDoubleBridge(ActionEvent event){
+		System.out.println("Add Double Bridge Test");
+		addDoubleBridge(graphicalNodes.get(3), graphicalNodes.get(4));
+	}
+	
+	@FXML
+	public void showHint(ActionEvent event){
+		System.out.println("Show Hint");
+		graphicalBrides.get(1).drawHintLine();
+	}
+	
+	@FXML
+	public void removeHint(ActionEvent event){
+		System.out.println("Remove Hint");
+		graphicalBrides.get(1).removeHintLine();
 	}
 
-	private void initGridPane(int gameSize) {
-		cleanGrid();
-		gridPane.setGridLinesVisible(true); // for Debugging
-
-		for (int i = 0; i < gameSize; i++) {
-			ColumnConstraints colConst = new ColumnConstraints();
-			colConst.setMinWidth(40);
-			colConst.setPrefWidth(100);
-			gridPane.getColumnConstraints().add(colConst);
-		}
-		for (int i = 0; i < gameSize; i++) {
-			RowConstraints rowConst = new RowConstraints();
-			rowConst.setMinHeight(40);
-			rowConst.setPrefHeight(100);
-			gridPane.getRowConstraints().add(rowConst);
-		}
-
+	private void initCanvas(int gameSize) {
+		int gameFieldSize = gameSize*GraphicalNode.CIRCLE_DIAMETER;
+		gameFieldPane.setPrefSize(gameFieldSize, gameFieldSize);
+		cleanPane();
 	}
 
 	private void addNode(int colum, int row, int value) {
-		GraphicalNode node = new GraphicalNode(value);
-		node.addToGrid(gridPane, colum, row);
+		GraphicalNode node = new GraphicalNode(colum, row, value);
+		graphicalNodes.add(node);
+		node.draw(gameFieldPane);
 	}
 
-	private void addBridge(int beginRow, int beginColum, int endRow, int endColum) {
-		GraphicalBridge graphicalBridge = new GraphicalBridge(gridPane, beginColum, beginRow, endColum, endRow);
-		// graphicalBridge.showSignelBridge();
+	private void addBridge(GraphicalNode graphicalNode1, GraphicalNode graphicalNode2) {
+		GraphicalBridge bridge = new GraphicalBridge(gameFieldPane, graphicalNode1,graphicalNode2);
+		graphicalBrides.add(bridge);
+		bridge.drawSingleLine();
+	}
+	
+	private void addDoubleBridge(GraphicalNode graphicalNode1, GraphicalNode graphicalNode2){
+		GraphicalBridge bridge = new GraphicalBridge(gameFieldPane, graphicalNode1,graphicalNode2);
+		graphicalBrides.add(bridge);
+		bridge.drawDoubleLine();
 	}
 
-	private void cleanGrid() {
-		gridPane.getChildren().clear();
-		gridPane.getColumnConstraints().clear();
-		gridPane.getRowConstraints().clear();
+	private void cleanPane() {
+		gameFieldPane.getChildren().clear();
 	}
 }

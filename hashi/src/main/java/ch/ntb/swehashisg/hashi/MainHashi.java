@@ -20,7 +20,7 @@ public class MainHashi extends Application {
     @FXML private Circle testCircle;
     
     private int gameSize = 10;
-    private static final int CIRCLE_RADIUS = 22;
+    private static final int CIRCLE_RADIUS = 40;
     
     public static void main(String[] args) throws Exception {
         launch(args);
