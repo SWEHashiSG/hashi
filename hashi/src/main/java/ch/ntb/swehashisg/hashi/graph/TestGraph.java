@@ -16,6 +16,9 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 
+import ch.ntb.swehashisg.hashi.model.GraphBridge;
+import ch.ntb.swehashisg.hashi.model.GraphField;
+
 public class TestGraph {
 
 	public static void main(String[] args) {
@@ -41,6 +44,7 @@ public class TestGraph {
 	}
 
 	private static Graph generateBasisPlayGround(Graph g) {
+		Vertex play = g.addVertex("name", "test");
 		Vertex root = null;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -83,40 +87,42 @@ public class TestGraph {
 			}
 		}
 
+		play.addEdge("field", root);
+
 		return g;
 	}
 
 	private static Graph generateExamplePlay(Graph g) {
-		setBridges(new Field(0, 1, 1), g);
-		setBridges(new Field(0, 3, 2), g);
-		setBridges(new Field(0, 5, 3), g);
-		setBridges(new Field(0, 7, 1), g);
+		setBridges(new GraphField(0, 1, 1), g);
+		setBridges(new GraphField(0, 3, 2), g);
+		setBridges(new GraphField(0, 5, 3), g);
+		setBridges(new GraphField(0, 7, 1), g);
 
-		setBridges(new Field(1, 0, 3), g);
-		setBridges(new Field(1, 2, 5), g);
-		setBridges(new Field(1, 4, 3), g);
+		setBridges(new GraphField(1, 0, 3), g);
+		setBridges(new GraphField(1, 2, 5), g);
+		setBridges(new GraphField(1, 4, 3), g);
 
-		setBridges(new Field(2, 5, 4), g);
-		setBridges(new Field(2, 7, 1), g);
+		setBridges(new GraphField(2, 5, 4), g);
+		setBridges(new GraphField(2, 7, 1), g);
 
-		setBridges(new Field(3, 2, 4), g);
-		setBridges(new Field(3, 4, 4), g);
+		setBridges(new GraphField(3, 2, 4), g);
+		setBridges(new GraphField(3, 4, 4), g);
 
-		setBridges(new Field(4, 0, 4), g);
-		setBridges(new Field(4, 3, 5), g);
-		setBridges(new Field(4, 5, 8), g);
-		setBridges(new Field(4, 7, 3), g);
+		setBridges(new GraphField(4, 0, 4), g);
+		setBridges(new GraphField(4, 3, 5), g);
+		setBridges(new GraphField(4, 5, 8), g);
+		setBridges(new GraphField(4, 7, 3), g);
 
-		setBridges(new Field(5, 6, 1), g);
+		setBridges(new GraphField(5, 6, 1), g);
 
-		setBridges(new Field(6, 0, 3), g);
-		setBridges(new Field(6, 2, 1), g);
-		setBridges(new Field(6, 7, 1), g);
-		setBridges(new Field(6, 5, 2), g);
+		setBridges(new GraphField(6, 0, 3), g);
+		setBridges(new GraphField(6, 2, 1), g);
+		setBridges(new GraphField(6, 7, 1), g);
+		setBridges(new GraphField(6, 5, 2), g);
 
-		setBridges(new Field(7, 1, 1), g);
-		setBridges(new Field(7, 3, 4), g);
-		setBridges(new Field(7, 6, 2), g);
+		setBridges(new GraphField(7, 1, 1), g);
+		setBridges(new GraphField(7, 3, 4), g);
+		setBridges(new GraphField(7, 6, 2), g);
 
 		return g;
 	}
@@ -130,12 +136,12 @@ public class TestGraph {
 		}
 	}
 
-	private static void setBridges(Field field, Graph g) {
+	private static void setBridges(GraphField field, Graph g) {
 		Vertex node = getVertexForField(field, g);
 		node.property("bridges", field.getBridges());
 	}
 
-	public static Set<Field> getRelevantFields(Graph g) {
+	public static Set<GraphField> getRelevantFields(Graph g) {
 		Vertex root = g.traversal().V().has("x", 0).has("y", 0).toList().get(0);
 
 		Set<Vertex> vertices = new HashSet<>();
@@ -146,129 +152,36 @@ public class TestGraph {
 		return convertVerticesToFields(vertices);
 	}
 
-	private static Set<Field> convertVerticesToFields(Set<Vertex> vertices) {
-		Set<Field> fields = new HashSet<>();
+	private static Set<GraphField> convertVerticesToFields(Set<Vertex> vertices) {
+		Set<GraphField> fields = new HashSet<>();
 		for (Vertex v : vertices) {
 			fields.add(convertVertexToField(v));
 		}
 		return fields;
 	}
 
-	private static Vertex getVertexForField(Field field, Graph g) {
+	private static Vertex getVertexForField(GraphField field, Graph g) {
 		return g.traversal().V().has("x", field.getX()).has("y", field.getY()).toList().get(0);
 	}
 
-	private static Field convertVertexToField(Vertex v) {
+	private static GraphField convertVertexToField(Vertex v) {
 		int x = (int) v.property("x").value();
 		int y = (int) v.property("y").value();
 		int bridges = (int) v.property("bridges").value();
 		Set<Vertex> neighbors = getNeighbors(v);
-		Set<Field> neighborFields = convertVerticesToFields(neighbors);
-		List<Bridge> existingBridges = getBridges(v);
-		return new Field(x, y, bridges, neighborFields, existingBridges);
+		Set<GraphField> neighborFields = convertVerticesToFields(neighbors);
+		List<GraphBridge> existingBridges = getBridges(v);
+		return new GraphField(x, y, bridges, neighborFields, existingBridges);
 	}
 
-	private static Field convertVertexToFieldLight(Vertex v) {
+	private static GraphField convertVertexToFieldLight(Vertex v) {
 		int x = (int) v.property("x").value();
 		int y = (int) v.property("y").value();
 		int bridges = (int) v.property("bridges").value();
-		return new Field(x, y, bridges);
+		return new GraphField(x, y, bridges);
 	}
 
-	private static class Field {
-		private int x;
-		private int y;
-		private int bridges;
-		private Set<Field> neighbors;
-		private List<Bridge> existingBridges;
-
-		public Field(int x, int y, int bridges, Set<Field> neighbors, List<Bridge> existingBridges) {
-			this.x = x;
-			this.y = y;
-			this.bridges = bridges;
-			this.neighbors = neighbors;
-			this.existingBridges = existingBridges;
-		}
-
-		public Field(int x, int y, int bridges) {
-			this(x, y, bridges, new HashSet<>(), new ArrayList<>());
-		}
-
-		public int getX() {
-			return x;
-		}
-
-		public int getY() {
-			return y;
-		}
-
-		public int getBridges() {
-			return bridges;
-		}
-
-		public Set<Field> getNeighbors() {
-			return neighbors;
-		}
-
-		public List<Bridge> getExistingBridges() {
-			return existingBridges;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + x;
-			result = prime * result + y;
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Field other = (Field) obj;
-			if (x != other.x)
-				return false;
-			if (y != other.y)
-				return false;
-			return true;
-		}
-	}
-
-	private static class Bridge {
-		private Field field1;
-		private Field field2;
-
-		public Bridge(Field field1, Field field2) {
-			super();
-			this.field1 = field1;
-			this.field2 = field2;
-		}
-
-		public Field getField1() {
-			return field1;
-		}
-
-		public void setField1(Field field1) {
-			this.field1 = field1;
-		}
-
-		public Field getField2() {
-			return field2;
-		}
-
-		public void setField2(Field field2) {
-			this.field2 = field2;
-		}
-
-	}
-
-	public static void addBridge(Bridge bridge, Graph g) {
+	public static void addBridge(GraphBridge bridge, Graph g) {
 		Vertex node1 = g.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
 				.toList().get(0);
 		Vertex node2 = g.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
@@ -285,7 +198,7 @@ public class TestGraph {
 		node1.addEdge("bridge", node2);
 	}
 
-	public static void removeBridge(Bridge bridge, Graph g) {
+	public static void removeBridge(GraphBridge bridge, Graph g) {
 		Vertex node1 = g.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
 				.toList().get(0);
 		Vertex node2 = g.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
@@ -322,14 +235,14 @@ public class TestGraph {
 		return vertices;
 	}
 
-	private static List<Bridge> getBridges(Vertex node) {
-		List<Bridge> bridges = new ArrayList<>();
+	private static List<GraphBridge> getBridges(Vertex node) {
+		List<GraphBridge> bridges = new ArrayList<>();
 		Iterator<Edge> edges = node.edges(Direction.BOTH, "bridge");
 		while (edges.hasNext()) {
 			Edge edge = edges.next();
-			Field node1 = convertVertexToFieldLight(edge.inVertex());
-			Field node2 = convertVertexToFieldLight(edge.inVertex());
-			Bridge bridge = new Bridge(node1, node2);
+			GraphField node1 = convertVertexToFieldLight(edge.inVertex());
+			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
+			GraphBridge bridge = new GraphBridge(node1, node2);
 			bridges.add(bridge);
 		}
 
