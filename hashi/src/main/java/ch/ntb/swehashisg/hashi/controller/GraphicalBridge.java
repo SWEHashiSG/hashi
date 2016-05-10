@@ -61,7 +61,6 @@ public class GraphicalBridge {
 	}
 	
 	public void drawHintLine(){
-		//clean();
 		lineHint = new Line(startX, startY, endX, endY);
 		lineHint.strokeWidthProperty().set(HINT_LINE_WIDTH);
 		lineHint.setStroke(Color.ORANGE);
@@ -70,8 +69,6 @@ public class GraphicalBridge {
 	}
 	
 	public void removeHintLine(){
-		clean();
-		lineHint = null;
 		pane.getChildren().remove(lineHint);
 	}
 

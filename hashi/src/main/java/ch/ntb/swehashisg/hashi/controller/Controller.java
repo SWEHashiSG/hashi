@@ -1,13 +1,11 @@
 package ch.ntb.swehashisg.hashi.controller;
 
 import java.util.ArrayList;
-
 import ch.ntb.swehashisg.hashi.model.FieldModel;
 
 import ch.ntb.swehashisg.hashi.xml.XMLHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.event.ActionEvent;
 
@@ -26,18 +24,23 @@ public class Controller {
 
 	@FXML
 	public void buttonClicked(ActionEvent event) {
-
 		System.out.println("Started");
 		buttonTest.setDisable(true);
 		buttonTest.setText("Game is Started");
 		initCanvas(gameSize);
+		loadGame();
+
+	}
+	
+	private void loadGame() {
+		// TODO: implement Game Load Function from File
 		addNode(0, 0, 3);
 		addNode(0, 5, 1);
 		addNode(5, 5, 8);
 		addNode(8, 0, 5);
 		addNode(8, 5, 6);
 	}
-	
+
 	@FXML
 	public void addBridge(ActionEvent event){
 		System.out.println("Add Bridge Test");
