@@ -12,21 +12,22 @@ public class gametime {
 		gameTime = 0;
 	}
 	
-	public void startTime(){
-		startTime = System.currentTimeMillis();
+	public void startTime(){	//start the Gametime
+		startTime = System.currentTimeMillis(); 
+		
 	}
 	
-	public void resetTime(){
+	public void resetTime(){	//reset the GameTime
 		startTime = 0;
 		currentTime = 0;
 	}
 	
-	public void stopTime(){
+	public void stopTime(){		//stop the GameTime
 		currentTime = System.currentTimeMillis();
 	}
 		
 	
-	public long getTime(){
+	public long getTime(){		//return Gametime 
 		if (currentTime > 0){
 			gameTime = currentTime - startTime;
 		}else{
