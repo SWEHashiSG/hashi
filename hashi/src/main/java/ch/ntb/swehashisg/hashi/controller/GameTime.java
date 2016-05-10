@@ -1,12 +1,12 @@
 package ch.ntb.swehashisg.hashi.controller;
 
-public class gametime {
+public class GameTime {
 
 	private long startTime;
 	private long currentTime;
 	private long gameTime;
 	
-	public gametime(){
+	public GameTime(){
 		currentTime = 0;
 		startTime = 0;
 		gameTime = 0;
