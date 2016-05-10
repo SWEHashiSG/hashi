@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="400.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.ntb.swehashisg.hashi.controller.Controller">
+<AnchorPane minHeight="400.0" minWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.ntb.swehashisg.hashi.controller.Controller">
    <children>
       <BorderPane layoutX="93.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -24,7 +25,13 @@
             </AnchorPane>
          </top>
          <center>
-            <Pane fx:id="gameFieldPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <Pane fx:id="pane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: Green;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor></Pane>
          </center>
       </BorderPane>
    </children>

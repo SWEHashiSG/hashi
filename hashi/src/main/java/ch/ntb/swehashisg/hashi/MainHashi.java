@@ -28,7 +28,7 @@ public class MainHashi extends Application {
 
     public void start(Stage stage) throws Exception {
 
-        String fxmlFile = "/fxml/mainWindow.fxml";
+        String fxmlFile = "/fxml/MainWindow.fxml";
         FXMLLoader loader = new FXMLLoader();
         Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
 

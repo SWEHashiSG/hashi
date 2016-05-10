@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Group>
+         <children>
+            <Rectangle fx:id="highliterVertical" arcHeight="5.0" arcWidth="5.0" fill="#ffce8a" height="40.0" layoutX="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="20.0" />
+            <Rectangle fx:id="highliterHorizontal" arcHeight="5.0" arcWidth="5.0" fill="#ffce8a" height="20.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
+            <Line fx:id="lineVerticalSingle" endX="20.0" endY="40.0" startX="20.0" />
+            <Line fx:id="lineHorizontalSingle" endX="40.0" endY="20.0" startY="20.0" />
+            <Line fx:id="lineHorizontalDouble1" endX="40.0" endY="18.0" startY="18.0" />
+            <Line fx:id="lineHorizontalDouble2" endX="40.0" endY="22.0" startY="22.0" />
+            <Line fx:id="lineVerticalDouble1" endX="18.0" endY="40.0" startX="18.0" />
+            <Line fx:id="lineVerticalDouble2" endX="22.0" endY="40.0" startX="22.0" />
+         </children>
+      </Group>
+   </children>
+</fx:root>
