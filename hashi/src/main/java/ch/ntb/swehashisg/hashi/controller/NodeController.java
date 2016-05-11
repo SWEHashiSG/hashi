@@ -1,7 +1,9 @@
 package ch.ntb.swehashisg.hashi.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -29,19 +31,35 @@ public class NodeController extends Pane {
 		this.graphField = graphField;
 		label.textProperty().bind(new SimpleStringProperty(Integer.toString(graphField.getBridges())));
 	}
+	
+	public void addToGameField(GridPane gridPane){
+		gridPane.add(this, graphField.getX(), graphField.getY());
+	}
 
 	@FXML
 	protected void onMouseClicked() {
-		System.out.println("The button was clicked!");
+		System.out.println("Clicked on Node!");
+		for (GraphField graphField : graphField.getNeighbors()) {
+			System.out.println("Neighbors");
+		}
 	}
 
 	@FXML
 	protected void onMouseEntered() {
+		getPossibleBridges();
 		System.out.println("Mouse on Node");
 	}
 
 	@FXML
 	protected void onMouseExited() {
 		System.out.println("Mouse not on Node:-)");
+	}
+
+	private ArrayList<GraphBridge> getPossibleBridges() {
+		ArrayList<GraphBridge> bridges = new ArrayList<>();
+		for (GraphField field : graphField.getNeighbors()) {
+			bridges.add(new GraphBridge(graphField, field));
+		}
+		return bridges;
 	}
 }

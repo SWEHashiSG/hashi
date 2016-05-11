@@ -6,19 +6,37 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root onMouseClicked="#onMouseClicked" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" prefHeight="200" prefWidth="400">
    <children>
-      <Group>
+      <GridPane mouseTransparent="true">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints percentHeight="33.3"/>
+          <RowConstraints percentHeight="33.3"/>
+          <RowConstraints/>
+        </rowConstraints>
          <children>
-            <Rectangle fx:id="highliterVertical" arcHeight="5.0" arcWidth="5.0" fill="#ffce8a" height="40.0" layoutX="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="20.0" />
-            <Rectangle fx:id="highliterHorizontal" arcHeight="5.0" arcWidth="5.0" fill="#ffce8a" height="20.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="40.0" />
-            <Line fx:id="lineVerticalSingle" endX="20.0" endY="40.0" startX="20.0" />
-            <Line fx:id="lineHorizontalSingle" endX="40.0" endY="20.0" startY="20.0" />
-            <Line fx:id="lineHorizontalDouble1" endX="40.0" endY="18.0" startY="18.0" />
-            <Line fx:id="lineHorizontalDouble2" endX="40.0" endY="22.0" startY="22.0" />
-            <Line fx:id="lineVerticalDouble1" endX="18.0" endY="40.0" startX="18.0" />
-            <Line fx:id="lineVerticalDouble2" endX="22.0" endY="40.0" startX="22.0" />
+            <Pane fx:id="highliter" style="-fx-background-color: Orange;" GridPane.rowIndex="1" />
+            <GridPane mouseTransparent="true" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS"/>
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints percentHeight="20.0" vgrow="ALWAYS" />
+                  <RowConstraints percentHeight="20.0" vgrow="ALWAYS" />
+                  <RowConstraints percentHeight="20.0" vgrow="ALWAYS" />
+                  <RowConstraints percentHeight="20.0" vgrow="ALWAYS" />
+                <RowConstraints percentHeight="20.0" vgrow="ALWAYS" />
+              </rowConstraints>
+               <children>
+                  <Pane fx:id="lineTop" style="-fx-background-color: black;" GridPane.rowIndex="1" />
+                  <Pane fx:id="lineMiddle" style="-fx-background-color: black;" visible="false" GridPane.rowIndex="2" />
+                  <Pane fx:id="lineButtom" style="-fx-background-color: black;" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
          </children>
-      </Group>
+      </GridPane>
    </children>
 </fx:root>

@@ -1,25 +1,19 @@
 package ch.ntb.swehashisg.hashi.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
-import ch.ntb.swehashisg.hashi.model.FieldModel;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
-import ch.ntb.swehashisg.hashi.xml.XMLHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
-import javafx.event.ActionEvent;
 
 public class Controller {
 
 	private GameFieldController gameFieldController;
-	private XMLHandler xmlHandler;
 	GraphDas graphDas;
+	private int gameSize = 8;			// Todo: Get form GameDas
 
 	@FXML
 	private Pane pane;
@@ -31,22 +25,22 @@ public class Controller {
 		System.out.println("Started");
 		buttonTest.setDisable(true);
 		buttonTest.setText("Game is Started");
-		//initCanvas(gameSize);
+		// initCanvas(gameSize);
 		loadGame();
 	}
 
 	private void loadGame() {
-		gameFieldController = new GameFieldController();
+		gameFieldController = new GameFieldController(gameSize);
 		pane.getChildren().add(gameFieldController);
 		graphDas = GraphDasFactory.getGraphDas();
-		gameFieldController.loadGame(graphDas.getRelevantFields(),pane);
+		gameFieldController.loadGame(graphDas.getRelevantFields());
 	}
 
 	@FXML
 	public void addBridge(ActionEvent event) {
-		System.out.println("Add Bridge Test");
-		GraphBridge bridge = new GraphBridge(graphDas.getRelevantFields().iterator().next(), graphDas.getRelevantFields().iterator().next());
-		gameFieldController.addBridge(bridge);
+		System.out.println("Add Bridge");
+		gameFieldController.addBridge(new GraphBridge(new GraphField(0, 1, 1), new GraphField(7, 1, 1)));
+		gameFieldController.addBridge(new GraphBridge(new GraphField(6, 2, 1), new GraphField(6, 5, 2)));
 	}
 
 	@FXML

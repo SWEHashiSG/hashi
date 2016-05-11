@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root onMouseClicked="#onMouseClicked" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" prefHeight="400" prefWidth="200">
+   <children>
+      <GridPane mouseTransparent="true">
+        <columnConstraints>
+          <ColumnConstraints percentWidth="33.3" />
+          <ColumnConstraints percentWidth="33.3" />
+          <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="ALWAYS"/>
+        </rowConstraints>
+         <children>
+            <Pane fx:id="highliter" style="-fx-background-color: Orange;" GridPane.columnIndex="1" />
+            <GridPane mouseTransparent="true" GridPane.columnIndex="1">
+              <columnConstraints>
+                  <ColumnConstraints percentWidth="20.0" />
+                  <ColumnConstraints percentWidth="20.0" />
+                  <ColumnConstraints percentWidth="20.0" />
+                  <ColumnConstraints percentWidth="20.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="ALWAYS" />
+              </rowConstraints>
+               <children>
+                  <Pane fx:id="lineTop" style="-fx-background-color: black;" GridPane.columnIndex="1" />
+                  <Pane fx:id="lineMiddle" style="-fx-background-color: black;" visible="false" GridPane.columnIndex="2" />
+                  <Pane fx:id="lineButtom" style="-fx-background-color: black;" GridPane.columnIndex="3" />
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</fx:root>
