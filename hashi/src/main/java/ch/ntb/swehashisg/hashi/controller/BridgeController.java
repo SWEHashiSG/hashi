@@ -27,7 +27,7 @@ public class BridgeController extends StackPane {
 	public BridgeController(GraphBridge graphBridge) {
 		String fxmlFile = "";
 		if (graphBridge.getBridgeDirection() == BridgeDirection.Horizontal) {
-			fxmlFile = "/fxml/Bridge.fxml";
+			fxmlFile = "/fxml/HorizontalBridge.fxml";
 		} else {
 			fxmlFile = "/fxml/VerticalBridge.fxml";
 		}
