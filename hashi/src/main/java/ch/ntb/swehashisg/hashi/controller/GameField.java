@@ -6,15 +6,13 @@ import java.util.Set;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
-public class GameFieldController extends GridPane {
+public class GameField extends GridPane {
 
-	public GameFieldController(int gameSize) {
+	public GameField(int gameSize) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -25,18 +23,19 @@ public class GameFieldController extends GridPane {
 			throw new RuntimeException(exception);
 		}
 		setFieldSize(gameSize);
+		setGridLinesVisible(true);					// For debugging show grid lines
 	}
 
 	private void setFieldSize(int gameSize) {
 		getRowConstraints().clear();
 		for (int i = 0; i < gameSize; i++) {
 			RowConstraints rowConstraints = new RowConstraints();
-			//rowConstraints.setPercentHeight(100.0 / gameSize);
-			rowConstraints.setPrefHeight(40);
+			rowConstraints.setPercentHeight(100.0 / gameSize);			//Automatic Size of Window 	
+			//rowConstraints.setPrefHeight(40);							// Fix Size of Window
 			getRowConstraints().add(rowConstraints);
 			ColumnConstraints columnConstraints = new ColumnConstraints();
-			//columnConstraints.setPercentWidth(100.0 / gameSize);
-			columnConstraints.setPrefWidth(40);
+			columnConstraints.setPercentWidth(100.0 / gameSize);		//Automatic Size of Window 
+			//columnConstraints.setPrefWidth(40);							// Fixe Size of Window
 			getColumnConstraints().add(columnConstraints);
 		}
 
@@ -44,11 +43,11 @@ public class GameFieldController extends GridPane {
 
 	public void loadGame(Set<GraphField> graphFields) {
 		for (GraphField graphField : graphFields) {
-			new NodeController(graphField).addToGameField(this);
+			new Field(graphField).addToGameField(this);
 		}
 	}
 
 	public void addBridge(GraphBridge graphBridge) {
-		new BridgeController(graphBridge).addToGameField(this);;
+		new Bridge(graphBridge).addToGameField(this);;
 	}
 }

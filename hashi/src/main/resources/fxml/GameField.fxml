@@ -5,13 +5,5 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<fx:root gridLinesVisible="true" style="-fx-background-color: White;" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-<!-- 	<columnConstraints>
-		<ColumnConstraints hgrow="ALWAYS"/>
-      <ColumnConstraints hgrow="ALWAYS" />
-	</columnConstraints>
-	<rowConstraints>
-		<RowConstraints vgrow="ALWAYS" />
-      <RowConstraints vgrow="ALWAYS" />
-	</rowConstraints> -->
+<fx:root style="-fx-background-color: White;" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 </fx:root>

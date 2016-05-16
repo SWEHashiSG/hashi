@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="400.0" minWidth="480.0" prefHeight="495.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.ntb.swehashisg.hashi.controller.MainWindowController">
+<fx:root type="javafx.scene.layout.AnchorPane"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane layoutX="93.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -25,7 +25,7 @@
             </AnchorPane>
          </top>
          <center>
-            <AnchorPane prefHeight="463.0" prefWidth="341.0" style="-fx-background-color: green;" BorderPane.alignment="CENTER">
+            <AnchorPane style="-fx-background-color: green;" BorderPane.alignment="CENTER">
                <children>
                   <AnchorPane fx:id="pane" layoutX="150.0" layoutY="77.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                </children>
@@ -33,4 +33,4 @@
          </center>
       </BorderPane>
    </children>
-</AnchorPane>
+</fx:root>

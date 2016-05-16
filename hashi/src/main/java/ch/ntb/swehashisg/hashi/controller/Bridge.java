@@ -6,12 +6,10 @@ import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class BridgeController extends StackPane {
+public class Bridge extends StackPane {
 
 	@FXML
 	private Pane lineTop;
@@ -24,7 +22,7 @@ public class BridgeController extends StackPane {
 
 	private GraphBridge graphBridge;
 
-	public BridgeController(GraphBridge graphBridge) {
+	public Bridge(GraphBridge graphBridge) {
 		String fxmlFile = "";
 		if (graphBridge.getBridgeDirection() == BridgeDirection.Horizontal) {
 			fxmlFile = "/fxml/HorizontalBridge.fxml";
@@ -41,16 +39,14 @@ public class BridgeController extends StackPane {
 			throw new RuntimeException(exception);
 		}
 		this.graphBridge = graphBridge;
-		if (graphBridge.getBridgeDirection() == BridgeDirection.Vertical) {
-			// this turn
-		}
+		
 		lineMiddle.setVisible(false);
 		lineTop.setVisible(true);
 		lineButtom.setVisible(true);
 		highliter.setVisible(false);
 	}
 
-	public void addToGameField(GridPane gridPane) {
+	public void addToGameField(GameField gameField) {
 		int columnIndex = graphBridge.getField1().getX();
 		int rowIndex = graphBridge.getField1().getY();
 		int columnSpan = 1;
@@ -62,7 +58,7 @@ public class BridgeController extends StackPane {
 			columnIndex++;
 			columnSpan = Math.abs(graphBridge.getField1().getX() - graphBridge.getField2().getX()) - 1;
 		}
-		gridPane.add(this, columnIndex, rowIndex, columnSpan, rowSpan);
+		gameField.add(this, columnIndex, rowIndex, columnSpan, rowSpan);
 	}
 
 	@FXML

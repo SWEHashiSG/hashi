@@ -12,14 +12,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
-public class NodeController extends Pane {
+public class Field extends Pane {
 	@FXML
 	private Label label;
 
 	private GraphField graphField;
 
-	public NodeController(GraphField graphField) {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Node.fxml"));
+	public Field(GraphField graphField) {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Field.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 
@@ -32,8 +32,8 @@ public class NodeController extends Pane {
 		label.textProperty().bind(new SimpleStringProperty(Integer.toString(graphField.getBridges())));
 	}
 	
-	public void addToGameField(GridPane gridPane){
-		gridPane.add(this, graphField.getX(), graphField.getY());
+	public void addToGameField(GameField gameField){
+		gameField.add(this, graphField.getX(), graphField.getY());
 	}
 
 	@FXML
