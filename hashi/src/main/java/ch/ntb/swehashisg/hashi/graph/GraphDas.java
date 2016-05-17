@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
+import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Direction;
@@ -49,6 +49,14 @@ public class GraphDas {
 		return fields;
 	}
 
+	private Set<GraphField> convertVerticesToFieldsLight(Set<Vertex> vertices) {
+		Set<GraphField> fields = new HashSet<>();
+		for (Vertex v : vertices) {
+			fields.add(convertVertexToFieldLight(v));
+		}
+		return fields;
+	}
+
 	private Vertex getVertexForField(GraphField field) {
 		return graph.traversal().V().has("x", field.getX()).has("y", field.getY()).toList().get(0);
 	}
@@ -58,7 +66,7 @@ public class GraphDas {
 		int y = (int) v.property("y").value();
 		int bridges = (int) v.property("bridges").value();
 		Set<Vertex> neighbors = getNeighbors(v);
-		Set<GraphField> neighborFields = convertVerticesToFields(neighbors);
+		Set<GraphField> neighborFields = convertVerticesToFieldsLight(neighbors);
 		List<GraphBridge> existingBridges = getBridges(v);
 		return new GraphField(x, y, bridges, neighborFields, existingBridges);
 	}
@@ -113,14 +121,12 @@ public class GraphDas {
 	private Set<Vertex> getNeighbors(Vertex node) {
 		Set<Vertex> vertices = new HashSet<>();
 		Graph g = node.graph();
-		vertices.addAll(g.traversal().V(node).repeat(__.in("row"))
-				.until(__.values("bridges").is((Predicate<Object>) t -> (int) t != 0)).toSet());
-		vertices.addAll(g.traversal().V(node).repeat(__.out("row"))
-				.until(__.values("bridges").is((Predicate<Object>) t -> (int) t != 0)).toSet());
-		vertices.addAll(g.traversal().V(node).repeat(__.in("column"))
-				.until(__.values("bridges").is((Predicate<Object>) t -> (int) t != 0)).toSet());
-		vertices.addAll(g.traversal().V(node).repeat(__.out("column"))
-				.until(__.values("bridges").is((Predicate<Object>) t -> (int) t != 0)).toSet());
+
+		vertices.addAll(g.traversal().V(node).repeat(__.in("row")).until(__.values("bridges").is(P.neq(0))).toSet());
+		vertices.addAll(g.traversal().V(node).repeat(__.out("row")).until(__.values("bridges").is(P.neq(0))).toSet());
+		vertices.addAll(g.traversal().V(node).repeat(__.in("column")).until(__.values("bridges").is(P.neq(0))).toSet());
+		vertices.addAll(
+				g.traversal().V(node).repeat(__.out("column")).until(__.values("bridges").is(P.neq(0))).toSet());
 		return vertices;
 	}
 
