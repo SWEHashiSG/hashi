@@ -32,7 +32,13 @@ public class TestGraph {
 			graphDas.addBridge(graphBridge1);
 			System.out.println("Oh Yes!");
 
-			graphDas.getRelevantFields();
+			long start = System.currentTimeMillis();
+
+			for (int i = 0; i < 100; i++) {
+				graphDas.getRelevantFields();
+			}
+
+			System.out.println("Duration: " + (System.currentTimeMillis() - start));
 
 			try {
 				graphDas.addBridge(graphBridge2);
