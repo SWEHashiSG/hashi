@@ -94,6 +94,9 @@ public class GraphDas {
 		if (!areNeighbors(node1, node2)) {
 			throw new IllegalArgumentException("Need to be neighbors!");
 		}
+		if (!areNeighbors2(node1, node2)) {
+			throw new IllegalArgumentException("Crossing bridges!");
+		}
 		node1.addEdge("bridge", node2);
 	}
 
@@ -207,21 +210,28 @@ public class GraphDas {
 				}
 			};
 			if (x1 > x2) {
-				tr = tr.repeat(__.in("row").and(__.values("bridges").is(0)).filter(complexFilterRow))
-						.until(__.values("x").is(x1));
+				tr = tr.repeat(__.in("row")
+						.or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
+								__.and(__.values("x").is(P.gt(x2)), __.values("bridges").is(0)))
+						.filter(complexFilterRow)).until(__.values("x").is(P.eq(x2)));
 			}
 			if (x1 < x2) {
-				tr = tr.repeat(__.out("row").and(__.values("bridges").is(0)).filter(complexFilterRow))
-						.until(__.values("x").is(x2));
+				tr = tr.repeat(__.out("row")
+						.or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
+								__.and(__.values("x").is(P.lt(x2)), __.values("bridges").is(0)))
+						.filter(complexFilterRow)).until(__.values("x").is(P.eq(x2)));
 			}
 			if (y1 > y2) {
-				tr = tr.repeat(__.in("column").and(__.values("bridges").is(0)).filter(complexFilterColumn))
-						.until(__.values("y").is(y2));
+				tr = tr.repeat(__.in("column")
+						.or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
+								__.and(__.values("y").is(P.gt(y2)), __.values("bridges").is(0)))
+						.filter(complexFilterColumn)).until(__.values("y").is(P.eq(y2)));
 			}
-
 			if (y1 < y2) {
-				tr = tr.repeat(__.out("column").and(__.values("bridges").is(0)).filter(complexFilterColumn))
-						.until(__.values("y").is(y2));
+				tr = tr.repeat(__.out("column")
+						.or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
+								__.and(__.values("y").is(P.lt(y2)), __.values("bridges").is(0)))
+						.filter(complexFilterColumn)).until(__.values("y").is(P.eq(y2)));
 			}
 			return tr.toList().size() > 0;
 		}

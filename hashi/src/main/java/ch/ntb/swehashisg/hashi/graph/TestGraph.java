@@ -30,7 +30,9 @@ public class TestGraph {
 			GraphBridge graphBridge2 = new GraphBridge(field3, field4);
 
 			graphDas.addBridge(graphBridge1);
+			System.out.println("Oh Yes!");
 			graphDas.addBridge(graphBridge2);
+			System.out.println("Oh No!");
 
 			GraphDasFactory.closeGraphDas(graphDas);
 		} catch (Exception ex) {
