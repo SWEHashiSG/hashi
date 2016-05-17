@@ -9,12 +9,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 
-public class Field extends Pane {
+public class Field extends StackPane {
 	@FXML
 	private Label label;
+	@FXML
+	private Circle highliter;
 
 	private GraphField graphField;
 
@@ -30,29 +32,29 @@ public class Field extends Pane {
 		}
 		this.graphField = graphField;
 		label.textProperty().bind(new SimpleStringProperty(Integer.toString(graphField.getBridges())));
+		// highliter.visibleProperty().bind(new SimpleBooleanProperty(false));
+		// TODO: Bind to GraphField
 	}
-	
-	public void addToGameField(GameField gameField){
+
+	public void addToGameField(GameField gameField) {
 		gameField.add(this, graphField.getX(), graphField.getY());
 	}
 
 	@FXML
 	protected void onMouseClicked() {
 		System.out.println("Clicked on Node!");
-		for (GraphField graphField : graphField.getNeighbors()) {
-			System.out.println("Neighbors");
-		}
 	}
 
 	@FXML
 	protected void onMouseEntered() {
-		getPossibleBridges();
 		System.out.println("Mouse on Node");
+		highliter.setVisible(true);
 	}
 
 	@FXML
 	protected void onMouseExited() {
 		System.out.println("Mouse not on Node:-)");
+		highliter.setVisible(false);
 	}
 
 	private ArrayList<GraphBridge> getPossibleBridges() {

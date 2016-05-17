@@ -1,21 +1,11 @@
 package ch.ntb.swehashisg.hashi;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URL;
 
 import ch.ntb.swehashisg.hashi.controller.MainWindow;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 public class MainHashi extends Application {

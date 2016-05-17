@@ -26,7 +26,7 @@ public class MainWindow extends AnchorPane {
 
 	private GameField gameField;
 	GraphDas graphDas;
-	private int gameSize = 8; // Todo: Get form GameDas
+	private int gameSize = 8; // TODO: Get form GameDas
 
 	@FXML
 	private Pane pane;
