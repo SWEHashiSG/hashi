@@ -31,8 +31,15 @@ public class TestGraph {
 
 			graphDas.addBridge(graphBridge1);
 			System.out.println("Oh Yes!");
-			graphDas.addBridge(graphBridge2);
-			System.out.println("Oh No!");
+
+			graphDas.getRelevantFields();
+
+			try {
+				graphDas.addBridge(graphBridge2);
+				System.out.println("Oh No!");
+			} catch (Exception ex) {
+				// Expected exception
+			}
 
 			GraphDasFactory.closeGraphDas(graphDas);
 		} catch (Exception ex) {

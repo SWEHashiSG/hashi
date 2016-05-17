@@ -132,6 +132,7 @@ public class GraphDas {
 		vertices.addAll(g.traversal().V(node).repeat(__.in("column")).until(__.values("bridges").is(P.neq(0))).toSet());
 		vertices.addAll(
 				g.traversal().V(node).repeat(__.out("column")).until(__.values("bridges").is(P.neq(0))).toSet());
+		Set<Vertex> realVertices = new HashSet<>();
 		for (Vertex v : vertices) {
 			if (!areNeighbors(node, v)) {
 				System.out.println("Are Neighbors is wrong!");
@@ -139,8 +140,11 @@ public class GraphDas {
 			if (!areNeighbors2(node, v)) {
 				System.out.println("Found Bridge Violation!");
 			}
+			if (areNeighbors2(node, v)) {
+				realVertices.add(v);
+			}
 		}
-		return vertices;
+		return realVertices;
 	}
 
 	private List<GraphBridge> getBridges(Vertex node) {
