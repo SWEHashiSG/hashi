@@ -24,6 +24,10 @@ public class GraphField {
 		this(x, y, bridges, new HashSet<>(), new ArrayList<>());
 	}
 
+	public GraphField(int x, int y) {
+		this(x, y, 0, new HashSet<>(), new ArrayList<>());
+	}
+
 	public int getX() {
 		return x;
 	}

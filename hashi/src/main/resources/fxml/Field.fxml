@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.Group?>
+
+<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+      <Circle id="highliter" fx:id="highliter" fill="ORANGE" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+	  <Circle centerX="20.0" centerY="20.0" fill="#ffffff00" onMouseClicked="#onMouseClicked" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
+			<Label fx:id="label" mouseTransparent="true" text="0">
+				<font>
+					<Font size="18.0" />
+				</font>
+			</Label>
+	</children>
+</fx:root>

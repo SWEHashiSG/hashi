@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="400.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.ntb.swehashisg.hashi.controller.Controller">
+<fx:root type="javafx.scene.layout.AnchorPane"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane layoutX="93.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -18,14 +19,18 @@
                   <Button fx:id="buttonTest" mnemonicParsing="false" onAction="#buttonClicked" text="Add Node" BorderPane.alignment="CENTER" />
                   <Button layoutX="71.0" mnemonicParsing="false" onAction="#addBridge" text="Add Bridges" />
                   <Button layoutX="152.0" mnemonicParsing="false" onAction="#addDoubleBridge" text="Add Double Bridgges" />
-                  <Button layoutX="282.0" mnemonicParsing="false" onAction="#showHint" text="show Hint" />
-                  <Button layoutX="352.0" mnemonicParsing="false" onAction="#removeHint" text="remove Hint" />
+                  <Button layoutX="82.0" layoutY="26.0" mnemonicParsing="false" onAction="#showHint" text="show Hint" />
+                  <Button layoutY="26.0" mnemonicParsing="false" onAction="#removeHint" text="remove Hint" />
                </children>
             </AnchorPane>
          </top>
          <center>
-            <Pane fx:id="gameFieldPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <AnchorPane style="-fx-background-color: green;" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane fx:id="pane" layoutX="150.0" layoutY="77.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+               </children>
+            </AnchorPane>
          </center>
       </BorderPane>
    </children>
-</AnchorPane>
+</fx:root>
