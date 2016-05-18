@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
@@ -19,8 +19,15 @@ public class Field extends StackPane {
 	private Circle highliter;
 
 	private GraphField graphField;
+	private ArrayList<Bridge> possibleBridges;
+	private GameField gameField;
 
-	public Field(GraphField graphField) {
+	private Bridge leftBridge;
+	private Bridge rightBridge;
+	private Bridge upperBridge;
+	private Bridge underBridge;
+
+	public Field(GraphField graphField, GameField gameField) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Field.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -31,12 +38,13 @@ public class Field extends StackPane {
 			throw new RuntimeException(exception);
 		}
 		this.graphField = graphField;
-		label.textProperty().bind(new SimpleStringProperty(Integer.toString(graphField.getBridges())));
-		// highliter.visibleProperty().bind(new SimpleBooleanProperty(false));
-		// TODO: Bind to GraphField
+		this.gameField = gameField;
+		possibleBridges = new ArrayList<Bridge>();
+		label.setText(Integer.toString(graphField.getBridges()));
+		highliter.setVisible(false);
 	}
 
-	public void addToGameField(GameField gameField) {
+	public void addToGameField() {
 		gameField.add(this, graphField.getX(), graphField.getY());
 	}
 
@@ -49,19 +57,53 @@ public class Field extends StackPane {
 	protected void onMouseEntered() {
 		System.out.println("Mouse on Node");
 		highliter.setVisible(true);
+		clearPossibleBridges();
+		for (GraphField neighbor : graphField.getNeighbors()) {
+			Bridge bridge = new Bridge(new GraphBridge(graphField, neighbor),gameField,0);
+			possibleBridges.add(bridge);
+			bridge.highlite();
+			bridge.addToGameField();
+		}
 	}
 
 	@FXML
-	protected void onMouseExited() {
-		System.out.println("Mouse not on Node:-)");
+	protected void onMouseExited(MouseEvent event) {
 		highliter.setVisible(false);
+		if (event.getX() <= 0) {
+			// mouse leave node to left
+			System.out.println("left");
+		} else if (event.getX() >= highliter.getRadius() * 2) {
+			// mouse leave node to right
+			System.out.println("right");
+		} else if (event.getY() <= 0) {
+			// mouse leave node to upper
+			System.out.println("upper");
+		} else if (event.getY() >= highliter.getRadius() * 2) {
+			// mouse leave node to down
+			System.out.println("down");
+		}
+		// clearPossibleBridges();
 	}
 
-	private ArrayList<GraphBridge> getPossibleBridges() {
-		ArrayList<GraphBridge> bridges = new ArrayList<>();
-		for (GraphField field : graphField.getNeighbors()) {
-			bridges.add(new GraphBridge(graphField, field));
+	private void clearPossibleBridges() {
+		for (Bridge bridge : possibleBridges) {
+			gameField.getChildren().remove(bridge);
 		}
-		return bridges;
+		possibleBridges.clear();
+	}
+
+	private void highliteAllBridges() {
+		if (leftBridge != null) {
+			leftBridge.highlite();
+		}
+		if (rightBridge != null) {
+			rightBridge.highlite();
+		}
+		if (upperBridge != null) {
+			upperBridge.highlite();
+		}
+		if (underBridge != null) {
+			underBridge.highlite();
+		}
 	}
 }
