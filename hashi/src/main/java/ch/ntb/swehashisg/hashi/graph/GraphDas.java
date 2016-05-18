@@ -146,7 +146,7 @@ public class GraphDas {
 		Iterator<Edge> edges = node.edges(Direction.BOTH, "bridge");
 		while (edges.hasNext()) {
 			Edge edge = edges.next();
-			GraphField node1 = convertVertexToFieldLight(edge.inVertex());
+			GraphField node1 = convertVertexToFieldLight(node);
 			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
 			GraphBridge bridge = new GraphBridge(node1, node2);
 			bridges.add(bridge);
