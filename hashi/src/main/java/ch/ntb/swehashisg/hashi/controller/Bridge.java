@@ -41,8 +41,8 @@ public class Bridge extends StackPane {
 		this.graphBridge = graphBridge;
 		
 		lineMiddle.setVisible(false);
-		lineTop.setVisible(true);
-		lineButtom.setVisible(true);
+		lineTop.setVisible(false);
+		lineButtom.setVisible(false);
 		highliter.setVisible(false);
 	}
 
@@ -52,18 +52,30 @@ public class Bridge extends StackPane {
 		int columnSpan = 1;
 		int rowSpan = 1;
 		if (graphBridge.getBridgeDirection() == BridgeDirection.Vertical) {
+			if (graphBridge.getField1().getY() > graphBridge.getField2().getY()){
+				rowIndex = graphBridge.getField2().getY();
+			}
 			rowIndex++;
 			rowSpan = Math.abs(graphBridge.getField1().getY() - graphBridge.getField2().getY()) - 1;
 		} else {
+			if (graphBridge.getField1().getX() > graphBridge.getField2().getX()){
+				columnIndex = graphBridge.getField2().getX();
+			}
 			columnIndex++;
 			columnSpan = Math.abs(graphBridge.getField1().getX() - graphBridge.getField2().getX()) - 1;
 		}
 		gameField.add(this, columnIndex, rowIndex, columnSpan, rowSpan);
 	}
+	
+	public void highlite(){
+		highliter.setVisible(true);
+	}
 
 	@FXML
 	protected void onMouseClicked() {
 		System.out.println("Clicked on Bridge!");
+		GameField gameField = (GameField)getParent();
+		gameField.addBridge(graphBridge);
 	}
 
 	@FXML
