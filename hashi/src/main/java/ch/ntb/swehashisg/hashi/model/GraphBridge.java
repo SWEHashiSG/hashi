@@ -1,12 +1,15 @@
 package ch.ntb.swehashisg.hashi.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class GraphBridge {
 	private GraphField field1;
 	private GraphField field2;
 	private BridgeDirection bridgeDirection;
+	private BooleanProperty highlite;
 	private IntegerProperty weighting;
 
 	public GraphBridge(GraphField field1, GraphField field2) {
@@ -19,6 +22,7 @@ public class GraphBridge {
 		} else {
 			throw new IllegalArgumentException("Bridges can only be horizontal or vertical");
 		}
+		highlite = new SimpleBooleanProperty(false);
 		weighting = new SimpleIntegerProperty(0);
 	}
 
@@ -42,6 +46,18 @@ public class GraphBridge {
 		return bridgeDirection;
 	}
 
+	public boolean isHighlited() {
+		return highlite.get();
+	}
+
+	public void setHighliter(boolean highlited) {
+		highlite.set(highlited);
+	}
+
+	public BooleanProperty getHighlitedProperty() {
+		return highlite;
+	}
+
 	public int getWeighting() {
 		return weighting.get();
 	}
@@ -57,8 +73,24 @@ public class GraphBridge {
 			weighting.set(weighting.get() - 1);
 		}
 	}
-	
-	public IntegerProperty getWeightingProperty(){
+
+	public IntegerProperty getWeightingProperty() {
 		return weighting;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GraphBridge other = (GraphBridge) obj;
+		if (field1.equals(other.field1) && field2.equals(other.field2))
+			return true;
+		if (field1.equals(other.field2) && field2.equals(other.field1))
+			return true;
+		return false;
 	}
 }

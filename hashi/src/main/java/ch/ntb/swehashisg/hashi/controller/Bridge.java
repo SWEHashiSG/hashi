@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -28,7 +26,7 @@ public class Bridge extends StackPane {
 	private GameField gameField;
 	private int weighting;
 
-	public Bridge(GraphBridge graphBridge, GameField gameField, int weighting) {
+	public Bridge(GraphBridge graphBridge, GameField gameField) {
 		String fxmlFile = "";
 		if (graphBridge.getBridgeDirection() == BridgeDirection.Horizontal) {
 			fxmlFile = "/fxml/HorizontalBridge.fxml";
@@ -46,37 +44,31 @@ public class Bridge extends StackPane {
 		}
 		this.graphBridge = graphBridge;
 		this.gameField = gameField;
-		setWeighting(weighting);
-		highliter.setVisible(false);
-	}
-	
-	public void setWeighting(int weighting){
-		this.weighting = weighting;
-		redrawBridge();
 	}
 
-	private void redrawBridge() {
-		switch (weighting) {
-		case 0:
-			lineMiddle.setVisible(false);
-			lineTop.setVisible(false);
-			lineButtom.setVisible(false);
-			break;
-		case 1:
-			lineMiddle.setVisible(true);
-			lineTop.setVisible(false);
-			lineButtom.setVisible(false);
-			break;
-		case 2:
-			lineMiddle.setVisible(false);
-			lineTop.setVisible(true);
-			lineButtom.setVisible(true);
-			break;
-		default:
-			throw new IllegalArgumentException(
-					"Weighting of Bridge is between 0 and 2. Weighting " + weighting + " is out of Range");
-		}
-	}
+	// private void drawLines() {
+	// switch (weighting) {
+	// case 0:
+	// lineMiddle.setVisible(false);
+	// lineTop.setVisible(false);
+	// lineButtom.setVisible(false);
+	// break;
+	// case 1:
+	// lineMiddle.setVisible(true);
+	// lineTop.setVisible(false);
+	// lineButtom.setVisible(false);
+	// break;
+	// case 2:
+	// lineMiddle.setVisible(false);
+	// lineTop.setVisible(true);
+	// lineButtom.setVisible(true);
+	// break;
+	// default:
+	// throw new IllegalArgumentException(
+	// "Weighting of Bridge is between 0 and 2. Weighting " + weighting + " is
+	// out of Range");
+	// }
+	// }
 
 	public void addToGameField() {
 		int columnIndex = graphBridge.getField1().getX();
@@ -99,26 +91,32 @@ public class Bridge extends StackPane {
 		gameField.add(this, columnIndex, rowIndex, columnSpan, rowSpan);
 	}
 
-	public void highlite() {
-		highliter.setVisible(true);
-		// gameField.addBridge(graphBridge);
+	public void setHighlite(boolean highlited) {
+		highliter.setVisible(highlited);
+	}
+
+	public GraphBridge getGraphBridge() {
+		return graphBridge;
 	}
 
 	@FXML
 	protected void onMouseClicked() {
 		System.out.println("Clicked on Bridge!");
-		gameField.addBridge(graphBridge);
+		// TODO: Add Bridge 
+		//gameField.addBridge(graphBridge);
 	}
 
 	@FXML
 	protected void onMouseEntered() {
-		System.out.println("Mouse on Bridge:-)");
-		highliter.setVisible(true);
+		if (graphBridge.getWeighting() > 0) {
+			System.out.println("Mouse on Bridge:-)");
+			graphBridge.setHighliter(true);
+		}
 	}
 
 	@FXML
 	protected void onMouseExited() {
 		System.out.println("Mouse not on Bridge:-)");
-		 highliter.setVisible(false);
+		setHighlite(false);
 	}
 }
