@@ -134,7 +134,7 @@ public class GraphDas {
 	}
 
 	private boolean needsBridge(Vertex node) {
-		return (int) node.property("bridges").value() >= node.graph().traversal().V(node).bothE("bridge").count()
+		return (int) node.property("bridges").value() > node.graph().traversal().V(node).bothE("bridge").count()
 				.toList().get(0);
 	}
 
