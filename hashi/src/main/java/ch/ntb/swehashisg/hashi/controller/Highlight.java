@@ -53,7 +53,7 @@ public class Highlight extends StackPane {
 
 	public void addToGameField() {
 		int columnIndex = neighbor1.getX();
-		int rowIndex = neighbor2.getY();
+		int rowIndex = neighbor1.getY();
 		int columnSpan = 1;
 		int rowSpan = 1;
 		if (GraphUtil.getDirectionOfNeighbors(neighbor1, neighbor2) == BridgeDirection.Vertical) {
