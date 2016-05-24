@@ -164,9 +164,6 @@ public class GraphDas {
 			GraphField node1 = convertVertexToFieldLight(edge.outVertex());
 			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
 			GraphBridge bridge = new GraphBridge(node1, node2);
-			if (bridgesToWeight.containsKey(bridge)) {
-				bridgesToWeight.put(bridge, bridgesToWeight.get(bridge) + 1);
-			}
 			bridges.add(bridge);
 		}
 

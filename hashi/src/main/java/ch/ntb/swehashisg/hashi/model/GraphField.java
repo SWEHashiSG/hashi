@@ -13,10 +13,11 @@ public class GraphField {
 	private int bridges;
 	private Set<GraphField> neighbors;
 	private List<GraphBridge> existingBridges;
-	private boolean southBridge = false;
-	private boolean northBridge = false;
-	private boolean eastBridge = false;
-	private boolean westBridge = false;
+
+	private GraphField southNeighbor = null;
+	private GraphField northNeighbor = null;
+	private GraphField eastNeighbor = null;
+	private GraphField westNeighbor = null;
 
 	public GraphField(int x, int y, int bridges, Set<GraphField> neighbors, List<GraphBridge> existingBridges) {
 		this.x = x;
@@ -27,35 +28,51 @@ public class GraphField {
 
 		for (GraphField neighbor : this.getNeighbors()) {
 			if (GraphUtil.isEastBridge(this, neighbor)) {
-				eastBridge = true;
+				eastNeighbor = neighbor;
 			}
 			if (GraphUtil.isWestBridge(this, neighbor)) {
-				westBridge = true;
+				westNeighbor = neighbor;
 			}
 			if (GraphUtil.isSouthBridge(this, neighbor)) {
-				southBridge = true;
+				southNeighbor = neighbor;
 			}
 			if (GraphUtil.isNorthBridge(this, neighbor)) {
-				northBridge = true;
+				northNeighbor = neighbor;
 			}
 		}
 
 	}
 
 	public boolean hasNorthNeighbor() {
-		return this.northBridge;
+		return this.northNeighbor != null;
 	}
 
 	public boolean hasSouthNeighbor() {
-		return this.southBridge;
+		return this.southNeighbor != null;
 	}
 
 	public boolean hasEastNeighbor() {
-		return this.eastBridge;
+		return this.eastNeighbor != null;
 	}
 
 	public boolean hasWestNeighbor() {
-		return this.westBridge;
+		return this.westNeighbor != null;
+	}
+
+	public GraphField getSouthNeighbor() {
+		return southNeighbor;
+	}
+
+	public GraphField getNorthNeighbor() {
+		return northNeighbor;
+	}
+
+	public GraphField getEastNeighbor() {
+		return eastNeighbor;
+	}
+
+	public GraphField getWestNeighbor() {
+		return westNeighbor;
 	}
 
 	public GraphField(int x, int y, int bridges) {
