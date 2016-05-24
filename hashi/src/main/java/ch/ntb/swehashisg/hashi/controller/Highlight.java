@@ -85,7 +85,11 @@ public class Highlight extends StackPane {
 	@FXML
 	protected void onMouseClicked() {
 		log.debug("Clicked on Bridge!");
-		gameField.addBridge(this);
+		if(gameField.needsBridge(this)) {
+			gameField.addBridge(this);	
+		} else {
+			gameField.removeBridge(this);
+		}
 	}
 
 	@FXML

@@ -97,16 +97,6 @@ public class GameField extends GridPane {
 		}
 	}
 
-	public void addBridge(Highlight highlight) {
-		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
-		graphDas.addBridge(bridge);
-		log.debug("-------------Redraw whole gamefield-----------------");
-		GraphPlayField graphPlayField = graphDas.getPlayField();
-		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(graphPlayField.getBridges());
-		loadGame(); // TODO: Update
-	}
-
 	protected void cleanGameField() {
 		this.getChildren().clear();
 	}
@@ -133,5 +123,40 @@ public class GameField extends GridPane {
 
 	public boolean hasBridge(GraphField neighbor1, GraphField neighbor2) {
 		return graphBridgeToBridge.containsKey(new GraphBridge(neighbor1, neighbor2));
+	}
+
+	public boolean needsBridge(Highlight highlight) {
+		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
+		int weighting = graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting();
+		if (highlight.getNeighbor1().getBridges() > highlight.getNeighbor1().getExistingBridges().size()
+				&& highlight.getNeighbor2().getBridges() > highlight.getNeighbor2().getExistingBridges().size()) {
+			if (weighting < 2) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void removeBridge(Highlight highlight) {
+		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
+		if (graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting() == 2) {
+			graphDas.removeBridge(bridge);
+		}
+		graphDas.removeBridge(bridge);
+		log.debug("-------------Redraw whole gamefield-----------------");
+		GraphPlayField graphPlayField = graphDas.getPlayField();
+		graphFields = graphPlayField.getFields();
+		createAllBridgesHighlights(graphPlayField.getBridges());
+		loadGame(); // TODO: Update
+	}
+
+	public void addBridge(Highlight highlight) {
+		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
+		graphDas.addBridge(bridge);
+		log.debug("-------------Redraw whole gamefield-----------------");
+		GraphPlayField graphPlayField = graphDas.getPlayField();
+		graphFields = graphPlayField.getFields();
+		createAllBridgesHighlights(graphPlayField.getBridges());
+		loadGame(); // TODO: Update
 	}
 }
