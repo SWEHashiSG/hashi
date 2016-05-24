@@ -49,27 +49,32 @@ public class MainWindow extends AnchorPane {
 	
 	@FXML
 	public void undo(){
-		
+		log.debug("Undo Clicked");
 	}
 	
 	@FXML
 	public void redo(){
-		
+		log.debug("Redo Clicked");
 	}
 	
 	@FXML
 	public void restart(){
-		
+		log.debug("Restart Clicked");
 	}
 	
 	@FXML
 	public void showSolution(){
-		
+		log.debug("Show Solution Clicked");
 	}
 	
 	@FXML
 	public void save(){
-		
+		log.debug("Save Clicked");
+	}
+	
+	@FXML
+	public void check(){
+		log.debug("Check Clicked");
 	}
 	
 	@FXML
