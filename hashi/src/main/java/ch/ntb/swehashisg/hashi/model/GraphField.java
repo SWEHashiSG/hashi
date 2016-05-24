@@ -5,12 +5,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ch.ntb.swehashisg.hashi.controller.GraphUtil;
+
 public class GraphField {
 	private int x;
 	private int y;
 	private int bridges;
 	private Set<GraphField> neighbors;
 	private List<GraphBridge> existingBridges;
+	private boolean southBridge = false;
+	private boolean northBridge = false;
+	private boolean eastBridge = false;
+	private boolean westBridge = false;
 
 	public GraphField(int x, int y, int bridges, Set<GraphField> neighbors, List<GraphBridge> existingBridges) {
 		this.x = x;
@@ -18,6 +24,38 @@ public class GraphField {
 		this.bridges = bridges;
 		this.neighbors = neighbors;
 		this.existingBridges = existingBridges;
+
+		for (GraphField neighbor : this.getNeighbors()) {
+			if (GraphUtil.isEastBridge(this, neighbor)) {
+				eastBridge = true;
+			}
+			if (GraphUtil.isWestBridge(this, neighbor)) {
+				westBridge = true;
+			}
+			if (GraphUtil.isSouthBridge(this, neighbor)) {
+				southBridge = true;
+			}
+			if (GraphUtil.isNorthBridge(this, neighbor)) {
+				northBridge = true;
+			}
+		}
+
+	}
+
+	public boolean hasNorthNeighbor() {
+		return this.northBridge;
+	}
+
+	public boolean hasSouthNeighbor() {
+		return this.southBridge;
+	}
+
+	public boolean hasEastNeighbor() {
+		return this.eastBridge;
+	}
+
+	public boolean hasWestNeighbor() {
+		return this.westBridge;
 	}
 
 	public GraphField(int x, int y, int bridges) {
