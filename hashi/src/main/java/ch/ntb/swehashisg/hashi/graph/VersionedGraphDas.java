@@ -10,25 +10,27 @@ public class VersionedGraphDas extends AbstractGraphDas {
 	
 	public VersionedGraphDas(GraphDas gd) {
 		mGraphDas = gd;
+		mIndex = 0;
+		mListOperations = new ArrayList<BridgeOperation>();
 	}
 
 	public boolean undo()
 	{
 		if(mIndex <= 0)
 			return false;
+		mIndex--;
 		BridgeOperation bo = mListOperations.get(mIndex);
 		executeOperation(!bo.mIsAddingBridge,bo.mGraphBridge);
-		mIndex++;
 		return true;
 	}
 	public boolean redo()
 	{
-		if(mIndex > mListOperations.size() ||
-		   mIndex <= 0)
+		if(mIndex >= mListOperations.size() ||
+		   mIndex < 0)
 			return false;
-		--mIndex;
 		BridgeOperation bo = mListOperations.get(mIndex);
 		executeOperation(bo.mIsAddingBridge, bo.mGraphBridge);		
+		mIndex++;
 		return true;
 	}
 	

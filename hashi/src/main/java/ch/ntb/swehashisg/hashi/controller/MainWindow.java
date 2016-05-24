@@ -7,8 +7,10 @@ import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.ntb.swehashisg.hashi.graph.AbstractGraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
+import ch.ntb.swehashisg.hashi.graph.VersionedGraphDas;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import javafx.event.ActionEvent;
@@ -29,7 +31,7 @@ public class MainWindow extends AnchorPane {
 	private static final Logger log = LoggerFactory.getLogger(MainWindow.class);
 
 	private GameField gameField;
-	GraphDas graphDas;
+	AbstractGraphDas graphDas;
 	private int gameSize = 8; // TODO: Get form GameDas
 
 	@FXML
@@ -80,7 +82,7 @@ public class MainWindow extends AnchorPane {
 	@FXML
 	public void loadGame() {
 		log.debug("Started");
-		graphDas = GraphDasFactory.getGraphDas();
+		graphDas = new VersionedGraphDas( GraphDasFactory.getGraphDas() );
 		gameField = new GameField(graphDas);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);

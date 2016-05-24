@@ -8,6 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.ntb.swehashisg.hashi.graph.AbstractGraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
@@ -21,13 +22,13 @@ public class GameField extends GridPane {
 
 	private static final Logger log = LoggerFactory.getLogger(GameField.class);
 
-	private GraphDas graphDas;
+	private AbstractGraphDas graphDas;
 	private Set<GraphField> graphFields;
 	private ArrayList<Field> fields;
 	private HashMap<GraphBridge, Bridge> graphBridgeToBridge;
 	private HashMap<GraphBridge, Highlight> graphBridgeToHighlight;
 
-	public GameField(GraphDas graphDas) {
+	public GameField(AbstractGraphDas graphDas) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
