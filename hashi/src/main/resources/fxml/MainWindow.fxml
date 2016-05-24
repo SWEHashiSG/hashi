@@ -10,19 +10,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root type="javafx.scene.layout.AnchorPane"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="449.0" prefWidth="412.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane layoutX="93.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <AnchorPane>
+            <AnchorPane prefHeight="41.0" prefWidth="413.0">
                <children>
-                  <Button fx:id="buttonTest" mnemonicParsing="false" onAction="#buttonClicked" text="Add Node" BorderPane.alignment="CENTER" />
-                  <Button layoutX="71.0" mnemonicParsing="false" onAction="#addBridge" text="Add Bridges" />
-                  <Button layoutX="152.0" mnemonicParsing="false" onAction="#addDoubleBridge" text="Add Double Bridgges" />
-                  <Button layoutX="82.0" layoutY="26.0" mnemonicParsing="false" onAction="#showHint" text="show Hint" />
-                  <Button layoutY="26.0" mnemonicParsing="false" onAction="#removeHint" text="remove Hint" />
-               </children>
-            </AnchorPane>
+                  <Button fx:id="buttonUndo" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#undo" text="Undo" />
+                  <Button fx:id="buttonRedo" layoutX="69.0" layoutY="8.0" mnemonicParsing="false" onAction="#redo" text="Redo" />
+                  <Button fx:id="buttonShowSolution" layoutX="123.0" layoutY="8.0" mnemonicParsing="false" onAction="#showSolution" text="show Solution" />
+                  <Button fx:id="buttonRestart" layoutX="225.0" layoutY="8.0" mnemonicParsing="false" onAction="#restart" text="Restart" />
+                  <Button fx:id="buttonSave" layoutX="288.0" layoutY="8.0" mnemonicParsing="false" onAction="#save" text="Save" />
+               </children></AnchorPane>
          </top>
          <center>
             <AnchorPane style="-fx-background-color: green;" BorderPane.alignment="CENTER">
@@ -31,6 +30,16 @@
                </children>
             </AnchorPane>
          </center>
+         <bottom>
+            <Pane prefHeight="96.0" prefWidth="445.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button layoutX="99.0" layoutY="15.0" mnemonicParsing="false" onAction="#addBridge" text="Add Bridges" />
+                  <Button layoutX="188.0" layoutY="15.0" mnemonicParsing="false" onAction="#addDoubleBridge" text="Add Double Bridgges" />
+                  <Button layoutX="17.0" layoutY="48.0" mnemonicParsing="false" onAction="#showHint" text="show Hint" />
+                  <Button layoutX="98.0" layoutY="48.0" mnemonicParsing="false" onAction="#removeHint" text="remove Hint" />
+                  <Button layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#loadGame" text="Load Game" />
+               </children></Pane>
+         </bottom>
       </BorderPane>
    </children>
 </fx:root>

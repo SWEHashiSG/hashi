@@ -1,14 +1,12 @@
 package ch.ntb.swehashisg.hashi.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
@@ -19,8 +17,18 @@ public class Field extends StackPane {
 	private Circle highliter;
 
 	private GraphField graphField;
+	private GameField gameField;
+	private static int fieldSize = 40;
 
-	public Field(GraphField graphField) {
+	public GraphField getGraphField() {
+		return graphField;
+	}
+
+	public void setGraphField(GraphField graphField) {
+		this.graphField = graphField;
+	}
+
+	public Field(GraphField graphField, GameField gameField) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Field.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -31,37 +39,76 @@ public class Field extends StackPane {
 			throw new RuntimeException(exception);
 		}
 		this.graphField = graphField;
-		label.textProperty().bind(new SimpleStringProperty(Integer.toString(graphField.getBridges())));
-		// highliter.visibleProperty().bind(new SimpleBooleanProperty(false));
-		// TODO: Bind to GraphField
+		this.gameField = gameField;
+		label.setText(Integer.toString(graphField.getBridges()));
 	}
 
-	public void addToGameField(GameField gameField) {
+	public void addToGameField() {
 		gameField.add(this, graphField.getX(), graphField.getY());
 	}
 
 	@FXML
 	protected void onMouseClicked() {
-		System.out.println("Clicked on Node!");
+		System.out.println("Clicked on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
+		// No Function implemented when clicking on Field
 	}
 
 	@FXML
 	protected void onMouseEntered() {
-		System.out.println("Mouse on Node");
+		System.out.println("Mouse on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
 		highliter.setVisible(true);
+		setHighliterFromBridges(true);
+
 	}
 
 	@FXML
-	protected void onMouseExited() {
-		System.out.println("Mouse not on Node:-)");
+	protected void onMouseExited(MouseEvent event) {
 		highliter.setVisible(false);
+		setHighliterFromBridges(false);
+		Bridge bridge = null;
+		if (event.getX() <= 0 && event.getY() > fieldSize / 3 && event.getY() < fieldSize * 2 / 3) {
+			System.out.println(" mouse leave Field to west");
+			bridge = gameField.getWestBrigde(this);
+			if (bridge != null) {
+				bridge.setHighlite(true);
+			}
+		} else if (event.getX() >= fieldSize && event.getY() > fieldSize / 3 && event.getY() < fieldSize * 2 / 3) {
+			System.out.println(" mouse leave Field to east");
+			bridge = gameField.getEastBridge(this);
+			if (bridge != null) {
+				bridge.setHighlite(true);
+			}
+		} else if (event.getY() <= 0 && event.getX() > fieldSize / 3 && event.getX() < fieldSize * 2 / 3) {
+			System.out.println(" mouse leave Field to north");
+			bridge = gameField.getNorthBridge(this);
+			if (bridge != null) {
+				bridge.setHighlite(true);
+			}
+		} else if (event.getY() >= fieldSize && event.getX() > fieldSize / 3 && event.getX() < fieldSize * 2 / 3) {
+			System.out.println(" mouse leave Field to south");
+			bridge = gameField.getSouthBridge(this);
+			if (bridge != null) {
+				bridge.setHighlite(true);
+			}
+		}
 	}
 
-	private ArrayList<GraphBridge> getPossibleBridges() {
-		ArrayList<GraphBridge> bridges = new ArrayList<>();
-		for (GraphField field : graphField.getNeighbors()) {
-			bridges.add(new GraphBridge(graphField, field));
+	private void setHighliterFromBridges(boolean highlited) {
+		Bridge bridge = gameField.getNorthBridge(this);
+		if (bridge != null) {
+			bridge.setHighlite(highlited);
 		}
-		return bridges;
+		bridge = gameField.getEastBridge(this);
+		if (bridge != null) {
+			bridge.setHighlite(highlited);
+		}
+		bridge = gameField.getSouthBridge(this);
+		if (bridge != null) {
+			bridge.setHighlite(highlited);
+		}
+		bridge = gameField.getWestBrigde(this);
+		if (bridge != null) {
+			bridge.setHighlite(highlited);
+		}
 	}
 }

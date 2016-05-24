@@ -30,8 +30,6 @@ public class MainWindow extends AnchorPane {
 
 	@FXML
 	private Pane pane;
-	@FXML
-	private Button buttonTest;
 
 	public MainWindow() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
@@ -44,36 +42,53 @@ public class MainWindow extends AnchorPane {
 			throw new RuntimeException(exception);
 		}
 	}
-
+	
 	@FXML
-	public void buttonClicked(ActionEvent event) {
+	public void undo(){
+		
+	}
+	
+	@FXML
+	public void redo(){
+		
+	}
+	
+	@FXML
+	public void restart(){
+		
+	}
+	
+	@FXML
+	public void showSolution(){
+		
+	}
+	
+	@FXML
+	public void save(){
+		
+	}
+	
+	@FXML
+	public void loadGame() {
 		System.out.println("Started");
-		buttonTest.setDisable(true);
-		buttonTest.setText("Game is Started");
-		loadGame();
-	}
-
-	private void loadGame() {
-		gameField = new GameField(gameSize);
-		pane.getChildren().add(gameField);
 		graphDas = GraphDasFactory.getGraphDas();
-		gameField.loadGame(graphDas.getRelevantFields());
+		gameField = new GameField(graphDas);
+		gameField.loadGame();
+		pane.getChildren().add(gameField);
 	}
 
 	@FXML
-	public void addBridge(ActionEvent event) {
+	public void addBridge() {
 		System.out.println("Add Bridge");
-		gameField.addBridge(new GraphBridge(new GraphField(0, 1, 1), new GraphField(7, 1, 1)));
-		gameField.addBridge(new GraphBridge(new GraphField(6, 2, 1), new GraphField(6, 5, 2)));
 	}
 
 	@FXML
-	public void addDoubleBridge(ActionEvent event) {
+	public void addDoubleBridge() {
 		System.out.println("Add Double Bridge Test");
 	}
 
 	@FXML
-	public void showHint(ActionEvent event) {
+	public void showHint() {
 		System.out.println("Show Hint");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
@@ -81,7 +96,7 @@ public class MainWindow extends AnchorPane {
 	}
 
 	@FXML
-	public void removeHint(ActionEvent event) {
+	public void removeHint() {
 		System.out.println("Remove Hint");
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Information Dialog");
