@@ -77,11 +77,18 @@ public class Highlight extends StackPane {
 		highliter.setVisible(highlited);
 	}
 
+	public GraphField getNeighbor1() {
+		return neighbor1;
+	}
+
+	public GraphField getNeighbor2() {
+		return neighbor2;
+	}
+
 	@FXML
 	protected void onMouseClicked() {
 		log.debug("Clicked on Bridge!");
-		// TODO: Add Bridge
-		// gameField.addBridge(graphBridge);
+		gameField.addBridge(this);
 	}
 
 	@FXML

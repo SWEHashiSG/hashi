@@ -5,10 +5,8 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ntb.swehashisg.hashi.MainApp;
 import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
-import ch.ntb.swehashisg.hashi.model.GraphField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
@@ -29,7 +27,6 @@ public class Bridge extends StackPane {
 
 	private GraphBridge graphBridge;
 	private GameField gameField;
-	private int weighting;
 
 	public Bridge(GraphBridge graphBridge, GameField gameField) {
 		String fxmlFile = "";
@@ -49,6 +46,15 @@ public class Bridge extends StackPane {
 		}
 		this.graphBridge = graphBridge;
 		this.gameField = gameField;
+
+		if (graphBridge.getWeighting() > 0) {
+			if (graphBridge.getWeighting() == 1) {
+				lineMiddle.setVisible(true);
+			} else if (graphBridge.getWeighting() == 2) {
+				lineButtom.setVisible(true);
+				lineTop.setVisible(true);
+			}
+		}
 	}
 
 	public void addToGameField() {

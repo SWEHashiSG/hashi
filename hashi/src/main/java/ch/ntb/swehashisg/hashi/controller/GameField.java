@@ -51,6 +51,7 @@ public class GameField extends GridPane {
 		graphBridgeToBridge = new HashMap<>();
 		graphBridgeToHighlight = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
+			log.debug("Should log??");
 			graphBridgeToBridge.put(bridge, new Bridge(bridge, this));
 		}
 		for (GraphField field : graphFields) {
@@ -96,9 +97,13 @@ public class GameField extends GridPane {
 		}
 	}
 
-	public void addBridge(GraphBridge graphBridge) {
-		graphDas.addBridge(graphBridge);
+	public void addBridge(Highlight highlight) {
+		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
+		graphDas.addBridge(bridge);
 		log.debug("-------------Redraw whole gamefield-----------------");
+		GraphPlayField graphPlayField = graphDas.getPlayField();
+		graphFields = graphPlayField.getFields();
+		createAllBridgesHighlights(graphPlayField.getBridges());
 		loadGame(); // TODO: Update
 	}
 
