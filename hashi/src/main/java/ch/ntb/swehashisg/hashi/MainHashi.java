@@ -17,7 +17,7 @@ public class MainHashi extends Application {
 	public void start(Stage stage) throws Exception {
 		MainWindow mainWindow = new MainWindow();
 		Scene scene = new Scene(mainWindow, 500, 500);
-
+        scene.getStylesheets().add("/styles/styles.css");
 		stage.setTitle("Hashi from Team SWEHashiSG");
 		URL url = getClass().getResource("/images/Icon.jpg");
 		stage.getIcons().add(new Image(url.toString()));
