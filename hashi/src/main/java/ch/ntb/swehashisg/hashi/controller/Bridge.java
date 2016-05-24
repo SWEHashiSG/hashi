@@ -81,13 +81,6 @@ public class Bridge extends StackPane {
 	}
 
 	@FXML
-	protected void onMouseClicked() {
-		log.debug("Clicked on Bridge!");
-		// TODO: Add Bridge
-		// gameField.addBridge(graphBridge);
-	}
-
-	@FXML
 	protected void onMouseEntered() {
 		if (graphBridge.getWeighting() > 0) {
 			log.debug("Mouse on Bridge:-)");
