@@ -1,9 +1,15 @@
 package ch.ntb.swehashisg.hashi.graph;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ch.ntb.swehashisg.hashi.controller.Bridge;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 
 public class TestGraph {
+	
+	private static final Logger log = LoggerFactory.getLogger(TestGraph.class);
 
 	public static void main(String[] args) {
 
@@ -11,11 +17,11 @@ public class TestGraph {
 			GraphDas graphDas = GraphDasFactory.getGraphDas();
 
 			for (GraphField graphField : graphDas.getRelevantFields()) {
-				System.out.println("graphField x: " + graphField.getX());
-				System.out.println("graphField Y: " + graphField.getY());
+				log.debug("graphField x: " + graphField.getX());
+				log.debug("graphField Y: " + graphField.getY());
 				for (GraphField neighbor : graphField.getNeighbors()) {
-					System.out.println("Neighbor x: " + neighbor.getX());
-					System.out.println("Neighbor Y: " + neighbor.getY());
+					log.debug("Neighbor x: " + neighbor.getX());
+					log.debug("Neighbor Y: " + neighbor.getY());
 				}
 			}
 
@@ -30,7 +36,7 @@ public class TestGraph {
 			GraphBridge graphBridge2 = new GraphBridge(field3, field4);
 
 			graphDas.addBridge(graphBridge1);
-			System.out.println("Oh Yes!");
+			log.debug("Oh Yes!");
 
 			long start = System.currentTimeMillis();
 
@@ -38,11 +44,11 @@ public class TestGraph {
 				graphDas.getRelevantFields();
 			}
 
-			System.out.println("Duration: " + (System.currentTimeMillis() - start));
+			log.debug("Duration: " + (System.currentTimeMillis() - start));
 
 			try {
 				graphDas.addBridge(graphBridge2);
-				System.out.println("Oh No!");
+				log.debug("Oh No!");
 			} catch (Exception ex) {
 				// Expected exception
 			}

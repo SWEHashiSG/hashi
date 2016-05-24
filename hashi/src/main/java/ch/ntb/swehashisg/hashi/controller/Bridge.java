@@ -2,6 +2,10 @@ package ch.ntb.swehashisg.hashi.controller;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ch.ntb.swehashisg.hashi.MainApp;
 import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import javafx.beans.value.ChangeListener;
@@ -12,6 +16,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class Bridge extends StackPane {
+	
+    private static final Logger log = LoggerFactory.getLogger(Bridge.class);
 
 	@FXML
 	private Pane lineTop;
@@ -101,7 +107,7 @@ public class Bridge extends StackPane {
 
 	@FXML
 	protected void onMouseClicked() {
-		System.out.println("Clicked on Bridge!");
+		log.debug("Clicked on Bridge!");
 		// TODO: Add Bridge 
 		//gameField.addBridge(graphBridge);
 	}
@@ -109,14 +115,14 @@ public class Bridge extends StackPane {
 	@FXML
 	protected void onMouseEntered() {
 		if (graphBridge.getWeighting() > 0) {
-			System.out.println("Mouse on Bridge:-)");
+			log.debug("Mouse on Bridge:-)");
 			graphBridge.setHighliter(true);
 		}
 	}
 
 	@FXML
 	protected void onMouseExited() {
-		System.out.println("Mouse not on Bridge:-)");
+		log.debug("Mouse not on Bridge:-)");
 		setHighlite(false);
 	}
 }

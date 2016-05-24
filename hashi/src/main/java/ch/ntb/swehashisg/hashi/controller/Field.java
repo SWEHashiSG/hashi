@@ -15,7 +15,7 @@ import javafx.scene.shape.Circle;
 
 public class Field extends StackPane {
 
-	private static Logger logger = LoggerFactory.getLogger(Field.class);
+	private static Logger log = LoggerFactory.getLogger(Field.class);
 
 	@FXML
 	private Label label;
@@ -59,13 +59,13 @@ public class Field extends StackPane {
 
 	@FXML
 	protected void onMouseClicked() {
-		System.out.println("Clicked on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
+		log.debug("Clicked on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
 		// No Function implemented when clicking on Field
 	}
 
 	@FXML
 	protected void onMouseEntered() {
-		System.out.println("Mouse on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
+		log.debug("Mouse on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
 		highliter.setVisible(true);
 		setHighliterFromBridges(true);
 
@@ -76,19 +76,19 @@ public class Field extends StackPane {
 		highliter.setVisible(false);
 		setHighliterFromBridges(false);
 		if (isMouseWest(event) && graphField.hasWestNeighbor()) {
-			logger.debug(" mouse leave Field to west");
+			log.debug(" mouse leave Field to west");
 			Bridge bridge = gameField.getWestBrigde(this);
 			bridge.setHighlite(true);
 		} else if (isMouseEast(event) && graphField.hasEastNeighbor()) {
-			logger.debug(" mouse leave Field to east");
+			log.debug(" mouse leave Field to east");
 			Bridge bridge = gameField.getEastBridge(this);
 			bridge.setHighlite(true);
 		} else if (isMouseNorth(event) && graphField.hasNorthNeighbor()) {
-			logger.debug(" mouse leave Field to north");
+			log.debug(" mouse leave Field to north");
 			Bridge bridge = gameField.getNorthBridge(this);
 			bridge.setHighlite(true);
 		} else if (isMouseSouth(event) && graphField.hasSouthNeighbor()) {
-			logger.debug(" mouse leave Field to south");
+			log.debug(" mouse leave Field to south");
 			Bridge bridge = gameField.getSouthBridge(this);
 			bridge.setHighlite(true);
 		}
