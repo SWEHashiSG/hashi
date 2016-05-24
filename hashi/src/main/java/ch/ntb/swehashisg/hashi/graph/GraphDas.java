@@ -22,7 +22,7 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
-public class GraphDas {
+public class GraphDas extends AbstractGraphDas {
 
 	private Graph graph;
 
