@@ -7,8 +7,14 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Utililties {
+import ch.ntb.swehashisg.hashi.controller.Bridge;
+
+public class Utilities {
+	
+	private static final Logger log = LoggerFactory.getLogger(Utilities.class);
 
 	protected static Graph generateBasisPlayGround(Graph g) {
 		Vertex play = g.addVertex("name", "test");
@@ -19,8 +25,8 @@ public class Utililties {
 				if (root == null) {
 					root = t;
 				}
-				System.out.println("j: " + j);
-				System.out.println("i: " + j);
+				log.debug("j: " + j);
+				log.debug("i: " + j);
 				if (j > 0) {
 					GraphTraversal<Vertex, Vertex> tr = g.traversal().V(root);
 					if (i > 0) {

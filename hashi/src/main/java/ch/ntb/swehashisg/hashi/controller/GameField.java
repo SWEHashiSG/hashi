@@ -2,10 +2,16 @@ package ch.ntb.swehashisg.hashi.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
+import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -13,11 +19,14 @@ import javafx.scene.layout.RowConstraints;
 
 public class GameField extends GridPane {
 
+	private static final Logger log = LoggerFactory.getLogger(GameField.class);
+
 	private GraphDas graphDas;
 	private ArrayList<GraphField> graphFields;
 	private ArrayList<Field> fields;
 	private ArrayList<GraphBridge> graphBridges;
-	private ArrayList<Bridge> bridges;
+	private HashMap<GraphBridge, Bridge> graphBridgeToBridge;
+	private HashMap<GraphBridge, Highlight> graphBridgeToHighlight;
 
 	public GameField(GraphDas graphDas) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
@@ -32,23 +41,33 @@ public class GameField extends GridPane {
 		this.graphDas = graphDas;
 		setFieldSize(8); // TODO: get Game Size from GraphDas
 		graphFields = new ArrayList<GraphField>();
-		graphFields.addAll(graphDas.getRelevantFields());
+		GraphPlayField graphPlayField = graphDas.getPlayField();
+		graphFields.addAll(graphPlayField.getFields());
 		graphBridges = new ArrayList<GraphBridge>();
-		createAllBridges();
+		createAllBridgesHighlights(graphPlayField.getBridges());
 	}
 
 	/**
 	 * Creat all Bridges with zero weighting for GUI
 	 */
-	private void createAllBridges() {
+	private void createAllBridgesHighlights(Set<GraphBridge> bridges) {
+		graphBridgeToBridge = new HashMap<>();
+		graphBridgeToHighlight = new HashMap<>();
+		for (GraphBridge bridge : bridges) {
+			graphBridgeToBridge.put(bridge, new Bridge(bridge, this));
+		}
 		for (GraphField field : graphFields) {
 			for (GraphField neighbor : field.getNeighbors()) {
 				GraphBridge newBridge = new GraphBridge(field, neighbor);
-				if (!graphBridges.contains(newBridge)) {
-					graphBridges.add(newBridge);
+
+				if (!bridges.contains(newBridge)) {
+					graphBridgeToBridge.put(newBridge, new Bridge(newBridge, this));
 				}
+				graphBridgeToHighlight.put(newBridge, new Highlight(field, neighbor, this));
 			}
 		}
+
+		graphBridges.addAll(bridges);
 	}
 
 	private void setFieldSize(int gameSize) {
@@ -65,91 +84,54 @@ public class GameField extends GridPane {
 	}
 
 	public void loadGame() {
-		System.out.println("Draw all Fields");
+		log.debug("Draw all Fields");
 		cleanGameField();
 		fields = new ArrayList<Field>();
-		bridges = new ArrayList<Bridge>();
 		for (GraphField graphField : graphFields) {
 			Field field = new Field(graphField, this);
 			field.addToGameField();
 			fields.add(field);
 
 		}
-		for (GraphBridge graphBridge : graphBridges) {
-			Bridge bridge = new Bridge(graphBridge, this);
+		for (Highlight highlight : graphBridgeToHighlight.values()) {
+			highlight.addToGameField();
+		}
+		for (Bridge bridge : graphBridgeToBridge.values()) {
 			bridge.addToGameField();
-			bridges.add(bridge);
 		}
 	}
 
 	public void addBridge(GraphBridge graphBridge) {
 		graphDas.addBridge(graphBridge);
-		System.out.println("-------------Redraw whole gamefield-----------------");
+		log.debug("-------------Redraw whole gamefield-----------------");
 		loadGame(); // TODO: Update
 	}
 
 	protected void cleanGameField() {
 		this.getChildren().clear();
 	}
-	
 
-	protected Bridge getNorthBridge(Field field) {
-		for (Bridge bridge : bridges) {
-			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField2().getY() < field.getGraphField().getY()){
-					return bridge;
-				}
-			} else if(bridge.getGraphBridge().getField2().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField1().getY() < field.getGraphField().getY()){
-					return bridge;
-				}
-			}
-		}
-		return null;
+	protected Highlight getNorthHighlight(Field field) {
+		return graphBridgeToHighlight
+				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getNorthNeighbor()));
 	}
 
-	protected Bridge getEastBridge(Field field) {
-		for (Bridge bridge : bridges) {
-			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField2().getX() > field.getGraphField().getX()){
-					return bridge;
-				}
-			} else if(bridge.getGraphBridge().getField2().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField1().getX() > field.getGraphField().getX()){
-					return bridge;
-				}
-			}
-		}
-		return null;
+	protected Highlight getEastHighlight(Field field) {
+		return graphBridgeToHighlight
+				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getEastNeighbor()));
 	}
 
-	protected Bridge getSouthBridge(Field field) {
-		for (Bridge bridge : bridges) {
-			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField2().getY() > field.getGraphField().getY()){
-					return bridge;
-				}
-			} else if(bridge.getGraphBridge().getField2().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField1().getY() > field.getGraphField().getY()){
-					return bridge;
-				}
-			}
-		}
-		return null;
+	protected Highlight getSouthHighlight(Field field) {
+		return graphBridgeToHighlight
+				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getSouthNeighbor()));
 	}
 
-	protected Bridge getWestBrigde(Field field) {
-		for (Bridge bridge : bridges) {
-			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField2().getX() < field.getGraphField().getX()){
-					return bridge;
-				}
-			} else if(bridge.getGraphBridge().getField2().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField1().getX() < field.getGraphField().getX()){
-					return bridge;
-				}
-			}
-		}
-		return null;
+	protected Highlight getWestHighlight(Field field) {
+		return graphBridgeToHighlight
+				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getWestNeighbor()));
+	}
+
+	public boolean hasBridge(GraphField neighbor1, GraphField neighbor2) {
+		return graphBridgeToBridge.containsKey(new GraphBridge(neighbor1, neighbor2));
 	}
 }

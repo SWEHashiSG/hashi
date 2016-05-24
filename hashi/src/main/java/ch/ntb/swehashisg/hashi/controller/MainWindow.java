@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
@@ -23,6 +25,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
 public class MainWindow extends AnchorPane {
+	
+	private static final Logger log = LoggerFactory.getLogger(MainWindow.class);
 
 	private GameField gameField;
 	GraphDas graphDas;
@@ -45,32 +49,37 @@ public class MainWindow extends AnchorPane {
 	
 	@FXML
 	public void undo(){
-		
+		log.debug("Undo Clicked");
 	}
 	
 	@FXML
 	public void redo(){
-		
+		log.debug("Redo Clicked");
 	}
 	
 	@FXML
 	public void restart(){
-		
+		log.debug("Restart Clicked");
 	}
 	
 	@FXML
 	public void showSolution(){
-		
+		log.debug("Show Solution Clicked");
 	}
 	
 	@FXML
 	public void save(){
-		
+		log.debug("Save Clicked");
+	}
+	
+	@FXML
+	public void check(){
+		log.debug("Check Clicked");
 	}
 	
 	@FXML
 	public void loadGame() {
-		System.out.println("Started");
+		log.debug("Started");
 		graphDas = GraphDasFactory.getGraphDas();
 		gameField = new GameField(graphDas);
 		gameField.loadGame();
@@ -79,17 +88,17 @@ public class MainWindow extends AnchorPane {
 
 	@FXML
 	public void addBridge() {
-		System.out.println("Add Bridge");
+		log.debug("Add Bridge");
 	}
 
 	@FXML
 	public void addDoubleBridge() {
-		System.out.println("Add Double Bridge Test");
+		log.debug("Add Double Bridge Test");
 	}
 
 	@FXML
 	public void showHint() {
-		System.out.println("Show Hint");
+		log.debug("Show Hint");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.showOpenDialog(this.getScene().getWindow());
@@ -97,7 +106,7 @@ public class MainWindow extends AnchorPane {
 
 	@FXML
 	public void removeHint() {
-		System.out.println("Remove Hint");
+		log.debug("Remove Hint");
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText("Look, an Information Dialog");

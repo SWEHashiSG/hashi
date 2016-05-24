@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root minHeight="40" minWidth="40" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints percentWidth="33.3" />
+          <ColumnConstraints percentWidth="33.3" />
+          <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <Pane fx:id="highliter" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" style="-fx-background-color: Orange;" visible="false" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+</fx:root>

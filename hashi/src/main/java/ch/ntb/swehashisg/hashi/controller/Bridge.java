@@ -2,16 +2,21 @@ package ch.ntb.swehashisg.hashi.controller;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ch.ntb.swehashisg.hashi.MainApp;
 import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import ch.ntb.swehashisg.hashi.model.GraphField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class Bridge extends StackPane {
+
+	private static final Logger log = LoggerFactory.getLogger(Bridge.class);
 
 	@FXML
 	private Pane lineTop;
@@ -46,30 +51,6 @@ public class Bridge extends StackPane {
 		this.gameField = gameField;
 	}
 
-	// private void drawLines() {
-	// switch (weighting) {
-	// case 0:
-	// lineMiddle.setVisible(false);
-	// lineTop.setVisible(false);
-	// lineButtom.setVisible(false);
-	// break;
-	// case 1:
-	// lineMiddle.setVisible(true);
-	// lineTop.setVisible(false);
-	// lineButtom.setVisible(false);
-	// break;
-	// case 2:
-	// lineMiddle.setVisible(false);
-	// lineTop.setVisible(true);
-	// lineButtom.setVisible(true);
-	// break;
-	// default:
-	// throw new IllegalArgumentException(
-	// "Weighting of Bridge is between 0 and 2. Weighting " + weighting + " is
-	// out of Range");
-	// }
-	// }
-
 	public void addToGameField() {
 		int columnIndex = graphBridge.getField1().getX();
 		int rowIndex = graphBridge.getField1().getY();
@@ -101,22 +82,22 @@ public class Bridge extends StackPane {
 
 	@FXML
 	protected void onMouseClicked() {
-		System.out.println("Clicked on Bridge!");
-		// TODO: Add Bridge 
-		//gameField.addBridge(graphBridge);
+		log.debug("Clicked on Bridge!");
+		// TODO: Add Bridge
+		// gameField.addBridge(graphBridge);
 	}
 
 	@FXML
 	protected void onMouseEntered() {
 		if (graphBridge.getWeighting() > 0) {
-			System.out.println("Mouse on Bridge:-)");
+			log.debug("Mouse on Bridge:-)");
 			graphBridge.setHighliter(true);
 		}
 	}
 
 	@FXML
 	protected void onMouseExited() {
-		System.out.println("Mouse not on Bridge:-)");
+		log.debug("Mouse not on Bridge:-)");
 		setHighlite(false);
 	}
 }

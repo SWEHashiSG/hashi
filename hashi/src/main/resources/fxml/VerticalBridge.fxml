@@ -18,7 +18,6 @@
           <RowConstraints vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <Pane fx:id="highliter" onMouseClicked="#onMouseClicked" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" style="-fx-background-color: Orange;" visible="false" GridPane.columnIndex="1" />
             <GridPane mouseTransparent="true" GridPane.columnIndex="1">
               <columnConstraints>
                   <ColumnConstraints percentWidth="20.0" />
