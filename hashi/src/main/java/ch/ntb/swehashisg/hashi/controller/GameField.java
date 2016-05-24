@@ -22,9 +22,8 @@ public class GameField extends GridPane {
 	private static final Logger log = LoggerFactory.getLogger(GameField.class);
 
 	private GraphDas graphDas;
-	private ArrayList<GraphField> graphFields;
+	private Set<GraphField> graphFields;
 	private ArrayList<Field> fields;
-	private ArrayList<GraphBridge> graphBridges;
 	private HashMap<GraphBridge, Bridge> graphBridgeToBridge;
 	private HashMap<GraphBridge, Highlight> graphBridgeToHighlight;
 
@@ -40,10 +39,8 @@ public class GameField extends GridPane {
 		}
 		this.graphDas = graphDas;
 		setFieldSize(8); // TODO: get Game Size from GraphDas
-		graphFields = new ArrayList<GraphField>();
 		GraphPlayField graphPlayField = graphDas.getPlayField();
-		graphFields.addAll(graphPlayField.getFields());
-		graphBridges = new ArrayList<GraphBridge>();
+		graphFields = graphPlayField.getFields();
 		createAllBridgesHighlights(graphPlayField.getBridges());
 	}
 
@@ -66,8 +63,6 @@ public class GameField extends GridPane {
 				graphBridgeToHighlight.put(newBridge, new Highlight(field, neighbor, this));
 			}
 		}
-
-		graphBridges.addAll(bridges);
 	}
 
 	private void setFieldSize(int gameSize) {
