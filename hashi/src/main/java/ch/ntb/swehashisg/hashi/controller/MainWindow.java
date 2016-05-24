@@ -19,7 +19,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -27,7 +26,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
 public class MainWindow extends AnchorPane {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(MainWindow.class);
 
 	private GameField gameField;
@@ -48,37 +47,37 @@ public class MainWindow extends AnchorPane {
 			throw new RuntimeException(exception);
 		}
 	}
-	
+
 	@FXML
-	public void undo(){
+	public void undo() {
 		log.debug("Undo Clicked");
 	}
-	
+
 	@FXML
-	public void redo(){
+	public void redo() {
 		log.debug("Redo Clicked");
 	}
-	
+
 	@FXML
-	public void restart(){
+	public void restart() {
 		log.debug("Restart Clicked");
 	}
-	
+
 	@FXML
-	public void showSolution(){
+	public void showSolution() {
 		log.debug("Show Solution Clicked");
 	}
-	
+
 	@FXML
-	public void save(){
+	public void save() {
 		log.debug("Save Clicked");
 	}
-	
+
 	@FXML
-	public void check(){
+	public void check() {
 		log.debug("Check Clicked");
 	}
-	
+
 	@FXML
 	public void loadGame() {
 		log.debug("Started");

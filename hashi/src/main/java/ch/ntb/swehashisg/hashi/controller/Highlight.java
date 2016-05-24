@@ -17,12 +17,6 @@ public class Highlight extends StackPane {
 	private static final Logger log = LoggerFactory.getLogger(Highlight.class);
 
 	@FXML
-	private Pane lineTop;
-	@FXML
-	private Pane lineMiddle;
-	@FXML
-	private Pane lineButtom;
-	@FXML
 	private Pane highliter;
 
 	private GraphField neighbor1;
@@ -49,6 +43,7 @@ public class Highlight extends StackPane {
 		this.neighbor1 = neighbor1;
 		this.neighbor2 = neighbor2;
 		this.gameField = gameField;
+		setHighlite(false);
 	}
 
 	public void addToGameField() {
@@ -75,6 +70,8 @@ public class Highlight extends StackPane {
 	public void setHighlite(boolean highlited) {
 		log.debug("Should highlight be visible: " + highlited);
 		highliter.setVisible(highlited);
+		highliter.setMouseTransparent(!highlited);
+		this.setMouseTransparent(!highlited);
 	}
 
 	public GraphField getNeighbor1() {
@@ -88,7 +85,11 @@ public class Highlight extends StackPane {
 	@FXML
 	protected void onMouseClicked() {
 		log.debug("Clicked on Bridge!");
-		gameField.addBridge(this);
+		if(gameField.needsBridge(this)) {
+			gameField.addBridge(this);	
+		} else {
+			gameField.removeBridge(this);
+		}
 	}
 
 	@FXML
