@@ -51,7 +51,7 @@ public class GraphDas extends AbstractGraphDas {
 		Set<GraphField> graphFields = convertVerticesToFields(vertices);
 
 		for (Entry<GraphBridge, Integer> bridge : bridgesToWeight.entrySet()) {
-			bridge.getKey().setWeighting(bridge.getValue());
+			bridge.getKey().setWeighting(bridge.getValue() / 2);
 		}
 
 		GraphPlayField graphPlayField = new GraphPlayField(bridgesToWeight.keySet(), graphFields);
@@ -134,7 +134,7 @@ public class GraphDas extends AbstractGraphDas {
 	}
 
 	private boolean needsBridge(Vertex node) {
-		return (int) node.property("bridges").value() >= node.graph().traversal().V(node).bothE("bridge").count()
+		return (int) node.property("bridges").value() > node.graph().traversal().V(node).bothE("bridge").count()
 				.toList().get(0);
 	}
 
@@ -164,6 +164,11 @@ public class GraphDas extends AbstractGraphDas {
 			GraphField node1 = convertVertexToFieldLight(edge.outVertex());
 			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
 			GraphBridge bridge = new GraphBridge(node1, node2);
+			if (bridgesToWeight.containsKey(bridge)) {
+				bridgesToWeight.put(bridge, bridgesToWeight.get(bridge) + 1);
+			} else {
+				bridgesToWeight.put(bridge, 1);
+			}
 			bridges.add(bridge);
 		}
 

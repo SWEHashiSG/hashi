@@ -53,7 +53,7 @@ public class Highlight extends StackPane {
 
 	public void addToGameField() {
 		int columnIndex = neighbor1.getX();
-		int rowIndex = neighbor2.getY();
+		int rowIndex = neighbor1.getY();
 		int columnSpan = 1;
 		int rowSpan = 1;
 		if (GraphUtil.getDirectionOfNeighbors(neighbor1, neighbor2) == BridgeDirection.Vertical) {
@@ -75,6 +75,20 @@ public class Highlight extends StackPane {
 	public void setHighlite(boolean highlited) {
 		log.debug("Should highlight be visible: " + highlited);
 		highliter.setVisible(highlited);
+	}
+
+	public GraphField getNeighbor1() {
+		return neighbor1;
+	}
+
+	public GraphField getNeighbor2() {
+		return neighbor2;
+	}
+
+	@FXML
+	protected void onMouseClicked() {
+		log.debug("Clicked on Bridge!");
+		gameField.addBridge(this);
 	}
 
 	@FXML
