@@ -1,9 +1,11 @@
 package ch.ntb.swehashisg.hashi.graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -18,13 +20,17 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
+import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
 public class GraphDas {
 
 	private Graph graph;
 
+	private HashMap<GraphBridge, Integer> bridgesToWeight;
+
 	public GraphDas(Graph graph) {
 		this.graph = graph;
+		this.bridgesToWeight = new HashMap<>();
 	}
 
 	protected void setBridges(GraphField field) {
@@ -32,7 +38,8 @@ public class GraphDas {
 		node.property("bridges", field.getBridges());
 	}
 
-	public Set<GraphField> getRelevantFields() {
+	public GraphPlayField getPlayField() {
+		bridgesToWeight = new HashMap<>();
 		Vertex root = graph.traversal().V().has("x", 0).has("y", 0).toList().get(0);
 
 		Set<Vertex> vertices = new HashSet<>();
@@ -40,7 +47,15 @@ public class GraphDas {
 			if ((int) t.get().value("bridges") > 0)
 				vertices.add(t.get());
 		})).until(__.out("row", "column").count().is(0)).iterate();
-		return convertVerticesToFields(vertices);
+
+		Set<GraphField> graphFields = convertVerticesToFields(vertices);
+
+		for (Entry<GraphBridge, Integer> bridge : bridgesToWeight.entrySet()) {
+			bridge.getKey().setWeighting(bridge.getValue() / 2);
+		}
+
+		GraphPlayField graphPlayField = new GraphPlayField(bridgesToWeight.keySet(), graphFields);
+		return graphPlayField;
 	}
 
 	private Set<GraphField> convertVerticesToFields(Set<Vertex> vertices) {
@@ -119,7 +134,7 @@ public class GraphDas {
 	}
 
 	private boolean needsBridge(Vertex node) {
-		return (int) node.property("bridges").value() >= node.graph().traversal().V(node).bothE("bridge").count()
+		return (int) node.property("bridges").value() > node.graph().traversal().V(node).bothE("bridge").count()
 				.toList().get(0);
 	}
 
@@ -149,6 +164,11 @@ public class GraphDas {
 			GraphField node1 = convertVertexToFieldLight(edge.outVertex());
 			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
 			GraphBridge bridge = new GraphBridge(node1, node2);
+			if (bridgesToWeight.containsKey(bridge)) {
+				bridgesToWeight.put(bridge, bridgesToWeight.get(bridge) + 1);
+			} else {
+				bridgesToWeight.put(bridge, 1);
+			}
 			bridges.add(bridge);
 		}
 

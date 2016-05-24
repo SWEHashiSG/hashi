@@ -3,12 +3,11 @@ package ch.ntb.swehashisg.hashi.graph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ntb.swehashisg.hashi.controller.Bridge;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 
 public class TestGraph {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(TestGraph.class);
 
 	public static void main(String[] args) {
@@ -16,7 +15,7 @@ public class TestGraph {
 		try {
 			GraphDas graphDas = GraphDasFactory.getGraphDas();
 
-			for (GraphField graphField : graphDas.getRelevantFields()) {
+			for (GraphField graphField : graphDas.getPlayField().getFields()) {
 				log.debug("graphField x: " + graphField.getX());
 				log.debug("graphField Y: " + graphField.getY());
 				for (GraphField neighbor : graphField.getNeighbors()) {
@@ -41,7 +40,7 @@ public class TestGraph {
 			long start = System.currentTimeMillis();
 
 			for (int i = 0; i < 100; i++) {
-				graphDas.getRelevantFields();
+				graphDas.getPlayField();
 			}
 
 			log.debug("Duration: " + (System.currentTimeMillis() - start));

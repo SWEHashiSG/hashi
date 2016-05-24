@@ -10,7 +10,7 @@
         </layout>
     </appender>
 
-    <logger name="ch.ntb.test">
+    <logger name="ch.ntb">
         <level value="DEBUG"/>
     </logger>
 

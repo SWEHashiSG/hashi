@@ -1,11 +1,23 @@
 package ch.ntb.swehashisg.hashi.controller;
 
+import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 
 public class GraphUtil {
+
+	public static BridgeDirection getDirectionOfNeighbors(GraphField field1, GraphField field2) {
+		if (field1.getX() == field2.getX()) {
+			return BridgeDirection.Vertical;
+		} else if (field1.getY() == field2.getY()) {
+			return BridgeDirection.Horizontal;
+		} else {
+			throw new IllegalArgumentException("Bridges can only be horizontal or vertical");
+		}
+	}
+
 	public static boolean isNorthBridge(GraphField field, GraphField neighbor) {
 		if (isVerticalNeighbor(field, neighbor)) {
-			if (field.getY() < neighbor.getY()) {
+			if (field.getY() > neighbor.getY()) {
 				return true;
 			}
 		}
@@ -14,7 +26,7 @@ public class GraphUtil {
 
 	public static boolean isSouthBridge(GraphField field, GraphField neighbor) {
 		if (isVerticalNeighbor(field, neighbor)) {
-			if (field.getY() > neighbor.getY()) {
+			if (field.getY() < neighbor.getY()) {
 				return true;
 			}
 		}

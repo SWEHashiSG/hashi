@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root minHeight="40" minWidth="40" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root mouseTransparent="true" minHeight="40" minWidth="40" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane>
         <columnConstraints>
@@ -18,8 +18,7 @@
           <RowConstraints vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <Pane fx:id="highliter" onMouseClicked="#onMouseClicked" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" style="-fx-background-color: Orange;" visible="false" GridPane.columnIndex="1" />
-            <GridPane mouseTransparent="true" GridPane.columnIndex="1">
+            <GridPane GridPane.columnIndex="1">
               <columnConstraints>
                   <ColumnConstraints percentWidth="20.0" />
                   <ColumnConstraints percentWidth="20.0" />
@@ -30,9 +29,9 @@
                 <RowConstraints vgrow="ALWAYS" />
               </rowConstraints>
                <children>
-                  <Pane fx:id="lineTop" mouseTransparent="true" style="-fx-background-color: black;" visible="false" GridPane.columnIndex="1" />
-                  <Pane fx:id="lineMiddle" mouseTransparent="true" style="-fx-background-color: black;" visible="false" GridPane.columnIndex="2" />
-                  <Pane fx:id="lineButtom" mouseTransparent="true" style="-fx-background-color: black;" visible="false" GridPane.columnIndex="3" />
+                  <Pane fx:id="lineTop" style="-fx-background-color: black;" visible="false" GridPane.columnIndex="1" />
+                  <Pane fx:id="lineMiddle" style="-fx-background-color: black;" visible="false" GridPane.columnIndex="2" />
+                  <Pane fx:id="lineButtom" style="-fx-background-color: black;" visible="false" GridPane.columnIndex="3" />
                </children>
             </GridPane>
          </children>

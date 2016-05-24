@@ -19,8 +19,9 @@
                   <Button fx:id="buttonUndo" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#undo" text="Undo" />
                   <Button fx:id="buttonRedo" layoutX="69.0" layoutY="8.0" mnemonicParsing="false" onAction="#redo" text="Redo" />
                   <Button fx:id="buttonShowSolution" layoutX="123.0" layoutY="8.0" mnemonicParsing="false" onAction="#showSolution" text="show Solution" />
-                  <Button fx:id="buttonRestart" layoutX="225.0" layoutY="8.0" mnemonicParsing="false" onAction="#restart" text="Restart" />
+                  <Button fx:id="buttonRestart" layoutX="224.0" layoutY="8.0" mnemonicParsing="false" onAction="#restart" text="Restart" />
                   <Button fx:id="buttonSave" layoutX="288.0" layoutY="8.0" mnemonicParsing="false" onAction="#save" text="Save" />
+                  <Button layoutX="338.0" layoutY="8.0" mnemonicParsing="false" onAction="#check" text="Check" />
                </children></AnchorPane>
          </top>
          <center>

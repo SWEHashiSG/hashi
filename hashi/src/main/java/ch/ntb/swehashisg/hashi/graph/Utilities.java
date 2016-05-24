@@ -10,8 +10,6 @@ import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ntb.swehashisg.hashi.controller.Bridge;
-
 public class Utilities {
 	
 	private static final Logger log = LoggerFactory.getLogger(Utilities.class);
