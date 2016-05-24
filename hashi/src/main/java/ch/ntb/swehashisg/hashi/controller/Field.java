@@ -25,10 +25,6 @@ public class Field extends StackPane {
 	private GraphField graphField;
 	private GameField gameField;
 	private static int fieldSize = 40;
-	private boolean southBridge = false;
-	private boolean norhtBridge = false;
-	private boolean eastBridge = false;
-	private boolean westBridge = false;
 
 	public GraphField getGraphField() {
 		return graphField;

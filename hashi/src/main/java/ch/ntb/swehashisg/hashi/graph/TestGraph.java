@@ -10,7 +10,7 @@ public class TestGraph {
 		try {
 			GraphDas graphDas = GraphDasFactory.getGraphDas();
 
-			for (GraphField graphField : graphDas.getRelevantFields()) {
+			for (GraphField graphField : graphDas.getPlayField().getFields()) {
 				System.out.println("graphField x: " + graphField.getX());
 				System.out.println("graphField Y: " + graphField.getY());
 				for (GraphField neighbor : graphField.getNeighbors()) {
@@ -35,7 +35,7 @@ public class TestGraph {
 			long start = System.currentTimeMillis();
 
 			for (int i = 0; i < 100; i++) {
-				graphDas.getRelevantFields();
+				graphDas.getPlayField();
 			}
 
 			System.out.println("Duration: " + (System.currentTimeMillis() - start));

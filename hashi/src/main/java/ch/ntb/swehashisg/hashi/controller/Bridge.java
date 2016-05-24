@@ -4,8 +4,7 @@ import java.io.IOException;
 
 import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import ch.ntb.swehashisg.hashi.model.GraphField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
@@ -46,29 +45,6 @@ public class Bridge extends StackPane {
 		this.gameField = gameField;
 	}
 
-	// private void drawLines() {
-	// switch (weighting) {
-	// case 0:
-	// lineMiddle.setVisible(false);
-	// lineTop.setVisible(false);
-	// lineButtom.setVisible(false);
-	// break;
-	// case 1:
-	// lineMiddle.setVisible(true);
-	// lineTop.setVisible(false);
-	// lineButtom.setVisible(false);
-	// break;
-	// case 2:
-	// lineMiddle.setVisible(false);
-	// lineTop.setVisible(true);
-	// lineButtom.setVisible(true);
-	// break;
-	// default:
-	// throw new IllegalArgumentException(
-	// "Weighting of Bridge is between 0 and 2. Weighting " + weighting + " is
-	// out of Range");
-	// }
-	// }
 
 	public void addToGameField() {
 		int columnIndex = graphBridge.getField1().getX();
@@ -102,8 +78,8 @@ public class Bridge extends StackPane {
 	@FXML
 	protected void onMouseClicked() {
 		System.out.println("Clicked on Bridge!");
-		// TODO: Add Bridge 
-		//gameField.addBridge(graphBridge);
+		// TODO: Add Bridge
+		// gameField.addBridge(graphBridge);
 	}
 
 	@FXML

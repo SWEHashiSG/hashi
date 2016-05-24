@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
+import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -32,7 +33,8 @@ public class GameField extends GridPane {
 		this.graphDas = graphDas;
 		setFieldSize(8); // TODO: get Game Size from GraphDas
 		graphFields = new ArrayList<GraphField>();
-		graphFields.addAll(graphDas.getRelevantFields());
+		GraphPlayField graphPlayField = graphDas.getPlayField();
+		graphFields.addAll(graphPlayField.getFields());
 		graphBridges = new ArrayList<GraphBridge>();
 		createAllBridges();
 	}
@@ -91,16 +93,15 @@ public class GameField extends GridPane {
 	protected void cleanGameField() {
 		this.getChildren().clear();
 	}
-	
 
 	protected Bridge getNorthBridge(Field field) {
 		for (Bridge bridge : bridges) {
-			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField2().getY() < field.getGraphField().getY()){
+			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())) {
+				if (bridge.getGraphBridge().getField2().getY() < field.getGraphField().getY()) {
 					return bridge;
 				}
-			} else if(bridge.getGraphBridge().getField2().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField1().getY() < field.getGraphField().getY()){
+			} else if (bridge.getGraphBridge().getField2().equals(field.getGraphField())) {
+				if (bridge.getGraphBridge().getField1().getY() < field.getGraphField().getY()) {
 					return bridge;
 				}
 			}
@@ -110,12 +111,12 @@ public class GameField extends GridPane {
 
 	protected Bridge getEastBridge(Field field) {
 		for (Bridge bridge : bridges) {
-			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField2().getX() > field.getGraphField().getX()){
+			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())) {
+				if (bridge.getGraphBridge().getField2().getX() > field.getGraphField().getX()) {
 					return bridge;
 				}
-			} else if(bridge.getGraphBridge().getField2().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField1().getX() > field.getGraphField().getX()){
+			} else if (bridge.getGraphBridge().getField2().equals(field.getGraphField())) {
+				if (bridge.getGraphBridge().getField1().getX() > field.getGraphField().getX()) {
 					return bridge;
 				}
 			}
@@ -125,12 +126,12 @@ public class GameField extends GridPane {
 
 	protected Bridge getSouthBridge(Field field) {
 		for (Bridge bridge : bridges) {
-			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField2().getY() > field.getGraphField().getY()){
+			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())) {
+				if (bridge.getGraphBridge().getField2().getY() > field.getGraphField().getY()) {
 					return bridge;
 				}
-			} else if(bridge.getGraphBridge().getField2().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField1().getY() > field.getGraphField().getY()){
+			} else if (bridge.getGraphBridge().getField2().equals(field.getGraphField())) {
+				if (bridge.getGraphBridge().getField1().getY() > field.getGraphField().getY()) {
 					return bridge;
 				}
 			}
@@ -140,12 +141,12 @@ public class GameField extends GridPane {
 
 	protected Bridge getWestBrigde(Field field) {
 		for (Bridge bridge : bridges) {
-			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField2().getX() < field.getGraphField().getX()){
+			if (bridge.getGraphBridge().getField1().equals(field.getGraphField())) {
+				if (bridge.getGraphBridge().getField2().getX() < field.getGraphField().getX()) {
 					return bridge;
 				}
-			} else if(bridge.getGraphBridge().getField2().equals(field.getGraphField())){
-				if (bridge.getGraphBridge().getField1().getX() < field.getGraphField().getX()){
+			} else if (bridge.getGraphBridge().getField2().equals(field.getGraphField())) {
+				if (bridge.getGraphBridge().getField1().getX() < field.getGraphField().getX()) {
 					return bridge;
 				}
 			}

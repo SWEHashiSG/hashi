@@ -58,6 +58,10 @@ public class GraphBridge {
 		return highlite;
 	}
 
+	public void setWeighting(Integer weighting) {
+		this.weighting = new SimpleIntegerProperty(weighting);
+	}
+
 	public int getWeighting() {
 		return weighting.get();
 	}
@@ -77,7 +81,7 @@ public class GraphBridge {
 	public IntegerProperty getWeightingProperty() {
 		return weighting;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -93,4 +97,13 @@ public class GraphBridge {
 			return true;
 		return false;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (field1.hashCode() + field2.hashCode());
+		return result;
+	}
+
 }
