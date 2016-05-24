@@ -3,6 +3,9 @@ package ch.ntb.swehashisg.hashi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
@@ -13,6 +16,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
 public class GameField extends GridPane {
+	
+	private static final Logger log = LoggerFactory.getLogger(GameField.class);
 
 	private GraphDas graphDas;
 	private ArrayList<GraphField> graphFields;
@@ -67,7 +72,7 @@ public class GameField extends GridPane {
 	}
 
 	public void loadGame() {
-		System.out.println("Draw all Fields");
+		log.debug("Draw all Fields");
 		cleanGameField();
 		fields = new ArrayList<Field>();
 		bridges = new ArrayList<Bridge>();
@@ -86,7 +91,7 @@ public class GameField extends GridPane {
 
 	public void addBridge(GraphBridge graphBridge) {
 		graphDas.addBridge(graphBridge);
-		System.out.println("-------------Redraw whole gamefield-----------------");
+		log.debug("-------------Redraw whole gamefield-----------------");
 		loadGame(); // TODO: Update
 	}
 
