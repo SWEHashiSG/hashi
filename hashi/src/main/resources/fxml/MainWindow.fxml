@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.effect.*?>
@@ -11,36 +12,80 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <fx:root prefHeight="449.0" prefWidth="412.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <BorderPane layoutX="93.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <AnchorPane prefHeight="41.0" prefWidth="413.0">
-               <children>
-                  <Button fx:id="buttonUndo" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#undo" text="Undo" />
-                  <Button fx:id="buttonRedo" layoutX="69.0" layoutY="8.0" mnemonicParsing="false" onAction="#redo" text="Redo" />
-                  <Button fx:id="buttonShowSolution" layoutX="123.0" layoutY="8.0" mnemonicParsing="false" onAction="#showSolution" text="show Solution" />
-                  <Button fx:id="buttonRestart" layoutX="224.0" layoutY="8.0" mnemonicParsing="false" onAction="#restart" text="Restart" />
-                  <Button fx:id="buttonSave" layoutX="288.0" layoutY="8.0" mnemonicParsing="false" onAction="#save" text="Save" />
-                  <Button layoutX="338.0" layoutY="8.0" mnemonicParsing="false" onAction="#check" text="Check" />
-               </children></AnchorPane>
-         </top>
-         <center>
-            <AnchorPane style="-fx-background-color: green;" BorderPane.alignment="CENTER">
-               <children>
-                  <AnchorPane fx:id="pane" layoutX="150.0" layoutY="77.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-               </children>
-            </AnchorPane>
-         </center>
-         <bottom>
-            <Pane prefHeight="96.0" prefWidth="445.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button layoutX="99.0" layoutY="15.0" mnemonicParsing="false" onAction="#addBridge" text="Add Bridges" />
-                  <Button layoutX="188.0" layoutY="15.0" mnemonicParsing="false" onAction="#addDoubleBridge" text="Add Double Bridgges" />
-                  <Button layoutX="17.0" layoutY="48.0" mnemonicParsing="false" onAction="#showHint" text="show Hint" />
-                  <Button layoutX="98.0" layoutY="48.0" mnemonicParsing="false" onAction="#removeHint" text="remove Hint" />
-                  <Button layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#loadGame" text="Load Game" />
-               </children></Pane>
-         </bottom>
-      </BorderPane>
-   </children>
+	<children>
+		<BorderPane layoutX="93.0" layoutY="52.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<top>
+				<AnchorPane>
+					<children>
+						<Button fx:id="buttonUndo" mnemonicParsing="false" onAction="#undo">
+							<tooltip>
+								<Tooltip text="Undo" />
+							</tooltip>
+							<graphic>
+								<fx:include source="../images/undo.fxml" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonRedo" layoutX="64.0" mnemonicParsing="false" onAction="#redo">
+							<tooltip>
+								<Tooltip text="Redo" />
+							</tooltip>
+							<graphic>
+								<fx:include source="../images/redo.fxml" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonShowSolution" layoutX="128.0" mnemonicParsing="false" onAction="#showSolution">
+							<tooltip>
+								<Tooltip text="show Solution" />
+							</tooltip>
+							<graphic>
+								<fx:include source="../images/solution.fxml" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonRestart" layoutX="192.0" mnemonicParsing="false" onAction="#restart">
+							<tooltip>
+								<Tooltip text="Restart" />
+							</tooltip>
+							<graphic>
+								<fx:include source="../images/reload.fxml" />
+							</graphic>
+						</Button>
+						<Button fx:id="buttonSave" layoutX="256.0" mnemonicParsing="false" onAction="#save">
+							<tooltip>
+								<Tooltip text="Save" />
+							</tooltip>
+							<graphic>
+								<fx:include source="../images/save.fxml" />
+							</graphic>
+						</Button>
+						<Button layoutX="320.0" mnemonicParsing="false" onAction="#check">
+							<tooltip>
+								<Tooltip text="Check" />
+							</tooltip>
+							<graphic>
+								<fx:include source="../images/check.fxml" />
+							</graphic>
+						</Button>
+					</children>
+				</AnchorPane>
+			</top>
+			<center>
+				<AnchorPane style="-fx-background-color: orange;" BorderPane.alignment="CENTER">
+					<children>
+						<AnchorPane fx:id="pane" layoutX="150.0" layoutY="77.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+					</children>
+				</AnchorPane>
+			</center>
+			<bottom>
+				<Pane BorderPane.alignment="CENTER">
+					<children>
+						<Button layoutX="99.0" layoutY="15.0" mnemonicParsing="false" onAction="#addBridge" text="Add Bridges" />
+						<Button layoutX="188.0" layoutY="15.0" mnemonicParsing="false" onAction="#addDoubleBridge" text="Add Double Bridgges" />
+						<Button layoutX="17.0" layoutY="48.0" mnemonicParsing="false" onAction="#showHint" text="show Hint" />
+						<Button layoutX="98.0" layoutY="48.0" mnemonicParsing="false" onAction="#removeHint" text="remove Hint" />
+						<Button layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#loadGame" text="Load Game" />
+					</children>
+				</Pane>
+			</bottom>
+		</BorderPane>
+	</children>
 </fx:root>

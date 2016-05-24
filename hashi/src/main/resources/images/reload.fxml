@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.transform.*?>
+<?import javafx.scene.effect.*?>
+
+<Group id='_root' xmlns:fx="http://javafx.com/fxml" xmlns:fxsvg="http://efxclipse.org/fxml-svg">
+	<children>
+		<fx:define>
+		</fx:define>
+		<!-- Unhandled type 'SvgMetadataElement' -->
+		<Group
+			opacity="1.0"
+			id="layer1"
+			>
+			<children>
+				<SVGPath
+					content="m 342.85715,430.64791 0,-6 -8,8 8,8 0,-6 c 6.62,0 12,5.38 12,12 0,2.02 -0.5,3.94 -1.4,5.6 l 2.92,2.92 c 1.56,-2.46 2.48,-5.38 2.48,-8.52 0,-8.84 -7.16,-16 -16,-16 z m 0,28 c -6.62,0 -12,-5.38 -12,-12 0,-2.02 0.5,-3.94 1.4,-5.6 l -2.92,-2.92 c -1.56,2.46 -2.48,5.38 -2.48,8.52 0,8.84 7.16,16 16,16 l 0,6 8,-8 -8,-8 0,6 z"
+					opacity="1"
+					id="path6825"
+					>
+					<fill>
+						<Color>
+							<red>1.0</red>
+							<green>0.5019607843137255</green>
+							<blue>0.0</blue>
+						</Color>
+					</fill>
+				</SVGPath>
+				<SVGPath
+					content="m 318.85715,422.64791 48,0 0,48 -48,0 z"
+					opacity="1"
+					id="path6827"
+					>
+					<fill>
+						TRANSPARENT
+					</fill>
+				</SVGPath>
+			</children>
+			<transforms>
+				<Translate
+					x="-318.85715"
+					y="-422.64791"
+					>
+				</Translate>
+			</transforms>
+		</Group>
+	</children>
+</Group>

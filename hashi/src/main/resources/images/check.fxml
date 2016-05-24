@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.transform.*?>
+<?import javafx.scene.effect.*?>
+
+<Group id='_root' xmlns:fx="http://javafx.com/fxml" xmlns:fxsvg="http://efxclipse.org/fxml-svg">
+	<children>
+		<fx:define>
+		</fx:define>
+		<!-- Unhandled type 'SvgMetadataElement' -->
+		<Group
+			opacity="1.0"
+			id="layer1"
+			>
+			<children>
+				<Group
+					opacity="1.0"
+					id="g3348"
+					>
+					<children>
+						<SVGPath
+							content="M 0,0 24,0 24,24 0,24 Z"
+							opacity="1"
+							id="path3338"
+							>
+							<fill>
+								TRANSPARENT
+							</fill>
+						</SVGPath>
+						<SVGPath
+							content="M 9,16.2 4.8,12 3.4,13.4 9,19 21,7 19.6,5.6 9,16.2 Z"
+							opacity="1"
+							id="path3340"
+							>
+							<fill>
+								<Color>
+									<red>1.0</red>
+									<green>0.5019607843137255</green>
+									<blue>0.0</blue>
+								</Color>
+							</fill>
+						</SVGPath>
+					</children>
+					<transforms>
+						<Affine
+							mxx="2"
+							myx="0"
+							mxy="0"
+							myy="2"
+							tx="473.14286"
+							ty="374.07649"
+							>
+						</Affine>
+					</transforms>
+				</Group>
+			</children>
+			<transforms>
+				<Translate
+					x="-473.14286"
+					y="-374.07649"
+					>
+				</Translate>
+			</transforms>
+		</Group>
+	</children>
+</Group>
