@@ -13,7 +13,7 @@ public class GraphDasFactory {
 		tg.createIndex("y", Vertex.class);
 		Graph g = tg;
 
-		g = Utilities.generateBasisPlayGround(g, 8, 8);
+		g = Utilities.generateBasisPlayGround(g, 10, 8);
 
 		BaseGraphDas graphDas = new BaseGraphDas(g);
 
@@ -46,12 +46,12 @@ public class GraphDasFactory {
 		}
 	}
 
-	public static GraphDas getEmptyGraphDas(int gameSize) {
+	public static GraphDas getEmptyGraphDas(int sizeX, int sizeY) {
 		TinkerGraph tg = TinkerGraph.open();
 		tg.createIndex("x", Vertex.class);
 		tg.createIndex("y", Vertex.class);
 		Graph g = tg;
-		g = Utilities.generateBasisPlayGround(g);
+		g = Utilities.generateBasisPlayGround(g,sizeX, sizeY);
 		BaseGraphDas graphDas = new BaseGraphDas(g);
 		return graphDas;
 	}

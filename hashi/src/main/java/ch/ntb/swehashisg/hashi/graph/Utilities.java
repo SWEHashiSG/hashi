@@ -19,8 +19,8 @@ public class Utilities {
 		play.property("sizeX", sizeX);
 		play.property("sizeY", sizeY);
 		Vertex root = null;
-		for (int i = 0; i < sizeY; i++) {
-			for (int j = 0; j < sizeX; j++) {
+		for (int i = 0; i < sizeX; i++) {
+			for (int j = 0; j < sizeY; j++) {
 				Vertex t = g.addVertex("x", i, "y", j, "bridges", 0);
 				if (root == null) {
 					root = t;

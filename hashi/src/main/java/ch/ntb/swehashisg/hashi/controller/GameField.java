@@ -44,7 +44,7 @@ public class GameField extends GridPane {
 			throw new RuntimeException(exception);
 		}
 		this.graphDas = graphDas;
-		setFieldSize(8); // TODO: get Game Size from GraphDas
+		setFieldSize(graphDas.getSizeX(), graphDas.getSizeY());
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
 		createAllBridgesHighlights(graphPlayField.getBridges());
@@ -104,22 +104,25 @@ public class GameField extends GridPane {
 	protected void update(GraphPlayField graphPlayField) {
 		graphFields = graphPlayField.getFields();
 		createAllBridgesHighlights(graphPlayField.getBridges());
-		loadGame(); // TODO: Update
+		loadGame();
 		if (graphDas.isCorrect()) {
 			finishGame();
 		}
 		isUpdating = false;
 	}
 
-	private void setFieldSize(int gameSize) {
+	private void setFieldSize(int sizeX, int sizeY) {
 		getRowConstraints().clear();
 		getColumnConstraints().clear();
-		for (int i = 0; i < gameSize; i++) {
+		for (int i = 0; i < sizeY; i++) {
 			RowConstraints rowConstraints = new RowConstraints();
-			rowConstraints.setPercentHeight(100.0 / gameSize);
+			rowConstraints.setPercentHeight(100.0 / sizeY);
 			getRowConstraints().add(rowConstraints);
+
+		}
+		for (int i = 0; i < sizeX; i++) {
 			ColumnConstraints columnConstraints = new ColumnConstraints();
-			columnConstraints.setPercentWidth(100.0 / gameSize);
+			columnConstraints.setPercentWidth(100.0 / sizeX);
 			getColumnConstraints().add(columnConstraints);
 		}
 	}

@@ -140,13 +140,13 @@ public class MainWindow extends AnchorPane {
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == buttonTypeOK) {
-				startEditorMode(12);
+				startEditorMode(8,8);
 			}
 		}
 	}
 
-	private void startEditorMode(int gameSize) {
-		graphDas = GraphDasFactory.getEmptyGraphDas(gameSize);
+	private void startEditorMode(int sizeX, int sizeY) {
+		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
 		gameField = new GameField(graphDas);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);
