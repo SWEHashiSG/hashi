@@ -8,12 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
-import ch.ntb.swehashisg.hashi.graph.BaseGraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
 import ch.ntb.swehashisg.hashi.graph.VersionedGraphDas;
-import ch.ntb.swehashisg.hashi.model.GraphBridge;
-import ch.ntb.swehashisg.hashi.model.GraphField;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -32,7 +28,6 @@ public class MainWindow extends AnchorPane {
 
 	private GameField gameField;
 	GraphDas graphDas;
-	private int gameSize = 8; // TODO: Get form GameDas
 
 	@FXML
 	private Pane pane;
@@ -86,7 +81,7 @@ public class MainWindow extends AnchorPane {
 	@FXML
 	public void loadGame() {
 		logger.debug("Started");
-		graphDas = new VersionedGraphDas( GraphDasFactory.getGraphDas() );
+		graphDas = GraphDasFactory.getGraphDas();
 		gameField = new GameField(graphDas);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);

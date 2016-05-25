@@ -6,7 +6,7 @@ import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 
 public class GraphDasFactory {
 
-	public static BaseGraphDas getGraphDas() {
+	public static GraphDas getGraphDas() {
 		TinkerGraph tg = TinkerGraph.open();
 		tg.createIndex("x", Vertex.class);
 		tg.createIndex("y", Vertex.class);
@@ -21,7 +21,7 @@ public class GraphDasFactory {
 		return graphDas;
 	}
 
-	public static void closeGraphDas(BaseGraphDas graphDas) {
+	public static void closeGraphDas(GraphDas graphDas) {
 		graphDas.close();
 	}
 

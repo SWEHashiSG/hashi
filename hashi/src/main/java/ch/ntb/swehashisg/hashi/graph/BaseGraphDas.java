@@ -22,7 +22,7 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
-public class BaseGraphDas implements GraphDas {
+public class BaseGraphDas extends GraphDas {
 
 	private Graph graph;
 
@@ -216,8 +216,8 @@ public class BaseGraphDas implements GraphDas {
 					List<Long> testList = g.traversal().V(t.get())
 							.match(__.<Vertex> as("t").repeat(__.in("row")).until(__.values("bridges").is(P.neq(0)))
 									.bothE("bridge").as("bridge"),
-									__.<Vertex> as("t").repeat(__.out("row")).until(__.values("bridges").is(P.neq(0)))
-											.bothE("bridge").as("bridge"))
+							__.<Vertex> as("t").repeat(__.out("row")).until(__.values("bridges").is(P.neq(0)))
+									.bothE("bridge").as("bridge"))
 							.select("bridge").count().toList();
 					if (testList.size() > 0) {
 						if (testList.get(0) > 0) {
@@ -237,8 +237,8 @@ public class BaseGraphDas implements GraphDas {
 					List<Long> testList = g.traversal().V(t.get())
 							.match(__.<Vertex> as("t").repeat(__.in("column")).until(__.values("bridges").is(P.neq(0)))
 									.bothE("bridge").as("bridge"),
-									__.<Vertex> as("t").repeat(__.out("column"))
-											.until(__.values("bridges").is(P.neq(0))).bothE("bridge").as("bridge"))
+							__.<Vertex> as("t").repeat(__.out("column")).until(__.values("bridges").is(P.neq(0)))
+									.bothE("bridge").as("bridge"))
 							.select("bridge").count().toList();
 					if (testList.size() > 0) {
 						if (testList.get(0) > 0) {
@@ -315,6 +315,7 @@ public class BaseGraphDas implements GraphDas {
 		}
 	}
 
+	@Override
 	void close() {
 		try {
 			graph.close();
@@ -323,6 +324,7 @@ public class BaseGraphDas implements GraphDas {
 		}
 	}
 
+	@Override
 	Graph getGraph() {
 		return this.graph;
 	}

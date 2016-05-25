@@ -2,48 +2,50 @@ package ch.ntb.swehashisg.hashi.graph;
 
 import java.util.ArrayList;
 
+import org.apache.tinkerpop.gremlin.structure.Graph;
+
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
-public class VersionedGraphDas implements GraphDas {
+public class VersionedGraphDas extends GraphDas {
 
-	private BaseGraphDas mGraphDas;
-	private ArrayList<BridgeOperation> mListOperations;
-	private int mIndex;
+	private BaseGraphDas graphDas;
+	private ArrayList<BridgeOperation> listOperations;
+	private int index;
 
 	public VersionedGraphDas(BaseGraphDas gd) {
-		mGraphDas = gd;
-		mIndex = 0;
-		mListOperations = new ArrayList<BridgeOperation>();
+		this.graphDas = gd;
+		this.index = 0;
+		this.listOperations = new ArrayList<BridgeOperation>();
 	}
 
 	public boolean undo() {
-		if (mIndex <= 0)
+		if (index <= 0)
 			return false;
-		mIndex--;
-		BridgeOperation bo = mListOperations.get(mIndex);
-		executeOperation(!bo.mIsAddingBridge, bo.mGraphBridge);
+		index--;
+		BridgeOperation bo = listOperations.get(index);
+		executeOperation(!bo.isAddingBridge, bo.graphBridge);
 		return true;
 	}
 
 	public boolean redo() {
-		if (mIndex >= mListOperations.size() || mIndex < 0)
+		if (index >= listOperations.size() || index < 0)
 			return false;
-		BridgeOperation bo = mListOperations.get(mIndex);
-		executeOperation(bo.mIsAddingBridge, bo.mGraphBridge);
-		mIndex++;
+		BridgeOperation bo = listOperations.get(index);
+		executeOperation(bo.isAddingBridge, bo.graphBridge);
+		index++;
 		return true;
 	}
 
 	@Override
 	public GraphPlayField getPlayField() {
-		return mGraphDas.getPlayField();
+		return graphDas.getPlayField();
 	}
 
 	@Override
 	public void addBridge(GraphBridge bridge) {
 		removeOperationsOverIndex();
-		mListOperations.add(new BridgeOperation(true, bridge));
+		listOperations.add(new BridgeOperation(true, bridge));
 		redo();
 
 	}
@@ -51,35 +53,45 @@ public class VersionedGraphDas implements GraphDas {
 	@Override
 	public void removeBridge(GraphBridge bridge) {
 		removeOperationsOverIndex();
-		mListOperations.add(new BridgeOperation(false, bridge));
+		listOperations.add(new BridgeOperation(false, bridge));
 		redo();
 	}
 
 	@Override
 	public boolean isCorrect() {
-		return mGraphDas.isCorrect();
+		return graphDas.isCorrect();
 	}
 
 	private void removeOperationsOverIndex() {
-		while (mListOperations.size() > mIndex)
-			mListOperations.remove(mIndex + 1);
+		while (listOperations.size() > index)
+			listOperations.remove(index + 1);
 	}
 
 	private void executeOperation(boolean addBridge, GraphBridge bridge) {
 		if (addBridge)
-			mGraphDas.addBridge(bridge);
+			graphDas.addBridge(bridge);
 		else
-			mGraphDas.removeBridge(bridge);
+			graphDas.removeBridge(bridge);
 	}
 
 	private static class BridgeOperation extends Object {
 
-		public boolean mIsAddingBridge;
-		public GraphBridge mGraphBridge;
+		public boolean isAddingBridge;
+		public GraphBridge graphBridge;
 
-		public BridgeOperation(boolean isAddingBridge, GraphBridge argGraphBridge) {
-			mIsAddingBridge = isAddingBridge;
-			mGraphBridge = argGraphBridge;
+		public BridgeOperation(boolean isAddingBridge, GraphBridge graphBridge) {
+			this.isAddingBridge = isAddingBridge;
+			this.graphBridge = graphBridge;
 		}
+	}
+
+	@Override
+	void close() {
+		graphDas.close();
+	}
+
+	@Override
+	Graph getGraph() {
+		return graphDas.getGraph();
 	}
 }

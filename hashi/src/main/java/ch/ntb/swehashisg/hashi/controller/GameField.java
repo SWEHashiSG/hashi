@@ -14,6 +14,8 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -153,7 +155,7 @@ public class GameField extends GridPane {
 	}
 
 	public void addBridge(Highlight highlight) {
-		if (!gameTime.isRunning()){
+		if (!gameTime.isRunning()) {
 			gameTime.startTime();
 		}
 		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
@@ -163,5 +165,18 @@ public class GameField extends GridPane {
 		graphFields = graphPlayField.getFields();
 		createAllBridgesHighlights(graphPlayField.getBridges());
 		loadGame(); // TODO: Update
+		if (graphDas.isCorrect()) {
+			finishGame();
+		}
+	}
+
+	private void finishGame() {
+		gameTime.stopTime();
+		logger.info("Game is Finished");
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Finish GAme");
+		alert.setHeaderText("Congratulation. You have finished the Hashi Game");
+		alert.setContentText("Time: " + gameTime.getTime() + " Seconds");
+		alert.showAndWait();
 	}
 }

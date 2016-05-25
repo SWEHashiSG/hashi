@@ -13,7 +13,7 @@ public class TestGraph {
 	public static void main(String[] args) {
 
 		try {
-			BaseGraphDas graphDas = GraphDasFactory.getGraphDas();
+			GraphDas graphDas = GraphDasFactory.getGraphDas();
 
 			for (GraphField graphField : graphDas.getPlayField().getFields()) {
 				logger.debug("graphField x: " + graphField.getX());
