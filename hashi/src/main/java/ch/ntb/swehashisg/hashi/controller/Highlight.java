@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
 
 public class Highlight extends StackPane {
 
-	private static final Logger log = LoggerFactory.getLogger(Highlight.class);
+	private static final Logger logger = LoggerFactory.getLogger(Highlight.class);
 
 	@FXML
 	private Pane highliter;
@@ -68,7 +68,7 @@ public class Highlight extends StackPane {
 	}
 
 	public void setHighlite(boolean highlited) {
-		log.debug("Should highlight be visible: " + highlited);
+		logger.debug("Should highlight be visible: " + highlited);
 		highliter.setVisible(highlited);
 		highliter.setMouseTransparent(!highlited);
 		this.setMouseTransparent(!highlited);
@@ -84,7 +84,7 @@ public class Highlight extends StackPane {
 
 	@FXML
 	protected void onMouseClicked() {
-		log.debug("Clicked on Bridge!");
+		logger.debug("Clicked on Bridge!");
 		if(gameField.needsBridge(this)) {
 			gameField.addBridge(this);	
 		} else {
@@ -101,7 +101,7 @@ public class Highlight extends StackPane {
 
 	@FXML
 	protected void onMouseExited() {
-		log.debug("Mouse not on Bridge:-)");
+		logger.debug("Mouse not on Bridge:-)");
 		setHighlite(false);
 	}
 }

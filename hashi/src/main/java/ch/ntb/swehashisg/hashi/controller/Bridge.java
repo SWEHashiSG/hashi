@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
 
 public class Bridge extends StackPane {
 
-	private static final Logger log = LoggerFactory.getLogger(Bridge.class);
+	private static final Logger logger = LoggerFactory.getLogger(Bridge.class);
 
 	@FXML
 	private Pane lineTop;
@@ -89,14 +89,14 @@ public class Bridge extends StackPane {
 	@FXML
 	protected void onMouseEntered() {
 		if (graphBridge.getWeighting() > 0) {
-			log.debug("Mouse on Bridge:-)");
+			logger.debug("Mouse on Bridge:-)");
 			graphBridge.setHighliter(true);
 		}
 	}
 
 	@FXML
 	protected void onMouseExited() {
-		log.debug("Mouse not on Bridge:-)");
+		logger.debug("Mouse not on Bridge:-)");
 		setHighlite(false);
 	}
 }

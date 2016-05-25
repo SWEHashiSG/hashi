@@ -28,7 +28,7 @@ import javafx.stage.WindowEvent;
 
 public class MainWindow extends AnchorPane {
 
-	private static final Logger log = LoggerFactory.getLogger(MainWindow.class);
+	private static final Logger logger = LoggerFactory.getLogger(MainWindow.class);
 
 	private GameField gameField;
 	AbstractGraphDas graphDas;
@@ -55,37 +55,37 @@ public class MainWindow extends AnchorPane {
 
 	@FXML
 	public void undo() {
-		log.debug("Undo Clicked");
+		logger.debug("Undo Clicked");
 	}
 
 	@FXML
 	public void redo() {
-		log.debug("Redo Clicked");
+		logger.debug("Redo Clicked");
 	}
 
 	@FXML
 	public void restart() {
-		log.debug("Restart Clicked");
+		logger.debug("Restart Clicked");
 	}
 
 	@FXML
 	public void showSolution() {
-		log.debug("Show Solution Clicked");
+		logger.debug("Show Solution Clicked");
 	}
 
 	@FXML
 	public void save() {
-		log.debug("Save Clicked");
+		logger.debug("Save Clicked");
 	}
 
 	@FXML
 	public void check() {
-		log.debug("Check Clicked");
+		logger.debug("Check Clicked");
 	}
 
 	@FXML
 	public void loadGame() {
-		log.debug("Started");
+		logger.debug("Started");
 		graphDas = new VersionedGraphDas( GraphDasFactory.getGraphDas() );
 		gameField = new GameField(graphDas);
 		gameField.loadGame();
@@ -94,17 +94,17 @@ public class MainWindow extends AnchorPane {
 
 	@FXML
 	public void addBridge() {
-		log.debug("Add Bridge");
+		logger.debug("Add Bridge");
 	}
 
 	@FXML
 	public void addDoubleBridge() {
-		log.debug("Add Double Bridge Test");
+		logger.debug("Add Double Bridge Test");
 	}
 
 	@FXML
 	public void showHint() {
-		log.debug("Show Hint");
+		logger.debug("Show Hint");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.showOpenDialog(this.getScene().getWindow());
@@ -112,7 +112,7 @@ public class MainWindow extends AnchorPane {
 
 	@FXML
 	public void removeHint() {
-		log.debug("Remove Hint");
+		logger.debug("Remove Hint");
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText("Look, an Information Dialog");

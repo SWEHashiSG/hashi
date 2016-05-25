@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public class GameTime {
 	
-	private static final Logger log = LoggerFactory.getLogger(GameTime.class);
+	private static final Logger logger = LoggerFactory.getLogger(GameTime.class);
 
 	private long startTime;
 	private long currentTime;
@@ -18,19 +18,19 @@ public class GameTime {
 	}
 	
 	public void startTime(){	//start the Gametime
-		log.debug("start Timer");
+		logger.debug("start Timer");
 		startTime = System.currentTimeMillis(); 
 		
 	}
 	
 	public void resetTime(){	//reset the GameTime
-		log.debug("reset timer");
+		logger.debug("reset timer");
 		startTime = 0;
 		currentTime = 0;
 	}
 	
 	public void stopTime(){		//stop the GameTime
-		log.debug("stop timer");
+		logger.debug("stop timer");
 		currentTime = System.currentTimeMillis();
 	}
 		

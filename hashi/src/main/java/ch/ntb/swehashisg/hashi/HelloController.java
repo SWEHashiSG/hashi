@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 
 public class HelloController
 {
-    private static final Logger log = LoggerFactory.getLogger(HelloController.class);
+    private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
 
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
@@ -36,10 +36,10 @@ public class HelloController
 
         if (builder.length() > 0) {
             String name = builder.toString();
-            log.debug("Saying hello to " + name);
+            logger.debug("Saying hello to " + name);
             messageLabel.setText("Hello " + name);
         } else {
-            log.debug("Neither first name nor last name was set, saying hello to anonymous person");
+            logger.debug("Neither first name nor last name was set, saying hello to anonymous person");
             messageLabel.setText("Hello mysterious person");
         }
     }

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 public class Utilities {
 	
-	private static final Logger log = LoggerFactory.getLogger(Utilities.class);
+	private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
 	protected static Graph generateBasisPlayGround(Graph g) {
 		Vertex play = g.addVertex("name", "test");
@@ -23,8 +23,8 @@ public class Utilities {
 				if (root == null) {
 					root = t;
 				}
-				log.debug("j: " + j);
-				log.debug("i: " + j);
+				logger.debug("j: " + j);
+				logger.debug("i: " + j);
 				if (j > 0) {
 					GraphTraversal<Vertex, Vertex> tr = g.traversal().V(root);
 					if (i > 0) {

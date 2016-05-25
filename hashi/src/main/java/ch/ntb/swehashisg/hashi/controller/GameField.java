@@ -20,7 +20,7 @@ import javafx.scene.layout.RowConstraints;
 
 public class GameField extends GridPane {
 
-	private static final Logger log = LoggerFactory.getLogger(GameField.class);
+	private static final Logger logger = LoggerFactory.getLogger(GameField.class);
 
 	private AbstractGraphDas graphDas;
 	private Set<GraphField> graphFields;
@@ -52,7 +52,7 @@ public class GameField extends GridPane {
 		graphBridgeToBridge = new HashMap<>();
 		graphBridgeToHighlight = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
-			log.debug("Should log??");
+			logger.debug("Should log??");
 			graphBridgeToBridge.put(bridge, new Bridge(bridge, this));
 		}
 		for (GraphField field : graphFields) {
@@ -81,7 +81,7 @@ public class GameField extends GridPane {
 	}
 
 	public void loadGame() {
-		log.debug("Draw all Fields");
+		logger.debug("Draw all Fields");
 		cleanGameField();
 		fields = new ArrayList<Field>();
 		for (GraphField graphField : graphFields) {
@@ -144,7 +144,7 @@ public class GameField extends GridPane {
 			graphDas.removeBridge(bridge);
 		}
 		graphDas.removeBridge(bridge);
-		log.debug("-------------Redraw whole gamefield-----------------");
+		logger.debug("-------------Redraw whole gamefield-----------------");
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
 		createAllBridgesHighlights(graphPlayField.getBridges());
@@ -154,7 +154,7 @@ public class GameField extends GridPane {
 	public void addBridge(Highlight highlight) {
 		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 		graphDas.addBridge(bridge);
-		log.debug("-------------Redraw whole gamefield-----------------");
+		logger.debug("-------------Redraw whole gamefield-----------------");
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
 		createAllBridgesHighlights(graphPlayField.getBridges());

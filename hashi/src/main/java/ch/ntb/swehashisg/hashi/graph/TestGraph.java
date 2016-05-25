@@ -8,7 +8,7 @@ import ch.ntb.swehashisg.hashi.model.GraphField;
 
 public class TestGraph {
 
-	private static final Logger log = LoggerFactory.getLogger(TestGraph.class);
+	private static final Logger logger = LoggerFactory.getLogger(TestGraph.class);
 
 	public static void main(String[] args) {
 
@@ -16,11 +16,11 @@ public class TestGraph {
 			GraphDas graphDas = GraphDasFactory.getGraphDas();
 
 			for (GraphField graphField : graphDas.getPlayField().getFields()) {
-				log.debug("graphField x: " + graphField.getX());
-				log.debug("graphField Y: " + graphField.getY());
+				logger.debug("graphField x: " + graphField.getX());
+				logger.debug("graphField Y: " + graphField.getY());
 				for (GraphField neighbor : graphField.getNeighbors()) {
-					log.debug("Neighbor x: " + neighbor.getX());
-					log.debug("Neighbor Y: " + neighbor.getY());
+					logger.debug("Neighbor x: " + neighbor.getX());
+					logger.debug("Neighbor Y: " + neighbor.getY());
 				}
 			}
 
@@ -35,7 +35,7 @@ public class TestGraph {
 			GraphBridge graphBridge2 = new GraphBridge(field3, field4);
 
 			graphDas.addBridge(graphBridge1);
-			log.debug("Oh Yes!");
+			logger.debug("Oh Yes!");
 
 			long start = System.currentTimeMillis();
 
@@ -43,11 +43,11 @@ public class TestGraph {
 				graphDas.getPlayField();
 			}
 
-			log.debug("Duration: " + (System.currentTimeMillis() - start));
+			logger.debug("Duration: " + (System.currentTimeMillis() - start));
 
 			try {
 				graphDas.addBridge(graphBridge2);
-				log.debug("Oh No!");
+				logger.debug("Oh No!");
 			} catch (Exception ex) {
 				// Expected exception
 			}
