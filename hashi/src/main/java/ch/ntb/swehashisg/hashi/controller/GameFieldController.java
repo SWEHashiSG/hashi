@@ -14,6 +14,7 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -228,5 +229,10 @@ public class GameFieldController extends GridPane {
 		alert.setHeaderText("Congratulation. You have finished the Hashi Game");
 		alert.setContentText("Time: " + gameTime.getTime() + " Seconds");
 		alert.showAndWait();
+	}
+	
+	@FXML
+	private void onMouseClicked(){
+		// Nothing to do in Play Mode
 	}
 }

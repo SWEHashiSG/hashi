@@ -3,8 +3,10 @@ package ch.ntb.swehashisg.hashi.graph;
 import java.util.ArrayList;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
+import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
 public class VersionedGraphDas extends GraphDas {
@@ -103,5 +105,10 @@ public class VersionedGraphDas extends GraphDas {
 	@Override
 	public int getSizeY() {
 		return graphDas.getSizeY();
+	}
+	
+	@Override
+	public void setBridges(GraphField field) {
+		graphDas.setBridges(field);
 	}
 }

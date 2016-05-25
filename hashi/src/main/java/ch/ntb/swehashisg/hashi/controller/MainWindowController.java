@@ -147,7 +147,7 @@ public class MainWindowController extends AnchorPane {
 
 	private void startEditorMode(int sizeX, int sizeY) {
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
-		gameField = new GameFieldController(graphDas);
+		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);
 	}

@@ -33,7 +33,8 @@ public class BaseGraphDas extends GraphDas {
 		this.bridgesToWeight = new HashMap<>();
 	}
 
-	protected void setBridges(GraphField field) {
+	@Override
+	public void setBridges(GraphField field) {
 		Vertex node = getVertexForField(field);
 		node.property("bridges", field.getBridges());
 	}

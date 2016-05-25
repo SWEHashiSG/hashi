@@ -5,5 +5,5 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<fx:root style="-fx-background-color: White;" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root onMouseClicked="#onMouseClicked" style="-fx-background-color: White;" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 </fx:root>
