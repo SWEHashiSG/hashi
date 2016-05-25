@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.canvas.*?>
@@ -17,83 +18,92 @@
 			<top>
 				<AnchorPane>
 					<children>
-                  <GridPane layoutX="8.0" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="16.66666666" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="16.66666666" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="16.66666666" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="16.66666666" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="16.66666666" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="-1" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-      						<Button fx:id="buttonSave" mnemonicParsing="false" onAction="#save" GridPane.columnIndex="4">
-      							<tooltip>
-      								<Tooltip text="Save" />
-      							</tooltip>
-      							<graphic>
-      								<fx:include source="../images/save.fxml" />
-      							</graphic>
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-      						</Button>
-      						<Button fx:id="buttonRedo" mnemonicParsing="false" onAction="#redo" GridPane.columnIndex="1">
-      							<tooltip>
-      								<Tooltip text="Redo" />
-      							</tooltip>
-      							<graphic>
-      								<fx:include source="../images/redo.fxml" />
-      							</graphic>
-      						</Button>
-      						<Button fx:id="buttonRestart" mnemonicParsing="false" onAction="#restart" GridPane.columnIndex="3">
-      							<tooltip>
-      								<Tooltip text="Restart" />
-      							</tooltip>
-      							<graphic>
-      								<fx:include source="../images/reload.fxml" />
-      							</graphic>
-      						</Button>
-      						<Button fx:id="buttonShowSolution" mnemonicParsing="false" onAction="#showSolution" GridPane.columnIndex="2">
-      							<tooltip>
-      								<Tooltip text="show Solution" />
-      							</tooltip>
-      							<graphic>
-      								<fx:include source="../images/solution.fxml" />
-      							</graphic>
-      						</Button>
-      						<Button mnemonicParsing="false" onAction="#check" GridPane.columnIndex="5">
-      							<tooltip>
-      								<Tooltip text="Check" />
-      							</tooltip>
-      							<graphic>
-      								<fx:include source="../images/check.fxml" />
-      							</graphic>
-      						</Button>
-      						<Button fx:id="buttonUndo" mnemonicParsing="false" onAction="#undo" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-      							<tooltip>
-      								<Tooltip text="Undo" />
-      							</tooltip>
-      							<graphic>
-      								<fx:include source="../images/undo.fxml" />
-      							</graphic>
-      						</Button>
-                     </children>
-                  </GridPane>
+						<GridPane layoutX="8.0" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
+							<columnConstraints>
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" />
+							</columnConstraints>
+							<rowConstraints>
+								<RowConstraints vgrow="SOMETIMES" />
+							</rowConstraints>
+							<children>
+								<Button fx:id="buttonSave" mnemonicParsing="false" onAction="#save" GridPane.columnIndex="4">
+									<tooltip>
+										<Tooltip text="Save" />
+									</tooltip>
+									<graphic>
+										<fx:include source="../images/save.fxml" />
+									</graphic>
+									<GridPane.margin>
+										<Insets />
+									</GridPane.margin>
+								</Button>
+								<Button fx:id="buttonRedo" mnemonicParsing="false" onAction="#redo" GridPane.columnIndex="1">
+									<tooltip>
+										<Tooltip text="Redo" />
+									</tooltip>
+									<graphic>
+										<fx:include source="../images/redo.fxml" />
+									</graphic>
+								</Button>
+								<Button fx:id="buttonRestart" mnemonicParsing="false" onAction="#restart" GridPane.columnIndex="3">
+									<tooltip>
+										<Tooltip text="Restart" />
+									</tooltip>
+									<graphic>
+										<fx:include source="../images/reload.fxml" />
+									</graphic>
+								</Button>
+								<Button fx:id="buttonShowSolution" mnemonicParsing="false" onAction="#showSolution" GridPane.columnIndex="2">
+									<tooltip>
+										<Tooltip text="show Solution" />
+									</tooltip>
+									<graphic>
+										<fx:include source="../images/solution.fxml" />
+									</graphic>
+								</Button>
+								<Button mnemonicParsing="false" onAction="#check" GridPane.columnIndex="6">
+									<tooltip>
+										<Tooltip text="Check" />
+									</tooltip>
+									<graphic>
+										<fx:include source="../images/check.fxml" />
+									</graphic>
+								</Button>
+								<Button fx:id="buttonUndo" mnemonicParsing="false" onAction="#undo" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+									<tooltip>
+										<Tooltip text="Undo" />
+									</tooltip>
+									<graphic>
+										<fx:include source="../images/undo.fxml" />
+									</graphic>
+								</Button>
+								<Button fx:id="buttonOpen" mnemonicParsing="false" onAction="#open" GridPane.columnIndex="5">
+									<tooltip>
+										<Tooltip text="Open Game" />
+									</tooltip>
+									<graphic>
+										<fx:include source="../images/load.fxml" />
+									</graphic>
+								</Button>
+							</children>
+						</GridPane>
 					</children>
 				</AnchorPane>
 			</top>
 			<center>
 				<AnchorPane fx:id="pane" depthTest="ENABLE" BorderPane.alignment="CENTER">
-               <opaqueInsets>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </opaqueInsets>
-               <BorderPane.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </BorderPane.margin>
+					<opaqueInsets>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</opaqueInsets>
+					<BorderPane.margin>
+						<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+					</BorderPane.margin>
 				</AnchorPane>
 			</center>
 			<bottom>
