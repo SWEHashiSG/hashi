@@ -23,7 +23,7 @@ public class FieldController extends StackPane {
 	private Circle highliter;
 
 	private GraphField graphField;
-	private GameField gameField;
+	private GameFieldController gameField;
 	private static int fieldSize = 40;
 
 	public GraphField getGraphField() {
@@ -34,7 +34,7 @@ public class FieldController extends StackPane {
 		this.graphField = graphField;
 	}
 
-	public FieldController(GraphField graphField, GameField gameField) {
+	public FieldController(GraphField graphField, GameFieldController gameField) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Field.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);

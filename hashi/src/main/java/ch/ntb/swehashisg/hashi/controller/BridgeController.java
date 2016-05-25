@@ -26,9 +26,9 @@ public class BridgeController extends StackPane {
 	private Pane highliter;
 
 	private GraphBridge graphBridge;
-	private GameField gameField;
+	private GameFieldController gameField;
 
-	public BridgeController(GraphBridge graphBridge, GameField gameField) {
+	public BridgeController(GraphBridge graphBridge, GameFieldController gameField) {
 		String fxmlFile = "";
 		if (graphBridge.getBridgeDirection() == BridgeDirection.Horizontal) {
 			fxmlFile = "/fxml/HorizontalBridge.fxml";

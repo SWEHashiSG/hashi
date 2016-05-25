@@ -21,9 +21,9 @@ public class HighlightController extends StackPane {
 
 	private GraphField neighbor1;
 	private GraphField neighbor2;
-	private GameField gameField;
+	private GameFieldController gameField;
 
-	public HighlightController(GraphField neighbor1, GraphField neighbor2, GameField gameField) {
+	public HighlightController(GraphField neighbor1, GraphField neighbor2, GameFieldController gameField) {
 		String fxmlFile = "";
 		if (GraphUtil.getDirectionOfNeighbors(neighbor1, neighbor2) == BridgeDirection.Horizontal) {
 			fxmlFile = "/fxml/HorizontalHighlight.fxml";

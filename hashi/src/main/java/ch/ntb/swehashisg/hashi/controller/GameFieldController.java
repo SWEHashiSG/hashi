@@ -21,9 +21,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class GameField extends GridPane {
+public class GameFieldController extends GridPane {
 
-	private static final Logger logger = LoggerFactory.getLogger(GameField.class);
+	private static final Logger logger = LoggerFactory.getLogger(GameFieldController.class);
 
 	private GraphDas graphDas;
 	private Set<GraphField> graphFields;
@@ -33,7 +33,7 @@ public class GameField extends GridPane {
 	private GameTime gameTime;
 	private boolean isUpdating = false;
 
-	public GameField(GraphDas graphDas) {
+	public GameFieldController(GraphDas graphDas) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -53,10 +53,10 @@ public class GameField extends GridPane {
 
 	private static class UpdateThread extends Thread {
 
-		private GameField gameField;
+		private GameFieldController gameField;
 		private GraphDas graphDas;
 
-		public UpdateThread(GameField gameField, GraphDas graphDas) {
+		public UpdateThread(GameFieldController gameField, GraphDas graphDas) {
 			this.gameField = gameField;
 			this.graphDas = graphDas;
 		}

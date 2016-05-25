@@ -34,7 +34,7 @@ public class MainWindowController extends AnchorPane {
 	private static final String XML_DESCRIPTION = "XML File";
 	private static final String JSON_DESCRIPTION = "JSon File";
 
-	private GameField gameField;
+	private GameFieldController gameField;
 	GraphDas graphDas;
 
 	@FXML
@@ -113,7 +113,7 @@ public class MainWindowController extends AnchorPane {
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
 			}
-			gameField = new GameField(graphDas);
+			gameField = new GameFieldController(graphDas);
 			gameField.loadGame();
 			pane.getChildren().add(gameField);
 		} else {
@@ -147,7 +147,7 @@ public class MainWindowController extends AnchorPane {
 
 	private void startEditorMode(int sizeX, int sizeY) {
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
-		gameField = new GameField(graphDas);
+		gameField = new GameFieldController(graphDas);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);
 	}
@@ -156,7 +156,7 @@ public class MainWindowController extends AnchorPane {
 	public void loadGame() {
 		logger.debug("Started");
 		graphDas = GraphDasFactory.getGraphDas();
-		gameField = new GameField(graphDas);
+		gameField = new GameFieldController(graphDas);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);
 	}
