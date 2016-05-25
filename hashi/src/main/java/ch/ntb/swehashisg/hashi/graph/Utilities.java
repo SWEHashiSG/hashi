@@ -61,7 +61,7 @@ public class Utilities {
 		return g;
 	}
 
-	public static void persistGraphDas(GraphDas g) {
+	public static void persistGraphDas(BaseGraphDas g) {
 		try {
 			g.getGraph().io(IoCore.graphson()).writeGraph("test.json");
 			g.getGraph().io(IoCore.graphml()).writeGraph("test.xml");

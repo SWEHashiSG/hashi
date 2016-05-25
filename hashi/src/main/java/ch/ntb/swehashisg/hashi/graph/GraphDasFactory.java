@@ -6,7 +6,7 @@ import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 
 public class GraphDasFactory {
 
-	public static GraphDas getGraphDas() {
+	public static BaseGraphDas getGraphDas() {
 		TinkerGraph tg = TinkerGraph.open();
 		tg.createIndex("x", Vertex.class);
 		tg.createIndex("y", Vertex.class);
@@ -14,14 +14,14 @@ public class GraphDasFactory {
 
 		g = Utilities.generateBasisPlayGround(g);
 
-		GraphDas graphDas = new GraphDas(g);
+		BaseGraphDas graphDas = new BaseGraphDas(g);
 
 		graphDas = GraphInitializer.generateExamplePlay(graphDas);
 
 		return graphDas;
 	}
 
-	public static void closeGraphDas(GraphDas graphDas) {
+	public static void closeGraphDas(BaseGraphDas graphDas) {
 		graphDas.close();
 	}
 

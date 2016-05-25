@@ -3,7 +3,7 @@ package ch.ntb.swehashisg.hashi.graph;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 
 class GraphInitializer {
-	public static GraphDas generateExamplePlay(GraphDas g) {
+	public static BaseGraphDas generateExamplePlay(BaseGraphDas g) {
 		g.setBridges(new GraphField(0, 1, 1));
 		g.setBridges(new GraphField(0, 3, 2));
 		g.setBridges(new GraphField(0, 5, 3));
