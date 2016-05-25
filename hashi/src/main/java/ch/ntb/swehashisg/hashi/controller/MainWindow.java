@@ -94,6 +94,32 @@ public class MainWindow extends AnchorPane {
 			}
 		}
 	}
+	
+	@FXML
+	public void open(){
+		logger.debug("Open Clicked");
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Load Game");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(XML_DESCRIPTION, "*.xml"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(JSON_DESCRIPTION, "*.json"));
+
+		File file = fileChooser.showOpenDialog(this.getScene().getWindow());
+		if (file != null) {
+			if (fileChooser.getSelectedExtensionFilter().getDescription().equals(XML_DESCRIPTION)){
+				graphDas = Utilities.loadGraphDas(file.getAbsolutePath(), GraphFormat.XML);
+			}
+			else if (fileChooser.getSelectedExtensionFilter().getDescription().equals(JSON_DESCRIPTION)){
+				graphDas = Utilities.loadGraphDas(file.getAbsolutePath(), GraphFormat.JSON);
+			} else {
+				throw new IllegalArgumentException("Unknown File Type");
+			}
+			gameField = new GameField(graphDas);
+			gameField.loadGame();
+			pane.getChildren().add(gameField);
+		} else {
+			logger.debug("Open File Dialog Closed without a choosen File");
+		}
+	}
 
 	@FXML
 	public void check() {
@@ -151,8 +177,7 @@ public class MainWindow extends AnchorPane {
 		if (result.get() == buttonTypeCancel) {
 			event.consume();
 		} else if (result.get() == buttonTypeSave) {
-			// TODO: Save Dialog
-			throw new NotImplementedException();
+			save();
 		} else if (result.get() == buttonTypeCloseWithoutSave) {
 
 		}
