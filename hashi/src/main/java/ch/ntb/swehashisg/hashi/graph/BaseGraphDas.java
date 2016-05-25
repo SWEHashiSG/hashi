@@ -61,6 +61,9 @@ public class BaseGraphDas extends GraphDas {
 			if ((int) t.get().value("bridges") > 0)
 				vertices.add(t.get());
 		})).until(__.out("row", "column").count().is(0)).iterate();
+		if((int)root.value("bridges") > 0) {
+			vertices.add(root);
+		}
 		return vertices;
 	}
 
