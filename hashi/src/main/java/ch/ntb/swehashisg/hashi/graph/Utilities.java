@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Utilities {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
 	protected static Graph generateBasisPlayGround(Graph g) {
@@ -61,7 +61,7 @@ public class Utilities {
 		return g;
 	}
 
-	public static void persistGraphDas(BaseGraphDas g) {
+	public static void persistGraphDas(GraphDas g) {
 		try {
 			g.getGraph().io(IoCore.graphson()).writeGraph("test.json");
 			g.getGraph().io(IoCore.graphml()).writeGraph("test.xml");
