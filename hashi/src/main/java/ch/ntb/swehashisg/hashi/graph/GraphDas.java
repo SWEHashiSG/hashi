@@ -40,13 +40,7 @@ public class GraphDas extends AbstractGraphDas {
 
 	public GraphPlayField getPlayField() {
 		bridgesToWeight = new HashMap<>();
-		Vertex root = graph.traversal().V().has("x", 0).has("y", 0).toList().get(0);
-
-		Set<Vertex> vertices = new HashSet<>();
-		graph.traversal().V(root).dedup().repeat(__.out("row", "column").sideEffect(t -> {
-			if ((int) t.get().value("bridges") > 0)
-				vertices.add(t.get());
-		})).until(__.out("row", "column").count().is(0)).iterate();
+		Set<Vertex> vertices = getRelevantVertices();
 
 		Set<GraphField> graphFields = convertVerticesToFields(vertices);
 
@@ -56,6 +50,36 @@ public class GraphDas extends AbstractGraphDas {
 
 		GraphPlayField graphPlayField = new GraphPlayField(bridgesToWeight.keySet(), graphFields);
 		return graphPlayField;
+	}
+
+	private Set<Vertex> getRelevantVertices() {
+		Vertex root = graph.traversal().V().has("x", 0).has("y", 0).toList().get(0);
+
+		Set<Vertex> vertices = new HashSet<>();
+		graph.traversal().V(root).dedup().repeat(__.out("row", "column").sideEffect(t -> {
+			if ((int) t.get().value("bridges") > 0)
+				vertices.add(t.get());
+		})).until(__.out("row", "column").count().is(0)).iterate();
+		return vertices;
+	}
+
+	public boolean isCorrect() {
+		Set<Vertex> vertices = getRelevantVertices();
+		for (Vertex vertex : vertices) {
+			int numberOfBridges = 0;
+			Iterator<Edge> iterator = vertex.edges(Direction.BOTH, "bridge");
+			while (iterator.hasNext()) {
+				iterator.next();
+				numberOfBridges++;
+			}
+
+			int neededBridges = vertex.value("bridges");
+			if (neededBridges != numberOfBridges) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private Set<GraphField> convertVerticesToFields(Set<Vertex> vertices) {
