@@ -31,6 +31,7 @@ public class GameField extends GridPane {
 	private HashMap<GraphBridge, Bridge> graphBridgeToBridge;
 	private HashMap<GraphBridge, Highlight> graphBridgeToHighlight;
 	private GameTime gameTime;
+	private boolean isUpdating = false;
 
 	public GameField(GraphDas graphDas) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
@@ -107,6 +108,7 @@ public class GameField extends GridPane {
 		if (graphDas.isCorrect()) {
 			finishGame();
 		}
+		isUpdating = false;
 	}
 
 	private void setFieldSize(int gameSize) {
@@ -184,26 +186,35 @@ public class GameField extends GridPane {
 	}
 
 	public void removeBridge(Highlight highlight) {
-		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
-		if (graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting() == 2) {
+		if (!isUpdating) {
+			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
+			if (graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting() == 2) {
+				graphDas.removeBridge(bridge);
+			}
 			graphDas.removeBridge(bridge);
+			logger.debug("-------------Redraw whole gamefield-----------------");
+			UpdateThread updateThread = new UpdateThread(this, graphDas);
+			isUpdating = true;
+			updateThread.run();
+		} else {
+			logger.warn("Is already updating, better solution needed!");
 		}
-		graphDas.removeBridge(bridge);
-		logger.debug("-------------Redraw whole gamefield-----------------");
-		UpdateThread updateThread = new UpdateThread(this, graphDas);
-		updateThread.run();
-
 	}
 
 	public void addBridge(Highlight highlight) {
-		if (!gameTime.isRunning()) {
-			gameTime.startTime();
+		if (!isUpdating) {
+			if (!gameTime.isRunning()) {
+				gameTime.startTime();
+			}
+			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
+			graphDas.addBridge(bridge);
+			logger.debug("-------------Redraw whole gamefield-----------------");
+			UpdateThread updateThread = new UpdateThread(this, graphDas);
+			isUpdating = true;
+			updateThread.run();
+		} else {
+			logger.warn("Is already updating, better solution needed!");
 		}
-		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
-		graphDas.addBridge(bridge);
-		logger.debug("-------------Redraw whole gamefield-----------------");
-		UpdateThread updateThread = new UpdateThread(this, graphDas);
-		updateThread.run();
 	}
 
 	private void finishGame() {
