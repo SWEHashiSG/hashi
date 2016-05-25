@@ -24,5 +24,6 @@ public class MainHashi extends Application {
 		stage.setScene(scene);
 		stage.show();
 		stage.setOnCloseRequest(event -> mainWindow.closeRequest(event));
+		stage.setResizable(false);
 	}
 }

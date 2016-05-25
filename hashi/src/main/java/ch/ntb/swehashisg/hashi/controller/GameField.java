@@ -52,7 +52,6 @@ public class GameField extends GridPane {
 		graphBridgeToBridge = new HashMap<>();
 		graphBridgeToHighlight = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
-			logger.debug("Should log??");
 			graphBridgeToBridge.put(bridge, new Bridge(bridge, this));
 		}
 		for (GraphField field : graphFields) {

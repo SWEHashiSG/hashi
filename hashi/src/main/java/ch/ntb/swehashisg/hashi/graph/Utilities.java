@@ -23,8 +23,6 @@ public class Utilities {
 				if (root == null) {
 					root = t;
 				}
-				logger.debug("j: " + j);
-				logger.debug("i: " + j);
 				if (j > 0) {
 					GraphTraversal<Vertex, Vertex> tr = g.traversal().V(root);
 					if (i > 0) {

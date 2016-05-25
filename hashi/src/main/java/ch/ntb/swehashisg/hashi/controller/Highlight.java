@@ -68,7 +68,6 @@ public class Highlight extends StackPane {
 	}
 
 	public void setHighlite(boolean highlited) {
-		logger.debug("Should highlight be visible: " + highlited);
 		highliter.setVisible(highlited);
 		highliter.setMouseTransparent(!highlited);
 		this.setMouseTransparent(!highlited);
