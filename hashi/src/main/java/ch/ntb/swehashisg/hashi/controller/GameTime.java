@@ -43,4 +43,8 @@ public class GameTime {
 		}
 		return gameTime;
 	}
+	
+	public boolean isRunning(){
+		return (startTime != 0);
+	}
 }
