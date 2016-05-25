@@ -46,4 +46,14 @@ public class GraphDasFactory {
 		}
 	}
 
+	public static GraphDas getEmptyGraphDas(int gameSize) {
+		TinkerGraph tg = TinkerGraph.open();
+		tg.createIndex("x", Vertex.class);
+		tg.createIndex("y", Vertex.class);
+		Graph g = tg;
+		g = Utilities.generateBasisPlayGround(g);
+		BaseGraphDas graphDas = new BaseGraphDas(g);
+		return graphDas;
+	}
+
 }

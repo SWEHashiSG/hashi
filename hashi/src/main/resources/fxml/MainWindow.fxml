@@ -97,7 +97,7 @@
 				</AnchorPane>
 			</top>
 			<center>
-				<AnchorPane fx:id="pane" depthTest="ENABLE" BorderPane.alignment="CENTER">
+				<AnchorPane fx:id="pane" depthTest="ENABLE" onMouseClicked="#clickedOnPane" BorderPane.alignment="CENTER">
 					<opaqueInsets>
 						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 					</opaqueInsets>

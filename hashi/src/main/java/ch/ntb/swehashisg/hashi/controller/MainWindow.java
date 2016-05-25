@@ -19,6 +19,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -28,7 +30,7 @@ import javafx.stage.WindowEvent;
 public class MainWindow extends AnchorPane {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainWindow.class);
-	
+
 	private static final String XML_DESCRIPTION = "XML File";
 	private static final String JSON_DESCRIPTION = "JSon File";
 
@@ -84,19 +86,18 @@ public class MainWindow extends AnchorPane {
 
 		File file = fileChooser.showSaveDialog(this.getScene().getWindow());
 		if (file != null) {
-			if (fileChooser.getSelectedExtensionFilter().getDescription().equals(XML_DESCRIPTION)){
-				Utilities.persistGraphDas(graphDas, file.getAbsolutePath(),GraphFormat.XML);
-			}
-			else if (fileChooser.getSelectedExtensionFilter().getDescription().equals(JSON_DESCRIPTION)){
-				Utilities.persistGraphDas(graphDas, file.getAbsolutePath(),GraphFormat.JSON);
+			if (fileChooser.getSelectedExtensionFilter().getDescription().equals(XML_DESCRIPTION)) {
+				Utilities.persistGraphDas(graphDas, file.getAbsolutePath(), GraphFormat.XML);
+			} else if (fileChooser.getSelectedExtensionFilter().getDescription().equals(JSON_DESCRIPTION)) {
+				Utilities.persistGraphDas(graphDas, file.getAbsolutePath(), GraphFormat.JSON);
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
 			}
 		}
 	}
-	
+
 	@FXML
-	public void open(){
+	public void open() {
 		logger.debug("Open Clicked");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Load Game");
@@ -105,10 +106,9 @@ public class MainWindow extends AnchorPane {
 
 		File file = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (file != null) {
-			if (fileChooser.getSelectedExtensionFilter().getDescription().equals(XML_DESCRIPTION)){
+			if (fileChooser.getSelectedExtensionFilter().getDescription().equals(XML_DESCRIPTION)) {
 				graphDas = Utilities.loadGraphDas(file.getAbsolutePath(), GraphFormat.XML);
-			}
-			else if (fileChooser.getSelectedExtensionFilter().getDescription().equals(JSON_DESCRIPTION)){
+			} else if (fileChooser.getSelectedExtensionFilter().getDescription().equals(JSON_DESCRIPTION)) {
 				graphDas = Utilities.loadGraphDas(file.getAbsolutePath(), GraphFormat.JSON);
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
@@ -124,6 +124,32 @@ public class MainWindow extends AnchorPane {
 	@FXML
 	public void check() {
 		logger.debug("Check Clicked");
+	}
+
+	@FXML
+	public void clickedOnPane(MouseEvent mouseEvent) {
+		if (mouseEvent.getButton() == MouseButton.MIDDLE) {
+			logger.debug("Starting Editor Mode. For Engineers only ;-)");
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Starting Editor Mode");
+			alert.setHeaderText("Welcom Developer. You start now in the Editor Mode");
+
+			ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+			ButtonType buttonTypeOK = new ButtonType("OK");
+			alert.getButtonTypes().setAll(buttonTypeOK, buttonTypeCancel);
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == buttonTypeOK) {
+				startEditorMode(12);
+			}
+		}
+	}
+
+	private void startEditorMode(int gameSize) {
+		graphDas = GraphDasFactory.getEmptyGraphDas(gameSize);
+		gameField = new GameField(graphDas);
+		gameField.loadGame();
+		pane.getChildren().add(gameField);
 	}
 
 	@FXML
