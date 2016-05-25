@@ -75,4 +75,18 @@ public class Utilities {
 		}
 	}
 
+	public static void loadGraphDas(GraphDas g, String absolutpath, GraphFormat graphFormat) {
+		try {
+			if (graphFormat == GraphFormat.XML) {
+				g.getGraph().io(IoCore.graphml()).readGraph(absolutpath);
+			} else if (graphFormat == GraphFormat.JSON) {
+				g.getGraph().io(IoCore.graphson()).readGraph(absolutpath);
+			} else {
+				throw new IllegalArgumentException("Unknown GraphFormat: " + graphFormat);
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException("Couldn't read Graph!", ex);
+		}
+	}
+
 }
