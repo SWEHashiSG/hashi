@@ -3,16 +3,17 @@ package ch.ntb.swehashisg.hashi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
-import ch.ntb.swehashisg.hashi.graph.BaseGraphDas;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -49,6 +50,30 @@ public class GameField extends GridPane {
 		gameTime = new GameTime();
 	}
 
+	private static class UpdateThread extends Thread {
+
+		private GameField gameField;
+		private GraphDas graphDas;
+
+		public UpdateThread(GameField gameField, GraphDas graphDas) {
+			this.gameField = gameField;
+			this.graphDas = graphDas;
+		}
+
+		@Override
+		public void run() {
+			GraphPlayField playField = graphDas.getPlayField();
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					gameField.update(playField);
+				}
+			});
+
+		}
+	}
+
 	/**
 	 * Creat all Bridges with zero weighting for GUI
 	 */
@@ -58,15 +83,29 @@ public class GameField extends GridPane {
 		for (GraphBridge bridge : bridges) {
 			graphBridgeToBridge.put(bridge, new Bridge(bridge, this));
 		}
+		Map<GraphField, GraphField> lightFieldToRealField = new HashMap<>();
+		for (GraphField field : graphFields) {
+			lightFieldToRealField.put(field, field);
+		}
 		for (GraphField field : graphFields) {
 			for (GraphField neighbor : field.getNeighbors()) {
-				GraphBridge newBridge = new GraphBridge(field, neighbor);
+				GraphField fullNeighbor = lightFieldToRealField.get(neighbor);
+				GraphBridge newBridge = new GraphBridge(field, fullNeighbor);
 
 				if (!bridges.contains(newBridge)) {
 					graphBridgeToBridge.put(newBridge, new Bridge(newBridge, this));
 				}
-				graphBridgeToHighlight.put(newBridge, new Highlight(field, neighbor, this));
+				graphBridgeToHighlight.put(newBridge, new Highlight(field, fullNeighbor, this));
 			}
+		}
+	}
+
+	protected void update(GraphPlayField graphPlayField) {
+		graphFields = graphPlayField.getFields();
+		createAllBridgesHighlights(graphPlayField.getBridges());
+		loadGame(); // TODO: Update
+		if (graphDas.isCorrect()) {
+			finishGame();
 		}
 	}
 
@@ -88,6 +127,9 @@ public class GameField extends GridPane {
 		cleanGameField();
 		fields = new ArrayList<Field>();
 		for (GraphField graphField : graphFields) {
+			if (graphField.getX() == 0 && graphField.getY() == 1) {
+				logger.debug("Mööp");
+			}
 			Field field = new Field(graphField, this);
 			field.addToGameField();
 			fields.add(field);
@@ -148,10 +190,9 @@ public class GameField extends GridPane {
 		}
 		graphDas.removeBridge(bridge);
 		logger.debug("-------------Redraw whole gamefield-----------------");
-		GraphPlayField graphPlayField = graphDas.getPlayField();
-		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(graphPlayField.getBridges());
-		loadGame(); // TODO: Update
+		UpdateThread updateThread = new UpdateThread(this, graphDas);
+		updateThread.run();
+
 	}
 
 	public void addBridge(Highlight highlight) {
@@ -161,13 +202,8 @@ public class GameField extends GridPane {
 		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 		graphDas.addBridge(bridge);
 		logger.debug("-------------Redraw whole gamefield-----------------");
-		GraphPlayField graphPlayField = graphDas.getPlayField();
-		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(graphPlayField.getBridges());
-		loadGame(); // TODO: Update
-		if (graphDas.isCorrect()) {
-			finishGame();
-		}
+		UpdateThread updateThread = new UpdateThread(this, graphDas);
+		updateThread.run();
 	}
 
 	private void finishGame() {
