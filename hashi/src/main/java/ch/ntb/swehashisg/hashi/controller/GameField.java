@@ -27,6 +27,7 @@ public class GameField extends GridPane {
 	private ArrayList<Field> fields;
 	private HashMap<GraphBridge, Bridge> graphBridgeToBridge;
 	private HashMap<GraphBridge, Highlight> graphBridgeToHighlight;
+	private GameTime gameTime;
 
 	public GameField(AbstractGraphDas graphDas) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
@@ -43,6 +44,7 @@ public class GameField extends GridPane {
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
 		createAllBridgesHighlights(graphPlayField.getBridges());
+		gameTime = new GameTime();
 	}
 
 	/**
@@ -52,7 +54,6 @@ public class GameField extends GridPane {
 		graphBridgeToBridge = new HashMap<>();
 		graphBridgeToHighlight = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
-			logger.debug("Should log??");
 			graphBridgeToBridge.put(bridge, new Bridge(bridge, this));
 		}
 		for (GraphField field : graphFields) {
@@ -152,6 +153,9 @@ public class GameField extends GridPane {
 	}
 
 	public void addBridge(Highlight highlight) {
+		if (!gameTime.isRunning()){
+			gameTime.startTime();
+		}
 		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 		graphDas.addBridge(bridge);
 		logger.debug("-------------Redraw whole gamefield-----------------");
