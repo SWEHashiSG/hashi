@@ -61,10 +61,15 @@ public class Utilities {
 		return g;
 	}
 
-	public static void persistGraphDas(GraphDas g) {
+	public static void persistGraphDas(GraphDas g, String absolutpath, GraphFormat graphFormat) {
 		try {
-			g.getGraph().io(IoCore.graphson()).writeGraph("test.json");
-			g.getGraph().io(IoCore.graphml()).writeGraph("test.xml");
+			if (graphFormat == GraphFormat.XML) {
+				g.getGraph().io(IoCore.graphml()).writeGraph(absolutpath);
+			} else if (graphFormat == GraphFormat.JSON) {
+				g.getGraph().io(IoCore.graphson()).writeGraph(absolutpath);
+			} else {
+				throw new IllegalArgumentException("Unknown GraphFormat: " + graphFormat);
+			}
 		} catch (Exception ex) {
 			throw new RuntimeException("Couldn't persist Graph!", ex);
 		}

@@ -1,5 +1,6 @@
 package ch.ntb.swehashisg.hashi.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -9,7 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
-import ch.ntb.swehashisg.hashi.graph.VersionedGraphDas;
+import ch.ntb.swehashisg.hashi.graph.GraphFormat;
+import ch.ntb.swehashisg.hashi.graph.Utilities;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -20,11 +22,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.WindowEvent;
 
 public class MainWindow extends AnchorPane {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainWindow.class);
+	
+	private static final String XML_DESCRIPTION = "XML File";
+	private static final String JSON_DESCRIPTION = "JSon File";
 
 	private GameField gameField;
 	GraphDas graphDas;
@@ -71,6 +77,22 @@ public class MainWindow extends AnchorPane {
 	@FXML
 	public void save() {
 		logger.debug("Save Clicked");
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save Game");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(XML_DESCRIPTION, "*.xml"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(JSON_DESCRIPTION, "*.json"));
+
+		File file = fileChooser.showSaveDialog(this.getScene().getWindow());
+		if (file != null) {
+			if (fileChooser.getSelectedExtensionFilter().getDescription().equals(XML_DESCRIPTION)){
+				Utilities.persistGraphDas(graphDas, file.getAbsolutePath(),GraphFormat.XML);
+			}
+			else if (fileChooser.getSelectedExtensionFilter().getDescription().equals(JSON_DESCRIPTION)){
+				Utilities.persistGraphDas(graphDas, file.getAbsolutePath(),GraphFormat.JSON);
+			} else {
+				throw new IllegalArgumentException("Unknown File Type");
+			}
+		}
 	}
 
 	@FXML
