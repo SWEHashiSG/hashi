@@ -13,7 +13,7 @@ public class GraphDasFactory {
 		tg.createIndex("y", Vertex.class);
 		Graph g = tg;
 
-		g = Utilities.generateBasisPlayGround(g, 10, 8);
+		g = Utilities.generateBasisPlayGround(g, 8, 8);
 
 		BaseGraphDas graphDas = new BaseGraphDas(g);
 

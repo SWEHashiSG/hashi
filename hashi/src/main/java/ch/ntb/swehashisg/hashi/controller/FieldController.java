@@ -13,9 +13,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
-public class Field extends StackPane {
+public class FieldController extends StackPane {
 
-	private static Logger logger = LoggerFactory.getLogger(Field.class);
+	private static Logger logger = LoggerFactory.getLogger(FieldController.class);
 
 	@FXML
 	private Label label;
@@ -34,7 +34,7 @@ public class Field extends StackPane {
 		this.graphField = graphField;
 	}
 
-	public Field(GraphField graphField, GameField gameField) {
+	public FieldController(GraphField graphField, GameField gameField) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Field.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -73,19 +73,19 @@ public class Field extends StackPane {
 		setHighliterFromBridges(false);
 		if (isMouseWest(event) && graphField.hasWestNeighbor()) {
 			logger.debug(" mouse leave Field to west");
-			Highlight bridge = gameField.getWestHighlight(this);
+			HighlightController bridge = gameField.getWestHighlight(this);
 			bridge.setHighlite(true);
 		} else if (isMouseEast(event) && graphField.hasEastNeighbor()) {
 			logger.debug(" mouse leave Field to east");
-			Highlight bridge = gameField.getEastHighlight(this);
+			HighlightController bridge = gameField.getEastHighlight(this);
 			bridge.setHighlite(true);
 		} else if (isMouseNorth(event) && graphField.hasNorthNeighbor()) {
 			logger.debug(" mouse leave Field to north");
-			Highlight bridge = gameField.getNorthHighlight(this);
+			HighlightController bridge = gameField.getNorthHighlight(this);
 			bridge.setHighlite(true);
 		} else if (isMouseSouth(event) && graphField.hasSouthNeighbor()) {
 			logger.debug(" mouse leave Field to south");
-			Highlight bridge = gameField.getSouthHighlight(this);
+			HighlightController bridge = gameField.getSouthHighlight(this);
 			bridge.setHighlite(true);
 		}
 	}
@@ -108,19 +108,19 @@ public class Field extends StackPane {
 
 	private void setHighliterFromBridges(boolean highlited) {
 		if (graphField.hasWestNeighbor()) {
-			Highlight bridge = gameField.getWestHighlight(this);
+			HighlightController bridge = gameField.getWestHighlight(this);
 			bridge.setHighlite(highlited);
 		}
 		if (graphField.hasEastNeighbor()) {
-			Highlight bridge = gameField.getEastHighlight(this);
+			HighlightController bridge = gameField.getEastHighlight(this);
 			bridge.setHighlite(highlited);
 		}
 		if (graphField.hasNorthNeighbor()) {
-			Highlight bridge = gameField.getNorthHighlight(this);
+			HighlightController bridge = gameField.getNorthHighlight(this);
 			bridge.setHighlite(highlited);
 		}
 		if (graphField.hasSouthNeighbor()) {
-			Highlight bridge = gameField.getSouthHighlight(this);
+			HighlightController bridge = gameField.getSouthHighlight(this);
 			bridge.setHighlite(highlited);
 		}
 	}

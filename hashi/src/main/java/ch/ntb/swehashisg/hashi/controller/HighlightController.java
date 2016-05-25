@@ -12,9 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class Highlight extends StackPane {
+public class HighlightController extends StackPane {
 
-	private static final Logger logger = LoggerFactory.getLogger(Highlight.class);
+	private static final Logger logger = LoggerFactory.getLogger(HighlightController.class);
 
 	@FXML
 	private Pane highliter;
@@ -23,7 +23,7 @@ public class Highlight extends StackPane {
 	private GraphField neighbor2;
 	private GameField gameField;
 
-	public Highlight(GraphField neighbor1, GraphField neighbor2, GameField gameField) {
+	public HighlightController(GraphField neighbor1, GraphField neighbor2, GameField gameField) {
 		String fxmlFile = "";
 		if (GraphUtil.getDirectionOfNeighbors(neighbor1, neighbor2) == BridgeDirection.Horizontal) {
 			fxmlFile = "/fxml/HorizontalHighlight.fxml";

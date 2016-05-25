@@ -2,7 +2,7 @@ package ch.ntb.swehashisg.hashi;
 
 import java.net.URL;
 
-import ch.ntb.swehashisg.hashi.controller.MainWindow;
+import ch.ntb.swehashisg.hashi.controller.MainWindowController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -15,7 +15,7 @@ public class MainHashi extends Application {
 	}
 
 	public void start(Stage stage) throws Exception {
-		MainWindow mainWindow = new MainWindow();
+		MainWindowController mainWindow = new MainWindowController();
 		Scene scene = new Scene(mainWindow, 500, 500);
         scene.getStylesheets().add("/styles/styles.css");
 		stage.setTitle("Hashi from Team SWEHashiSG");

@@ -27,9 +27,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.WindowEvent;
 
-public class MainWindow extends AnchorPane {
+public class MainWindowController extends AnchorPane {
 
-	private static final Logger logger = LoggerFactory.getLogger(MainWindow.class);
+	private static final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
 
 	private static final String XML_DESCRIPTION = "XML File";
 	private static final String JSON_DESCRIPTION = "JSon File";
@@ -44,7 +44,7 @@ public class MainWindow extends AnchorPane {
 	@FXML
 	private Button butotnRedo;
 
-	public MainWindow() {
+	public MainWindowController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);

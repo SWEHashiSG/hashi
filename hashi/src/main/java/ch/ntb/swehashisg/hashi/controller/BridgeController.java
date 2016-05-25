@@ -12,9 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class Bridge extends StackPane {
+public class BridgeController extends StackPane {
 
-	private static final Logger logger = LoggerFactory.getLogger(Bridge.class);
+	private static final Logger logger = LoggerFactory.getLogger(BridgeController.class);
 
 	@FXML
 	private Pane lineTop;
@@ -28,7 +28,7 @@ public class Bridge extends StackPane {
 	private GraphBridge graphBridge;
 	private GameField gameField;
 
-	public Bridge(GraphBridge graphBridge, GameField gameField) {
+	public BridgeController(GraphBridge graphBridge, GameField gameField) {
 		String fxmlFile = "";
 		if (graphBridge.getBridgeDirection() == BridgeDirection.Horizontal) {
 			fxmlFile = "/fxml/HorizontalBridge.fxml";

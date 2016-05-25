@@ -27,9 +27,9 @@ public class GameField extends GridPane {
 
 	private GraphDas graphDas;
 	private Set<GraphField> graphFields;
-	private ArrayList<Field> fields;
-	private HashMap<GraphBridge, Bridge> graphBridgeToBridge;
-	private HashMap<GraphBridge, Highlight> graphBridgeToHighlight;
+	private ArrayList<FieldController> fields;
+	private HashMap<GraphBridge, BridgeController> graphBridgeToBridge;
+	private HashMap<GraphBridge, HighlightController> graphBridgeToHighlight;
 	private GameTime gameTime;
 	private boolean isUpdating = false;
 
@@ -82,7 +82,7 @@ public class GameField extends GridPane {
 		graphBridgeToBridge = new HashMap<>();
 		graphBridgeToHighlight = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
-			graphBridgeToBridge.put(bridge, new Bridge(bridge, this));
+			graphBridgeToBridge.put(bridge, new BridgeController(bridge, this));
 		}
 		Map<GraphField, GraphField> lightFieldToRealField = new HashMap<>();
 		for (GraphField field : graphFields) {
@@ -94,9 +94,9 @@ public class GameField extends GridPane {
 				GraphBridge newBridge = new GraphBridge(field, fullNeighbor);
 
 				if (!bridges.contains(newBridge)) {
-					graphBridgeToBridge.put(newBridge, new Bridge(newBridge, this));
+					graphBridgeToBridge.put(newBridge, new BridgeController(newBridge, this));
 				}
-				graphBridgeToHighlight.put(newBridge, new Highlight(field, fullNeighbor, this));
+				graphBridgeToHighlight.put(newBridge, new HighlightController(field, fullNeighbor, this));
 			}
 		}
 	}
@@ -130,20 +130,20 @@ public class GameField extends GridPane {
 	public void loadGame() {
 		logger.debug("Draw all Fields");
 		cleanGameField();
-		fields = new ArrayList<Field>();
+		fields = new ArrayList<FieldController>();
 		for (GraphField graphField : graphFields) {
 			if (graphField.getX() == 0 && graphField.getY() == 1) {
 				logger.debug("Mööp");
 			}
-			Field field = new Field(graphField, this);
+			FieldController field = new FieldController(graphField, this);
 			field.addToGameField();
 			fields.add(field);
 
 		}
-		for (Highlight highlight : graphBridgeToHighlight.values()) {
+		for (HighlightController highlight : graphBridgeToHighlight.values()) {
 			highlight.addToGameField();
 		}
-		for (Bridge bridge : graphBridgeToBridge.values()) {
+		for (BridgeController bridge : graphBridgeToBridge.values()) {
 			bridge.addToGameField();
 		}
 	}
@@ -152,22 +152,22 @@ public class GameField extends GridPane {
 		this.getChildren().clear();
 	}
 
-	protected Highlight getNorthHighlight(Field field) {
+	protected HighlightController getNorthHighlight(FieldController field) {
 		return graphBridgeToHighlight
 				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getNorthNeighbor()));
 	}
 
-	protected Highlight getEastHighlight(Field field) {
+	protected HighlightController getEastHighlight(FieldController field) {
 		return graphBridgeToHighlight
 				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getEastNeighbor()));
 	}
 
-	protected Highlight getSouthHighlight(Field field) {
+	protected HighlightController getSouthHighlight(FieldController field) {
 		return graphBridgeToHighlight
 				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getSouthNeighbor()));
 	}
 
-	protected Highlight getWestHighlight(Field field) {
+	protected HighlightController getWestHighlight(FieldController field) {
 		return graphBridgeToHighlight
 				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getWestNeighbor()));
 	}
@@ -176,7 +176,7 @@ public class GameField extends GridPane {
 		return graphBridgeToBridge.containsKey(new GraphBridge(neighbor1, neighbor2));
 	}
 
-	public boolean needsBridge(Highlight highlight) {
+	public boolean needsBridge(HighlightController highlight) {
 		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 		int weighting = graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting();
 		if (highlight.getNeighbor1().getBridges() > highlight.getNeighbor1().getExistingBridges().size()
@@ -188,7 +188,7 @@ public class GameField extends GridPane {
 		return false;
 	}
 
-	public void removeBridge(Highlight highlight) {
+	public void removeBridge(HighlightController highlight) {
 		if (!isUpdating) {
 			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 			if (graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting() == 2) {
@@ -204,7 +204,7 @@ public class GameField extends GridPane {
 		}
 	}
 
-	public void addBridge(Highlight highlight) {
+	public void addBridge(HighlightController highlight) {
 		if (!isUpdating) {
 			if (!gameTime.isRunning()) {
 				gameTime.startTime();
