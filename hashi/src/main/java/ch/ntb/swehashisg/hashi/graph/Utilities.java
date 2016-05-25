@@ -14,11 +14,13 @@ public class Utilities {
 
 	private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
-	protected static Graph generateBasisPlayGround(Graph g) {
+	protected static Graph generateBasisPlayGround(Graph g, int sizeX, int sizeY) {
 		Vertex play = g.addVertex("name", "test");
+		play.property("sizeX", sizeX);
+		play.property("sizeY", sizeY);
 		Vertex root = null;
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
+		for (int i = 0; i < sizeY; i++) {
+			for (int j = 0; j < sizeX; j++) {
 				Vertex t = g.addVertex("x", i, "y", j, "bridges", 0);
 				if (root == null) {
 					root = t;

@@ -17,4 +17,8 @@ public abstract class GraphDas {
 	abstract void close();
 
 	abstract Graph getGraph();
+
+	public abstract int getSizeX();
+
+	public abstract int getSizeY();
 }

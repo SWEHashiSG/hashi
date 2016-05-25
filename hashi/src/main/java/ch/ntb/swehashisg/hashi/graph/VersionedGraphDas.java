@@ -94,4 +94,14 @@ public class VersionedGraphDas extends GraphDas {
 	Graph getGraph() {
 		return graphDas.getGraph();
 	}
+
+	@Override
+	public int getSizeX() {
+		return graphDas.getSizeX();
+	}
+
+	@Override
+	public int getSizeY() {
+		return graphDas.getSizeY();
+	}
 }

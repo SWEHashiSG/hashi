@@ -82,6 +82,16 @@ public class BaseGraphDas extends GraphDas {
 		return true;
 	}
 
+	@Override
+	public int getSizeX() {
+		return graph.traversal().V().has("name").toList().get(0).value("sizeX");
+	}
+
+	@Override
+	public int getSizeY() {
+		return graph.traversal().V().has("name").toList().get(0).value("sizeY");
+	}
+
 	private Set<GraphField> convertVerticesToFields(Set<Vertex> vertices) {
 		Set<GraphField> fields = new HashSet<>();
 		for (Vertex v : vertices) {
@@ -216,8 +226,8 @@ public class BaseGraphDas extends GraphDas {
 					List<Long> testList = g.traversal().V(t.get())
 							.match(__.<Vertex> as("t").repeat(__.in("row")).until(__.values("bridges").is(P.neq(0)))
 									.bothE("bridge").as("bridge"),
-							__.<Vertex> as("t").repeat(__.out("row")).until(__.values("bridges").is(P.neq(0)))
-									.bothE("bridge").as("bridge"))
+									__.<Vertex> as("t").repeat(__.out("row")).until(__.values("bridges").is(P.neq(0)))
+											.bothE("bridge").as("bridge"))
 							.select("bridge").count().toList();
 					if (testList.size() > 0) {
 						if (testList.get(0) > 0) {
@@ -237,8 +247,8 @@ public class BaseGraphDas extends GraphDas {
 					List<Long> testList = g.traversal().V(t.get())
 							.match(__.<Vertex> as("t").repeat(__.in("column")).until(__.values("bridges").is(P.neq(0)))
 									.bothE("bridge").as("bridge"),
-							__.<Vertex> as("t").repeat(__.out("column")).until(__.values("bridges").is(P.neq(0)))
-									.bothE("bridge").as("bridge"))
+									__.<Vertex> as("t").repeat(__.out("column"))
+											.until(__.values("bridges").is(P.neq(0))).bothE("bridge").as("bridge"))
 							.select("bridge").count().toList();
 					if (testList.size() > 0) {
 						if (testList.get(0) > 0) {
