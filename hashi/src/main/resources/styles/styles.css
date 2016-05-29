@@ -1,7 +1,7 @@
 /* Application wide styles */
 
 .label {
-    -fx-font-size: 12.0px;
+    -fx-font-size: 18.0px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
@@ -15,8 +15,9 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
 }
 
-.button:hover{
-    -fx-base: #395bae;
+
+.field{
+	-fx-stroke-width: 2.0;
 }
 
 /* Component specific styles */
@@ -32,10 +33,3 @@
 -fx-padding: 10.0;
 -fx-background-radius: 10.0;
 }
-
-.hello-message {
-    -fx-text-fill: #AA0000;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
-}
-
