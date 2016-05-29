@@ -22,8 +22,6 @@ public class BridgeController extends StackPane {
 	private Pane lineMiddle;
 	@FXML
 	private Pane lineButtom;
-	@FXML
-	private Pane highliter;
 
 	private GraphBridge graphBridge;
 	private GameFieldController gameField;
@@ -78,25 +76,7 @@ public class BridgeController extends StackPane {
 		gameField.add(this, columnIndex, rowIndex, columnSpan, rowSpan);
 	}
 
-	public void setHighlite(boolean highlited) {
-		highliter.setVisible(highlited);
-	}
-
 	public GraphBridge getGraphBridge() {
 		return graphBridge;
-	}
-
-	@FXML
-	protected void onMouseEntered() {
-		if (graphBridge.getWeighting() > 0) {
-			logger.debug("Mouse on Bridge:-)");
-			graphBridge.setHighliter(true);
-		}
-	}
-
-	@FXML
-	protected void onMouseExited() {
-		logger.debug("Mouse not on Bridge:-)");
-		setHighlite(false);
 	}
 }
