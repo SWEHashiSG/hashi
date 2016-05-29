@@ -62,7 +62,7 @@ public class GameFieldDesignerController extends GameFieldController {
 
 	@Override
 	void clickedOnField(FieldController field) {
-		// Todo: Edit Field with remove old and add new
+		graphDas.removeField(field.getGraphField());
 		addNewField(field.getGraphField().getX(), field.getGraphField().getY());
 	}
 	
