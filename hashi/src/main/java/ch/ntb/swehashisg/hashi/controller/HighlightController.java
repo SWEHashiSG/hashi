@@ -9,6 +9,7 @@ import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
@@ -87,7 +88,8 @@ public class HighlightController extends StackPane {
 	}
 
 	@FXML
-	protected void onMouseClicked() {
+	protected void onMouseClicked(MouseEvent event) {
+		event.consume();					// Consume Event that not a new Field will be drawn
 		logger.debug("Clicked on Highliter");
 		if(gameField.needsBridge(this)) {
 			gameField.addBridge(this);	

@@ -41,7 +41,7 @@ public class GameFieldDesignerController extends GameFieldController {
 		if (result.isPresent()) {
 			return result.get();
 		} else {
-			throw new IllegalArgumentException();
+			return 0;
 		}
 	}
 
