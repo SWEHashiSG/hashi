@@ -1,16 +1,11 @@
 package ch.ntb.swehashisg.hashi.model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 public class GraphBridge {
 	private GraphField field1;
 	private GraphField field2;
 	private BridgeDirection bridgeDirection;
-	private BooleanProperty highlite;
-	private IntegerProperty weighting;
+	private boolean highlite;
+	private int weighting;
 
 	public GraphBridge(GraphField field1, GraphField field2) {
 		this.field1 = field1;
@@ -22,8 +17,8 @@ public class GraphBridge {
 		} else {
 			throw new IllegalArgumentException("Bridges can only be horizontal or vertical");
 		}
-		highlite = new SimpleBooleanProperty(false);
-		weighting = new SimpleIntegerProperty(0);
+		highlite = false;
+		weighting = 0;
 	}
 
 	public GraphField getField1() {
@@ -47,39 +42,31 @@ public class GraphBridge {
 	}
 
 	public boolean isHighlited() {
-		return highlite.get();
-	}
-
-	public void setHighliter(boolean highlited) {
-		highlite.set(highlited);
-	}
-
-	public BooleanProperty getHighlitedProperty() {
 		return highlite;
 	}
 
+	public void setHighliter(boolean highlited) {
+		highlite = highlited;
+	}
+
 	public void setWeighting(Integer weighting) {
-		this.weighting = new SimpleIntegerProperty(weighting);
+		this.weighting = weighting;
 	}
 
 	public int getWeighting() {
-		return weighting.get();
+		return weighting;
 	}
 
 	public void incrementWeighting() {
-		weighting.set((weighting.get() + 1) % 3);
+		weighting = ((weighting + 1) % 3);
 	}
 
 	public void decrementWeighting() {
-		if (weighting.get() == 0) {
-			weighting.set(2);
+		if (weighting == 0) {
+			weighting = 2;
 		} else {
-			weighting.set(weighting.get() - 1);
+			weighting = weighting - 1;
 		}
-	}
-
-	public IntegerProperty getWeightingProperty() {
-		return weighting;
 	}
 
 	@Override
