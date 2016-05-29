@@ -16,6 +16,8 @@ import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -113,7 +115,14 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	private void cleanGameField() {
-		this.getChildren().clear();
+		if (!getChildren().isEmpty()) {
+			Node n = getChildren().get(0);
+			getChildren().clear();
+			if (n instanceof Group) {
+				logger.debug("Grid Lines are Visible");
+				getChildren().add(n);
+			}
+		}
 	}
 
 	HighlightController getNorthHighlight(FieldController field) {
