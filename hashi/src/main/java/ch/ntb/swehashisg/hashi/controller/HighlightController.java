@@ -69,8 +69,13 @@ public class HighlightController extends StackPane {
 
 	public void setHighlite(boolean highlited) {
 		highliter.setVisible(highlited);
-		highliter.setMouseTransparent(!highlited);
-		this.setMouseTransparent(!highlited);
+		if (gameField.getBridge(neighbor1, neighbor2).getWeighting() > 0){
+			highliter.setMouseTransparent(false);
+			this.setMouseTransparent(false);	
+		} else {
+			highliter.setMouseTransparent(!highlited);
+			this.setMouseTransparent(!highlited);
+		}
 	}
 
 	public GraphField getNeighbor1() {
@@ -83,7 +88,7 @@ public class HighlightController extends StackPane {
 
 	@FXML
 	protected void onMouseClicked() {
-		logger.debug("Clicked on Bridge!");
+		logger.debug("Clicked on Highliter");
 		if(gameField.needsBridge(this)) {
 			gameField.addBridge(this);	
 		} else {
@@ -93,6 +98,7 @@ public class HighlightController extends StackPane {
 
 	@FXML
 	protected void onMouseEntered() {
+		logger.debug("Mouse on Highliter");
 		if (gameField.hasBridge(neighbor1, neighbor2)) {
 			setHighlite(true);
 		}
@@ -100,7 +106,7 @@ public class HighlightController extends StackPane {
 
 	@FXML
 	protected void onMouseExited() {
-		logger.debug("Mouse not on Bridge:-)");
+		logger.debug("Mouse not on Highliter");
 		setHighlite(false);
 	}
 }

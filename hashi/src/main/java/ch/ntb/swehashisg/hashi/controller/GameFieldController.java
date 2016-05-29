@@ -99,9 +99,6 @@ public abstract class GameFieldController extends GridPane {
 		cleanGameField();
 		fields = new ArrayList<FieldController>();
 		for (GraphField graphField : graphFields) {
-			if (graphField.getX() == 0 && graphField.getY() == 1) {
-				logger.debug("Mööp");
-			}
 			FieldController field = new FieldController(graphField, this);
 			field.addToGameField();
 			fields.add(field);
@@ -141,6 +138,10 @@ public abstract class GameFieldController extends GridPane {
 
 	boolean hasBridge(GraphField neighbor1, GraphField neighbor2) {
 		return graphBridgeToBridge.containsKey(new GraphBridge(neighbor1, neighbor2));
+	}
+	
+	GraphBridge getBridge(GraphField neighbor1, GraphField neighbor2){
+		return graphBridgeToBridge.get(new GraphBridge(neighbor1, neighbor2)).getGraphBridge();
 	}
 
 	boolean needsBridge(HighlightController highlight) {

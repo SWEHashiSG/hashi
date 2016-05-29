@@ -47,11 +47,12 @@ public class GameFieldPlayController extends GameFieldController {
 
 	@Override
 	void onMouseClicked(MouseEvent event) {
+		logger.debug("Clicked on Game Field. No Function in Play Mode");
 		// Nothing to do in Play Mode
 	}
 
 	@Override
 	void clickedOnField(FieldController field) {
-		// TODO Auto-generated method stub
+		// Nothing to do in Play Mode
 	}
 }

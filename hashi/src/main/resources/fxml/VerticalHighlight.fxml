@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root minHeight="40" minWidth="40" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root minHeight="40" minWidth="40" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"  onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" onMouseClicked="#onMouseClicked" >
    <children>
       <GridPane>
         <columnConstraints>
@@ -18,7 +18,7 @@
           <RowConstraints vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <Pane fx:id="highliter" onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited" onMouseClicked="#onMouseClicked" style="-fx-background-color: Orange;" visible="false" GridPane.columnIndex="1" />
+            <Pane fx:id="highliter" style="-fx-background-color: Orange;" visible="false" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>
