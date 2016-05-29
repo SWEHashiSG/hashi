@@ -3,7 +3,6 @@ package ch.ntb.swehashisg.hashi.graph;
 import java.util.ArrayList;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
@@ -108,7 +107,12 @@ public class VersionedGraphDas extends GraphDas {
 	}
 	
 	@Override
-	public void setBridges(GraphField field) {
-		graphDas.setBridges(field);
+	public void addField(GraphField field) {
+		graphDas.addField(field);
+	}
+
+	@Override
+	public void removeField(GraphField field) {
+		graphDas.removeField(field);		
 	}
 }

@@ -21,6 +21,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class BaseGraphDas extends GraphDas {
 
@@ -34,9 +35,15 @@ public class BaseGraphDas extends GraphDas {
 	}
 
 	@Override
-	public void setBridges(GraphField field) {
+	public void addField(GraphField field) {
 		Vertex node = getVertexForField(field);
 		node.property("bridges", field.getBridges());
+	}
+	
+	@Override
+	public void removeField(GraphField field) {
+		// TODO: implement Remove Field form GraphDas
+		throw new NotImplementedException();
 	}
 
 	public GraphPlayField getPlayField() {
@@ -342,5 +349,4 @@ public class BaseGraphDas extends GraphDas {
 	Graph getGraph() {
 		return this.graph;
 	}
-
 }

@@ -2,9 +2,10 @@ package ch.ntb.swehashisg.hashi.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,12 +20,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.WindowEvent;
 
 public class MainWindowController extends AnchorPane {
@@ -129,18 +130,27 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void clickedOnPane(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.MIDDLE) {
-			logger.debug("Starting Editor Mode. For Engineers only ;-)");
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Starting Editor Mode");
-			alert.setHeaderText("Welcom Developer. You start now in the Editor Mode");
+			List<Integer> choices = new ArrayList<>();
+			choices.add(6);
+			choices.add(8);
+			choices.add(10);
+			choices.add(12);
+			choices.add(14);
+			ChoiceDialog<Integer> dialog = new ChoiceDialog<Integer>(8, choices);
+			dialog.setTitle("Starting Editor Mode");
+			dialog.setHeaderText("Pleas select your desired Gamesize");
+			dialog.setContentText("Choos Width");
 
-			ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-			ButtonType buttonTypeOK = new ButtonType("OK");
-			alert.getButtonTypes().setAll(buttonTypeOK, buttonTypeCancel);
+			Optional<Integer> resultWidth = dialog.showAndWait();
+			if (resultWidth.isPresent()) {
+				int width = resultWidth.get();
+				dialog.setContentText("Choos Height");
 
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == buttonTypeOK) {
-				startEditorMode(8,8);
+				Optional<Integer> resultHeight = dialog.showAndWait();
+				if (resultHeight.isPresent()) {
+					int heigth = resultHeight.get();
+					startEditorMode(width, heigth);
+				}
 			}
 		}
 	}
@@ -205,8 +215,7 @@ public class MainWindowController extends AnchorPane {
 		} else if (result.get() == buttonTypeSave) {
 			save();
 		} else if (result.get() == buttonTypeCloseWithoutSave) {
-
+			// simple close Window
 		}
 	}
-
 }

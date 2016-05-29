@@ -16,8 +16,7 @@ import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -50,32 +49,6 @@ public abstract class GameFieldController extends GridPane {
 		createAllBridgesHighlights(graphPlayField.getBridges());
 	}
 
-	static class UpdateThread extends Thread {
-
-		private GameFieldController gameField;
-		private GraphDas graphDas;
-
-		public UpdateThread(GameFieldController gameField, GraphDas graphDas) {
-			this.gameField = gameField;
-			this.graphDas = graphDas;
-		}
-
-		@Override
-		public void run() {
-			GraphPlayField playField = graphDas.getPlayField();
-			Platform.runLater(new Runnable() {
-
-				@Override
-				public void run() {
-					gameField.update(playField);
-				}
-			});
-		}
-	}
-
-	/**
-	 * Creat all Bridges with zero weighting for GUI
-	 */
 	private void createAllBridgesHighlights(Set<GraphBridge> bridges) {
 		graphBridgeToBridge = new HashMap<>();
 		graphBridgeToHighlight = new HashMap<>();
@@ -113,7 +86,6 @@ public abstract class GameFieldController extends GridPane {
 			RowConstraints rowConstraints = new RowConstraints();
 			rowConstraints.setPrefHeight(FieldController.getFieldSize());
 			getRowConstraints().add(rowConstraints);
-
 		}
 		for (int i = 0; i < sizeX; i++) {
 			ColumnConstraints columnConstraints = new ColumnConstraints();
@@ -143,35 +115,35 @@ public abstract class GameFieldController extends GridPane {
 		}
 	}
 
-	protected void cleanGameField() {
+	private void cleanGameField() {
 		this.getChildren().clear();
 	}
 
-	protected HighlightController getNorthHighlight(FieldController field) {
+	HighlightController getNorthHighlight(FieldController field) {
 		return graphBridgeToHighlight
 				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getNorthNeighbor()));
 	}
 
-	protected HighlightController getEastHighlight(FieldController field) {
+	HighlightController getEastHighlight(FieldController field) {
 		return graphBridgeToHighlight
 				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getEastNeighbor()));
 	}
 
-	protected HighlightController getSouthHighlight(FieldController field) {
+	HighlightController getSouthHighlight(FieldController field) {
 		return graphBridgeToHighlight
 				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getSouthNeighbor()));
 	}
 
-	protected HighlightController getWestHighlight(FieldController field) {
+	HighlightController getWestHighlight(FieldController field) {
 		return graphBridgeToHighlight
 				.get(new GraphBridge(field.getGraphField(), field.getGraphField().getWestNeighbor()));
 	}
 
-	public boolean hasBridge(GraphField neighbor1, GraphField neighbor2) {
+	boolean hasBridge(GraphField neighbor1, GraphField neighbor2) {
 		return graphBridgeToBridge.containsKey(new GraphBridge(neighbor1, neighbor2));
 	}
 
-	public boolean needsBridge(HighlightController highlight) {
+	boolean needsBridge(HighlightController highlight) {
 		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 		int weighting = graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting();
 		if (highlight.getNeighbor1().getBridges() > highlight.getNeighbor1().getExistingBridges().size()
@@ -211,9 +183,32 @@ public abstract class GameFieldController extends GridPane {
 			logger.warn("Is already updating, better solution needed!");
 		}
 	}
-	
+
 	@FXML
-	private void onMouseClicked(){
-		// Nothing to do in Play Mode
+	abstract void onMouseClicked(MouseEvent event);
+	
+	abstract void clickedOnField(FieldController field);
+
+	static class UpdateThread extends Thread {
+
+		private GameFieldController gameField;
+		private GraphDas graphDas;
+
+		public UpdateThread(GameFieldController gameField, GraphDas graphDas) {
+			this.gameField = gameField;
+			this.graphDas = graphDas;
+		}
+
+		@Override
+		public void run() {
+			GraphPlayField playField = graphDas.getPlayField();
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					gameField.update(playField);
+				}
+			});
+		}
 	}
 }

@@ -56,7 +56,7 @@ public class FieldController extends StackPane {
 	@FXML
 	protected void onMouseClicked() {
 		logger.debug("Clicked on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
-		// No Function implemented when clicking on Field
+		gameField.clickedOnField(this);
 	}
 
 	@FXML

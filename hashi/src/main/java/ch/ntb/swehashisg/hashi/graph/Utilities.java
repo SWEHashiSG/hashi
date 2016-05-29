@@ -15,6 +15,7 @@ public class Utilities {
 	private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
 	protected static Graph generateBasisPlayGround(Graph g, int sizeX, int sizeY) {
+		logger.debug("Generate Basis Play Ground");
 		Vertex play = g.addVertex("name", "test");
 		play.property("sizeX", sizeX);
 		play.property("sizeY", sizeY);
