@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.model.GraphField;
-import ch.ntb.swehashisg.hashi.model.GraphPlayField;
-import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.input.MouseEvent;
 
@@ -24,20 +22,7 @@ public class GameFieldDesignerController extends GameFieldController {
 		setGridLinesVisible(true); // TODO: Does not Working
 	}
 
-	protected void update(GraphPlayField graphPlayField) {
-		graphFields = graphPlayField.getFields();
-		loadGame();
-		isUpdating = false;
-	}
-
-	@FXML
-	void onMouseClicked(MouseEvent mouseEvent) {
-		int x = ((int) mouseEvent.getX() / FieldController.getFieldSize());
-		int y = ((int) mouseEvent.getY() / FieldController.getFieldSize());
-		addNewField(x, y);
-	}
-	
-	private int showBridgeValueDialog(){
+	private int showBridgeValueDialog() {
 		List<Integer> choices = new ArrayList<>();
 		choices.add(1);
 		choices.add(2);
@@ -61,12 +46,19 @@ public class GameFieldDesignerController extends GameFieldController {
 	}
 
 	@Override
+	void onMouseClicked(MouseEvent mouseEvent) {
+		int x = ((int) mouseEvent.getX() / FieldController.getFieldSize());
+		int y = ((int) mouseEvent.getY() / FieldController.getFieldSize());
+		addNewField(x, y);
+	}
+
+	@Override
 	void clickedOnField(FieldController field) {
 		graphDas.removeField(field.getGraphField());
 		addNewField(field.getGraphField().getX(), field.getGraphField().getY());
 	}
-	
-	private void addNewField(int x, int y){
+
+	private void addNewField(int x, int y) {
 		int value = showBridgeValueDialog();
 		graphDas.addField(new GraphField(x, y, value));
 		logger.debug("Clicked on Game Field in Designer Mode. Add new Field at: x=" + x + " - y=" + y);
