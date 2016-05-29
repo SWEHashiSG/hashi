@@ -124,4 +124,8 @@ public class FieldController extends StackPane {
 			bridge.setHighlite(highlited);
 		}
 	}
+
+	public static int getFieldSize() {
+		return fieldSize;
+	}
 }

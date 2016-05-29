@@ -113,7 +113,7 @@ public class MainWindowController extends AnchorPane {
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
 			}
-			gameField = new GameFieldController(graphDas);
+			gameField = new GameFieldPlayController(graphDas);
 			gameField.loadGame();
 			pane.getChildren().add(gameField);
 		} else {
@@ -156,7 +156,7 @@ public class MainWindowController extends AnchorPane {
 	public void loadGame() {
 		logger.debug("Started");
 		graphDas = GraphDasFactory.getGraphDas();
-		gameField = new GameFieldController(graphDas);
+		gameField = new GameFieldPlayController(graphDas);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);
 	}

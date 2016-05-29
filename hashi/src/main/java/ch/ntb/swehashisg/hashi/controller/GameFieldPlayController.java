@@ -1,6 +1,5 @@
 package ch.ntb.swehashisg.hashi.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,65 +12,47 @@ import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public abstract class GameFieldController extends GridPane {
+public class GameFieldPlayController extends GameFieldController {
 
-	private static final Logger logger = LoggerFactory.getLogger(GameFieldController.class);
+	private static final Logger logger = LoggerFactory.getLogger(GameFieldPlayController.class);
+	
+	private GameTime gameTime;
 
-	protected GraphDas graphDas;
-	protected Set<GraphField> graphFields;
-	protected ArrayList<FieldController> fields;
-	protected HashMap<GraphBridge, BridgeController> graphBridgeToBridge;
-	protected HashMap<GraphBridge, HighlightController> graphBridgeToHighlight;
-	protected boolean isUpdating = false;
+	public GameFieldPlayController(GraphDas graphDas) {
+		super(graphDas);
 
-	public GameFieldController(GraphDas graphDas) {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
-
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
-		this.graphDas = graphDas;
-		setFieldSize(graphDas.getSizeX(), graphDas.getSizeY());
-		GraphPlayField graphPlayField = graphDas.getPlayField();
-		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(graphPlayField.getBridges());
+		gameTime = new GameTime();
 	}
 
-	static class UpdateThread extends Thread {
-
-		private GameFieldController gameField;
-		private GraphDas graphDas;
-
-		public UpdateThread(GameFieldController gameField, GraphDas graphDas) {
-			this.gameField = gameField;
-			this.graphDas = graphDas;
-		}
-
-		@Override
-		public void run() {
-			GraphPlayField playField = graphDas.getPlayField();
-			Platform.runLater(new Runnable() {
-
-				@Override
-				public void run() {
-					gameField.update(playField);
-				}
-			});
-		}
-	}
+//	private static class UpdateThread extends Thread {
+//
+//		private GameFieldController gameField;
+//		private GraphDas graphDas;
+//
+//		public UpdateThread(GameFieldController gameField, GraphDas graphDas) {
+//			this.gameField = gameField;
+//			this.graphDas = graphDas;
+//		}
+//
+//		@Override
+//		public void run() {
+//			GraphPlayField playField = graphDas.getPlayField();
+//			Platform.runLater(new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					gameField.update(playField);
+//				}
+//			});
+//
+//		}
+//	}
 
 	/**
 	 * Creat all Bridges with zero weighting for GUI
@@ -100,10 +81,10 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	protected void update(GraphPlayField graphPlayField) {
-		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(graphPlayField.getBridges());
-		loadGame();
-		isUpdating = false;
+		super.update(graphPlayField);
+		if (graphDas.isCorrect()) {
+			finishGame();
+		}
 	}
 
 	private void setFieldSize(int sizeX, int sizeY) {
@@ -111,13 +92,13 @@ public abstract class GameFieldController extends GridPane {
 		getColumnConstraints().clear();
 		for (int i = 0; i < sizeY; i++) {
 			RowConstraints rowConstraints = new RowConstraints();
-			rowConstraints.setPrefHeight(FieldController.getFieldSize());
+			rowConstraints.setPercentHeight(100.0 / sizeY);
 			getRowConstraints().add(rowConstraints);
 
 		}
 		for (int i = 0; i < sizeX; i++) {
 			ColumnConstraints columnConstraints = new ColumnConstraints();
-			columnConstraints.setPrefWidth(FieldController.getFieldSize());
+			columnConstraints.setPercentWidth(100.0 / sizeX);
 			getColumnConstraints().add(columnConstraints);
 		}
 	}
@@ -200,16 +181,20 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	public void addBridge(HighlightController highlight) {
-		if (!isUpdating) {
-			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
-			graphDas.addBridge(bridge);
-			logger.debug("-------------Redraw whole gamefield-----------------");
-			UpdateThread updateThread = new UpdateThread(this, graphDas);
-			isUpdating = true;
-			updateThread.run();
-		} else {
-			logger.warn("Is already updating, better solution needed!");
+		if (!gameTime.isRunning()) {
+			gameTime.startTime();
 		}
+		super.addBridge(highlight);
+	}
+
+	private void finishGame() {
+		gameTime.stopTime();
+		logger.info("Game is Finished");
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Finish GAme");
+		alert.setHeaderText("Congratulation. You have finished the Hashi Game");
+		alert.setContentText("Time: " + gameTime.getTime() + " Seconds");
+		alert.showAndWait();
 	}
 	
 	@FXML
