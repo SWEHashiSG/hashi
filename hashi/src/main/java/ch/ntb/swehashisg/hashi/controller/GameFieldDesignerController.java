@@ -3,12 +3,15 @@ package ch.ntb.swehashisg.hashi.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
+import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
+import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.input.MouseEvent;
 
@@ -18,6 +21,8 @@ public class GameFieldDesignerController extends GameFieldController {
 
 	public GameFieldDesignerController(GraphDas graphDas) {
 		super(graphDas);
+
+		logger.debug("Is Used???");
 
 		setGridLinesVisible(true); // TODO: Does not Working
 	}
@@ -53,7 +58,7 @@ public class GameFieldDesignerController extends GameFieldController {
 	}
 
 	@Override
-	void clickedOnField(FieldController field) {
+	protected void clickedOnField(FieldController field) {
 		setBridges(field.getGraphField().getX(), field.getGraphField().getY());
 	}
 
@@ -61,8 +66,21 @@ public class GameFieldDesignerController extends GameFieldController {
 		int value = showBridgeValueDialog();
 		graphDas.setBridges(new GraphField(x, y, value));
 		logger.debug("Clicked on Game Field in Designer Mode. Add new Field at: x=" + x + " - y=" + y);
-		UpdateThread updateThread = new UpdateThread(this, graphDas);
-		isUpdating = true;
-		updateThread.run();
+		initiateUpdate();
+	}
+
+	@Override
+	protected Set<GraphBridge> getBridges(GraphPlayField graphPlayField) {
+		return graphPlayField.getSolutionBridges();
+	}
+
+	@Override
+	protected void addBridge(GraphBridge graphBridge) {
+		graphDas.addSolutionBridge(graphBridge);
+	}
+
+	@Override
+	protected void removeBridge(GraphBridge graphBridge) {
+		graphDas.removeSolutionBridge(graphBridge);
 	}
 }
