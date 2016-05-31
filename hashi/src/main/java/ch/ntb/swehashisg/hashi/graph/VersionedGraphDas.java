@@ -2,7 +2,6 @@ package ch.ntb.swehashisg.hashi.graph;
 
 import java.util.ArrayList;
 
-import org.apache.commons.logging.Log;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
@@ -20,33 +19,36 @@ public class VersionedGraphDas extends GraphDas {
 		this.index = 0;
 		this.listOperations = new ArrayList<BridgeOperation>();
 	}
-	
-	public boolean canUndo()
-	{
+
+	public boolean canUndo() {
 		return (index > 0);
 	}
 
 	public void undo() {
-		System.out.println("@VersionedGraphDas::undo()  1");
-		if (!canUndo())
-			return;
-		
-		System.out.println("@VersionedGraphDas::undo()  2");
+		if (!canUndo()) {
+			throw new IllegalArgumentException("Nothing to undo!");
+		}
+
 		index--;
 		BridgeOperation bo = listOperations.get(index);
 		executeOperation(!bo.isAddingBridge, bo.graphBridge);
 	}
-	
-	public boolean canRedo()
-	{
-		return ! ((index >= listOperations.size() || index < 0));
+
+	public boolean canRedo() {
+		return !((index >= listOperations.size() || index < 0));
 	}
 
 	public void redo() {
-		if (!canRedo())
-			return;
+		if (!canRedo()) {
+			throw new IllegalArgumentException("Nothing to redo!");
+		}
 		BridgeOperation bo = listOperations.get(index);
 		executeOperation(bo.isAddingBridge, bo.graphBridge);
+		index++;
+	}
+
+	private void addOperation(BridgeOperation bridgeOperation) {
+		listOperations.add(bridgeOperation);
 		index++;
 	}
 
@@ -57,27 +59,19 @@ public class VersionedGraphDas extends GraphDas {
 
 	@Override
 	public void addBridge(GraphBridge bridge) {
-		removeOperationsOverIndex();
-		listOperations.add(new BridgeOperation(true, bridge));
-		redo();
-
+		graphDas.addBridge(bridge);
+		addOperation(new BridgeOperation(true, bridge));
 	}
 
 	@Override
 	public void removeBridge(GraphBridge bridge) {
-		removeOperationsOverIndex();
-		listOperations.add(new BridgeOperation(false, bridge));
-		redo();
+		graphDas.removeBridge(bridge);
+		addOperation(new BridgeOperation(false, bridge));
 	}
 
 	@Override
 	public boolean isCorrect() {
 		return graphDas.isCorrect();
-	}
-
-	private void removeOperationsOverIndex() {
-		while (listOperations.size() > index)
-			listOperations.remove(index + 1);
 	}
 
 	private void executeOperation(boolean addBridge, GraphBridge bridge) {
@@ -87,7 +81,7 @@ public class VersionedGraphDas extends GraphDas {
 			graphDas.removeBridge(bridge);
 	}
 
-	private static class BridgeOperation extends Object {
+	private static class BridgeOperation {
 
 		public boolean isAddingBridge;
 		public GraphBridge graphBridge;
