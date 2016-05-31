@@ -9,19 +9,19 @@ import org.junit.Test;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 
 public class GraphFieldTest {
-	
+
 	GraphField main, northN, southN, westN, eastN;
 	HashSet<GraphField> neighbor;
-	
+
 	public GraphFieldTest() {
 		main = new GraphField(5, 5, 2);
 		neighbor = new HashSet<GraphField>();
 		neighbor.add(main);
 
-		northN = new GraphField(5, 1, 2, neighbor, null);
-		southN = new GraphField(5, 10, 2, neighbor, null);
-		westN = new GraphField(1, 5, 2, neighbor, null);
-		eastN = new GraphField(10, 5, 2, neighbor, null);
+		northN = new GraphField(5, 1, 2, neighbor, null, null);
+		southN = new GraphField(5, 10, 2, neighbor, null, null);
+		westN = new GraphField(1, 5, 2, neighbor, null, null);
+		eastN = new GraphField(10, 5, 2, neighbor, null, null);
 	}
 
 	@Test
