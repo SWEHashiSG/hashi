@@ -27,10 +27,12 @@ public class BaseGraphDas extends GraphDas {
 	private Graph graph;
 
 	private HashMap<GraphBridge, Integer> bridgesToWeight;
+	private HashMap<GraphBridge, Integer> solutionBridgesToWeight;
 
 	public BaseGraphDas(Graph graph) {
 		this.graph = graph;
 		this.bridgesToWeight = new HashMap<>();
+		this.solutionBridgesToWeight = new HashMap<>();
 	}
 
 	@Override
@@ -41,6 +43,7 @@ public class BaseGraphDas extends GraphDas {
 
 	public GraphPlayField getPlayField() {
 		bridgesToWeight = new HashMap<>();
+		solutionBridgesToWeight = new HashMap<>();
 		Set<Vertex> vertices = getRelevantVertices();
 
 		Set<GraphField> graphFields = convertVerticesToFields(vertices);
@@ -49,7 +52,12 @@ public class BaseGraphDas extends GraphDas {
 			bridge.getKey().setWeighting(bridge.getValue() / 2);
 		}
 
-		GraphPlayField graphPlayField = new GraphPlayField(bridgesToWeight.keySet(), graphFields);
+		for (Entry<GraphBridge, Integer> bridge : solutionBridgesToWeight.entrySet()) {
+			bridge.getKey().setWeighting(bridge.getValue() / 2);
+		}
+
+		GraphPlayField graphPlayField = new GraphPlayField(bridgesToWeight.keySet(), solutionBridgesToWeight.keySet(),
+				graphFields);
 		return graphPlayField;
 	}
 
@@ -259,10 +267,10 @@ public class BaseGraphDas extends GraphDas {
 			GraphField node1 = convertVertexToFieldLight(edge.outVertex());
 			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
 			GraphBridge bridge = new GraphBridge(node1, node2);
-			if (bridgesToWeight.containsKey(bridge)) {
-				bridgesToWeight.put(bridge, bridgesToWeight.get(bridge) + 1);
+			if (solutionBridgesToWeight.containsKey(bridge)) {
+				solutionBridgesToWeight.put(bridge, solutionBridgesToWeight.get(bridge) + 1);
 			} else {
-				bridgesToWeight.put(bridge, 1);
+				solutionBridgesToWeight.put(bridge, 1);
 			}
 			bridges.add(bridge);
 		}
