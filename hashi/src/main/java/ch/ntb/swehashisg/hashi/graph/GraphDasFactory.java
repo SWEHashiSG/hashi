@@ -19,7 +19,7 @@ public class GraphDasFactory {
 
 		graphDas = GraphInitializer.generateExamplePlay(graphDas);
 
-		return graphDas;
+		return new VersionedGraphDas(graphDas);
 	}
 
 	public static void closeGraphDas(GraphDas graphDas) {
