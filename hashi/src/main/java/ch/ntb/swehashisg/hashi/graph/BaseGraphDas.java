@@ -253,7 +253,7 @@ public class BaseGraphDas extends GraphDas {
 
 	private List<GraphBridge> getSolutionBridges(Vertex node) {
 		List<GraphBridge> bridges = new ArrayList<>();
-		Iterator<Edge> edges = node.edges(Direction.BOTH, "bridge");
+		Iterator<Edge> edges = node.edges(Direction.BOTH, "solutionBridge");
 		while (edges.hasNext()) {
 			Edge edge = edges.next();
 			GraphField node1 = convertVertexToFieldLight(edge.outVertex());
