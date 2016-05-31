@@ -10,10 +10,8 @@ public abstract class GraphDas {
 	public abstract GraphPlayField getPlayField();
 
 	public abstract void addBridge(GraphBridge bridge);
-	
-	public abstract void addField(GraphField field);
-	
-	public abstract void removeField(GraphField field);
+
+	public abstract void setBridges(GraphField field);
 
 	public abstract void removeBridge(GraphBridge bridge);
 
