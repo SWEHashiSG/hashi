@@ -1,9 +1,12 @@
 package ch.ntb.swehashisg.hashi.controller;
 
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
+import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -28,13 +31,6 @@ public class GameFieldPlayController extends GameFieldController {
 		}
 	}
 
-	public void addBridge(HighlightController highlight) {
-		if (!gameTime.isRunning()) {
-			gameTime.startTime();
-		}
-		super.addBridge(highlight);
-	}
-
 	private void finishGame() {
 		gameTime.stopTime();
 		logger.info("Game is Finished");
@@ -52,7 +48,20 @@ public class GameFieldPlayController extends GameFieldController {
 	}
 
 	@Override
-	void clickedOnField(FieldController field) {
-		// Nothing to do in Play Mode
+	protected Set<GraphBridge> getBridges(GraphPlayField graphPlayField) {
+		return graphPlayField.getBridges();
+	}
+
+	@Override
+	protected void addBridge(GraphBridge graphBridge) {
+		if (!gameTime.isRunning()) {
+			gameTime.startTime();
+		}
+		graphDas.addBridge(graphBridge);
+	}
+
+	@Override
+	protected void removeBridge(GraphBridge graphBridge) {
+		graphDas.removeBridge(graphBridge);
 	}
 }

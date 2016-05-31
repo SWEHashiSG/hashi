@@ -32,6 +32,7 @@ public abstract class GameFieldController extends GridPane {
 	protected ArrayList<FieldController> fields;
 	protected HashMap<GraphBridge, BridgeController> graphBridgeToBridge;
 	protected HashMap<GraphBridge, HighlightController> graphBridgeToHighlight;
+	protected HashMap<GraphBridge, BridgeController> graphBridgeToSolutionBridge;
 	protected boolean isUpdating = false;
 
 	public GameFieldController(GraphDas graphDas) {
@@ -48,8 +49,14 @@ public abstract class GameFieldController extends GridPane {
 		setFieldSize(graphDas.getSizeX(), graphDas.getSizeY());
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(graphPlayField.getBridges());
+		createAllBridgesHighlights(getBridges(graphPlayField));
+		graphBridgeToSolutionBridge = new HashMap<>();
+		for (GraphBridge bridge : graphPlayField.getSolutionBridges()) {
+			graphBridgeToSolutionBridge.put(bridge, new BridgeController(bridge, this, false));
+		}
 	}
+
+	protected abstract Set<GraphBridge> getBridges(GraphPlayField graphPlayField);
 
 	private void createAllBridgesHighlights(Set<GraphBridge> bridges) {
 		graphBridgeToBridge = new HashMap<>();
@@ -76,7 +83,7 @@ public abstract class GameFieldController extends GridPane {
 
 	protected void update(GraphPlayField graphPlayField) {
 		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(graphPlayField.getBridges());
+		createAllBridgesHighlights(getBridges(graphPlayField));
 		loadGame();
 		isUpdating = false;
 	}
@@ -148,8 +155,8 @@ public abstract class GameFieldController extends GridPane {
 	boolean hasBridge(GraphField neighbor1, GraphField neighbor2) {
 		return graphBridgeToBridge.containsKey(new GraphBridge(neighbor1, neighbor2));
 	}
-	
-	GraphBridge getBridge(GraphField neighbor1, GraphField neighbor2){
+
+	GraphBridge getBridge(GraphField neighbor1, GraphField neighbor2) {
 		return graphBridgeToBridge.get(new GraphBridge(neighbor1, neighbor2)).getGraphBridge();
 	}
 
@@ -169,9 +176,9 @@ public abstract class GameFieldController extends GridPane {
 		if (!isUpdating) {
 			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 			if (graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting() == 2) {
-				graphDas.removeBridge(bridge);
+				removeBridge(bridge);
 			}
-			graphDas.removeBridge(bridge);
+			removeBridge(bridge);
 			logger.debug("-------------Redraw whole gamefield-----------------");
 			UpdateThread updateThread = new UpdateThread(this, graphDas);
 			isUpdating = true;
@@ -184,20 +191,30 @@ public abstract class GameFieldController extends GridPane {
 	public void addBridge(HighlightController highlight) {
 		if (!isUpdating) {
 			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
-			graphDas.addBridge(bridge);
+			addBridge(bridge);
 			logger.debug("-------------Redraw whole gamefield-----------------");
-			UpdateThread updateThread = new UpdateThread(this, graphDas);
-			isUpdating = true;
-			updateThread.run();
+			initiateUpdate();
 		} else {
 			logger.warn("Is already updating, better solution needed!");
 		}
 	}
 
+	protected abstract void addBridge(GraphBridge graphBridge);
+
+	protected abstract void removeBridge(GraphBridge graphBridge);
+
 	@FXML
 	abstract void onMouseClicked(MouseEvent event);
-	
-	abstract void clickedOnField(FieldController field);
+
+	protected void clickedOnField(FieldController field) {
+		// Do nothing
+	}
+
+	protected void initiateUpdate() {
+		UpdateThread updateThread = new UpdateThread(this, graphDas);
+		isUpdating = true;
+		updateThread.run();
+	}
 
 	static class UpdateThread extends Thread {
 
@@ -219,6 +236,12 @@ public abstract class GameFieldController extends GridPane {
 					gameField.update(playField);
 				}
 			});
+		}
+	}
+
+	public void showSolution() {
+		for (BridgeController bridgeController : graphBridgeToSolutionBridge.values()) {
+			bridgeController.toggleVisibility();
 		}
 	}
 }

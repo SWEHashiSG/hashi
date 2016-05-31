@@ -24,9 +24,13 @@ public class BridgeController extends StackPane {
 	private Pane lineButtom;
 
 	private GraphBridge graphBridge;
-	private GameFieldController gameField;
+	private GameFieldController gameFieldController;
 
-	public BridgeController(GraphBridge graphBridge, GameFieldController gameField) {
+	public BridgeController(GraphBridge graphBridge, GameFieldController gameFieldController) {
+		this(graphBridge, gameFieldController, true);
+	}
+
+	public BridgeController(GraphBridge graphBridge, GameFieldController gameFieldController, boolean isVisible) {
 		String fxmlFile = "";
 		if (graphBridge.getBridgeDirection() == BridgeDirection.Horizontal) {
 			fxmlFile = "/fxml/HorizontalBridge.fxml";
@@ -43,7 +47,7 @@ public class BridgeController extends StackPane {
 			throw new RuntimeException(exception);
 		}
 		this.graphBridge = graphBridge;
-		this.gameField = gameField;
+		this.gameFieldController = gameFieldController;
 
 		if (graphBridge.getWeighting() > 0) {
 			if (graphBridge.getWeighting() == 1) {
@@ -53,6 +57,7 @@ public class BridgeController extends StackPane {
 				lineTop.setVisible(true);
 			}
 		}
+		this.setVisible(isVisible);
 	}
 
 	public void addToGameField() {
@@ -73,10 +78,18 @@ public class BridgeController extends StackPane {
 			columnIndex++;
 			columnSpan = Math.abs(graphBridge.getField1().getX() - graphBridge.getField2().getX()) - 1;
 		}
-		gameField.add(this, columnIndex, rowIndex, columnSpan, rowSpan);
+		gameFieldController.add(this, columnIndex, rowIndex, columnSpan, rowSpan);
 	}
 
 	public GraphBridge getGraphBridge() {
 		return graphBridge;
+	}
+
+	public void toggleVisibility() {
+		if (this.isVisible()) {
+			this.setVisible(false);
+		} else {
+			this.setVisible(true);
+		}
 	}
 }
