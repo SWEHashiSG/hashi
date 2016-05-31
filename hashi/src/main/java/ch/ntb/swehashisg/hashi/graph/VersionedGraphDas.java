@@ -2,6 +2,7 @@ package ch.ntb.swehashisg.hashi.graph;
 
 import java.util.ArrayList;
 
+import org.apache.commons.logging.Log;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
@@ -25,13 +26,15 @@ public class VersionedGraphDas extends GraphDas {
 		return (index > 0);
 	}
 
-	public boolean undo() {
+	public void undo() {
+		System.out.println("@VersionedGraphDas::undo()  1");
 		if (!canUndo())
-			return false;
+			return;
+		
+		System.out.println("@VersionedGraphDas::undo()  2");
 		index--;
 		BridgeOperation bo = listOperations.get(index);
 		executeOperation(!bo.isAddingBridge, bo.graphBridge);
-		return true;
 	}
 	
 	public boolean canRedo()
@@ -39,13 +42,12 @@ public class VersionedGraphDas extends GraphDas {
 		return ! ((index >= listOperations.size() || index < 0));
 	}
 
-	public boolean redo() {
+	public void redo() {
 		if (!canRedo())
-			return false;
+			return;
 		BridgeOperation bo = listOperations.get(index);
 		executeOperation(bo.isAddingBridge, bo.graphBridge);
 		index++;
-		return true;
 	}
 
 	@Override

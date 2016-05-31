@@ -13,18 +13,25 @@ public class GraphField {
 	private int bridges;
 	private Set<GraphField> neighbors;
 	private List<GraphBridge> existingBridges;
+	private List<GraphBridge> existingSolutionBridges;
+
+	public List<GraphBridge> getExistingSolutionBridges() {
+		return existingSolutionBridges;
+	}
 
 	private GraphField southNeighbor = null;
 	private GraphField northNeighbor = null;
 	private GraphField eastNeighbor = null;
 	private GraphField westNeighbor = null;
 
-	public GraphField(int x, int y, int bridges, Set<GraphField> neighbors, List<GraphBridge> existingBridges) {
+	public GraphField(int x, int y, int bridges, Set<GraphField> neighbors, List<GraphBridge> existingBridges,
+			List<GraphBridge> existingSolutionBridges) {
 		this.x = x;
 		this.y = y;
 		this.bridges = bridges;
 		this.neighbors = neighbors;
 		this.existingBridges = existingBridges;
+		this.existingSolutionBridges = existingSolutionBridges;
 
 		for (GraphField neighbor : this.getNeighbors()) {
 			if (GraphUtil.isEastBridge(this, neighbor)) {
@@ -41,6 +48,14 @@ public class GraphField {
 			}
 		}
 
+	}
+
+	public GraphField(int x, int y, int bridges) {
+		this(x, y, bridges, new HashSet<>(), new ArrayList<>(), new ArrayList<>());
+	}
+
+	public GraphField(int x, int y) {
+		this(x, y, 0, new HashSet<>(), new ArrayList<>(), new ArrayList<>());
 	}
 
 	public boolean hasNorthNeighbor() {
@@ -73,14 +88,6 @@ public class GraphField {
 
 	public GraphField getWestNeighbor() {
 		return westNeighbor;
-	}
-
-	public GraphField(int x, int y, int bridges) {
-		this(x, y, bridges, new HashSet<>(), new ArrayList<>());
-	}
-
-	public GraphField(int x, int y) {
-		this(x, y, 0, new HashSet<>(), new ArrayList<>());
 	}
 
 	public int getX() {

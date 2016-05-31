@@ -12,32 +12,32 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 
 public class GraphBridgeTest {
-	
+
 	GraphField field1, field2, field3;
 	GraphBridge graphBridge;
-	
-	public GraphBridgeTest(){
-		
-		field3 = new GraphField(2, 5, 1);		// Dummy
+
+	public GraphBridgeTest() {
+
+		field3 = new GraphField(2, 5, 1); // Dummy
 		setToVerticalNeighbors(4);
-		
+
 	}
-	
+
 	private void setToVerticalNeighbors(int field2bridges) {
 		field1 = new GraphField(1, 1, 2);
 		HashSet<GraphField> field2neighbor = new HashSet<GraphField>();
 		field2neighbor.add(field1);
-		field2 = new GraphField(1, 2, field2bridges, field2neighbor, null);
-		
+		field2 = new GraphField(1, 2, field2bridges, field2neighbor, null, null);
+
 		graphBridge = new GraphBridge(field1, field2);
 	}
-	
+
 	private void setToHorizontalNeighbors(int field2bridges) {
 		field1 = new GraphField(1, 1, 2);
 		HashSet<GraphField> field2neighbor = new HashSet<GraphField>();
 		field2neighbor.add(field1);
-		field2 = new GraphField(2, 1, field2bridges, field2neighbor, null);
-		
+		field2 = new GraphField(2, 1, field2bridges, field2neighbor, null, null);
+
 		graphBridge = new GraphBridge(field1, field2);
 	}
 
@@ -99,19 +99,21 @@ public class GraphBridgeTest {
 		assertTrue("Weighting should be 1", graphBridge.getWeighting() == 1);
 		graphBridge.setWeighting(2);
 		assertTrue("Weighting should be 2", graphBridge.getWeighting() == 2);
-		
+
 		try {
 			graphBridge.setWeighting(3);
 			fail("Weighting 3 should never be allowed");
-		} catch(Exception e) {}
-		
+		} catch (Exception e) {
+		}
+
 		setToHorizontalNeighbors(1);
-		
+
 		try {
 			graphBridge.setWeighting(2);
 			fail("Weighting 2 should not be possible with field that allows only 1 bridge");
-		} catch(Exception e) {}
-		
+		} catch (Exception e) {
+		}
+
 	}
 
 	@Test
@@ -128,22 +130,24 @@ public class GraphBridgeTest {
 		assertTrue("Weighting should be 1", graphBridge.getWeighting() == 1);
 		graphBridge.incrementWeighting();
 		assertTrue("Weighting should be 2", graphBridge.getWeighting() == 2);
-		
+
 		try {
 			graphBridge.incrementWeighting();
 			fail("Incrementing shouldn't be possible if already 2");
-		} catch(Exception e) {}
-		
+		} catch (Exception e) {
+		}
+
 		setToHorizontalNeighbors(1);
 		graphBridge.setWeighting(0);
 		graphBridge.incrementWeighting();
 		assertTrue("Weighting should be 1", graphBridge.getWeighting() == 1);
-		
+
 		try {
 			graphBridge.incrementWeighting();
 			fail("Incrementing shouldn't be possible if only 1 is possible");
-		} catch(Exception e) {}
-		
+		} catch (Exception e) {
+		}
+
 		setToHorizontalNeighbors(4);
 	}
 
@@ -156,19 +160,19 @@ public class GraphBridgeTest {
 		assertTrue("Weighting should be 1", graphBridge.getWeighting() == 1);
 		graphBridge.decrementWeighting();
 		assertTrue("Weighting should be 0", graphBridge.getWeighting() == 0);
-		
+
 		try {
 			graphBridge.decrementWeighting();
 			fail("Decrementing shouldn't be possible if already 0");
-		} catch(Exception e) {}
-		
-		
+		} catch (Exception e) {
+		}
+
 		setToHorizontalNeighbors(1);
-		
+
 		graphBridge.setWeighting(1);
 		graphBridge.decrementWeighting();
 		assertTrue("Weighting should be 0", graphBridge.getWeighting() == 0);
-		
+
 		setToHorizontalNeighbors(4);
 	}
 

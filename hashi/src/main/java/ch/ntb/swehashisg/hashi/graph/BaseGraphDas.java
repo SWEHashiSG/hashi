@@ -123,7 +123,8 @@ public class BaseGraphDas extends GraphDas {
 		Set<Vertex> neighbors = getNeighbors(v);
 		Set<GraphField> neighborFields = convertVerticesToFieldsLight(neighbors);
 		List<GraphBridge> existingBridges = getBridges(v);
-		return new GraphField(x, y, bridges, neighborFields, existingBridges);
+		List<GraphBridge> existingSolutionBridges = getSolutionBridges(v);
+		return new GraphField(x, y, bridges, neighborFields, existingBridges, existingSolutionBridges);
 	}
 
 	private GraphField convertVertexToFieldLight(Vertex v) {
@@ -150,6 +151,23 @@ public class BaseGraphDas extends GraphDas {
 		node1.addEdge("bridge", node2);
 	}
 
+	public void addSolutionBridge(GraphBridge bridge) {
+		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
+				.toList().get(0);
+		Vertex node2 = graph.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
+				.toList().get(0);
+		if (!needsSolutionBridge(node1)) {
+			throw new IllegalArgumentException("Doesn't need bridge!");
+		}
+		if (!needsSolutionBridge(node2)) {
+			throw new IllegalArgumentException("Doesn't need bridge!");
+		}
+		if (!areNeighbors2(node1, node2)) {
+			throw new IllegalArgumentException("Crossing bridges!");
+		}
+		node1.addEdge("solutionBridge", node2);
+	}
+
 	public void removeBridge(GraphBridge bridge) {
 		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
 				.toList().get(0);
@@ -168,8 +186,31 @@ public class BaseGraphDas extends GraphDas {
 		}
 	}
 
+	public void removeSolutionBridge(GraphBridge bridge) {
+		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
+				.toList().get(0);
+		Vertex node2 = graph.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
+				.toList().get(0);
+		if (!areNeighbors2(node1, node2)) {
+			throw new IllegalArgumentException("Need to be neighbors!");
+		}
+		List<Object> possibleCandidates = node1.graph().traversal().V(node1).outE("solutionBridge").as("edgeToDelete")
+				.bothV().is(node2).select("edgeToDelete").toList();
+		if (possibleCandidates.size() == 0) {
+			throw new IllegalArgumentException("No solutionBridge to delete found!");
+		} else {
+			Edge e = (Edge) possibleCandidates.get(0);
+			e.remove();
+		}
+	}
+
 	private boolean needsBridge(Vertex node) {
 		return (int) node.property("bridges").value() > node.graph().traversal().V(node).bothE("bridge").count()
+				.toList().get(0);
+	}
+
+	private boolean needsSolutionBridge(Vertex node) {
+		return (int) node.property("bridges").value() > node.graph().traversal().V(node).bothE("solutionBridge").count()
 				.toList().get(0);
 	}
 
@@ -192,6 +233,25 @@ public class BaseGraphDas extends GraphDas {
 	}
 
 	private List<GraphBridge> getBridges(Vertex node) {
+		List<GraphBridge> bridges = new ArrayList<>();
+		Iterator<Edge> edges = node.edges(Direction.BOTH, "bridge");
+		while (edges.hasNext()) {
+			Edge edge = edges.next();
+			GraphField node1 = convertVertexToFieldLight(edge.outVertex());
+			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
+			GraphBridge bridge = new GraphBridge(node1, node2);
+			if (bridgesToWeight.containsKey(bridge)) {
+				bridgesToWeight.put(bridge, bridgesToWeight.get(bridge) + 1);
+			} else {
+				bridgesToWeight.put(bridge, 1);
+			}
+			bridges.add(bridge);
+		}
+
+		return bridges;
+	}
+
+	private List<GraphBridge> getSolutionBridges(Vertex node) {
 		List<GraphBridge> bridges = new ArrayList<>();
 		Iterator<Edge> edges = node.edges(Direction.BOTH, "bridge");
 		while (edges.hasNext()) {
