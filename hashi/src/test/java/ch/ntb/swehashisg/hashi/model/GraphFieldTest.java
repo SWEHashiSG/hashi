@@ -1,4 +1,4 @@
-package ch.ntb.swehashisg.hashi.test;
+package ch.ntb.swehashisg.hashi.model;
 
 import static org.junit.Assert.*;
 
