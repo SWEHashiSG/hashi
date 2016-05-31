@@ -127,11 +127,15 @@ public class MainWindowController extends AnchorPane {
 			}
 			gameField = new GameFieldPlayController(graphDas, this);
 			gameField.loadGame();
-			pane.getChildren().add(gameField);
-			updateButtons(graphDas);
+			addGameField(gameField);
 		} else {
 			logger.debug("Open File Dialog Closed without a choosen File");
 		}
+	}
+
+	private void addGameField(GameFieldController gameField) {
+		pane.getChildren().add(gameField);
+		updateButtons(graphDas);
 	}
 
 	@FXML
@@ -166,8 +170,7 @@ public class MainWindowController extends AnchorPane {
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
 		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas, this);
 		gameField.loadGame();
-		pane.getChildren().add(gameField);
-		updateButtons(graphDas);
+		addGameField(gameField);
 	}
 
 	public void closeRequest(WindowEvent event) {
