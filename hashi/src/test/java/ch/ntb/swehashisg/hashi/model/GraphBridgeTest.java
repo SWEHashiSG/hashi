@@ -1,36 +1,31 @@
 package ch.ntb.swehashisg.hashi.model;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.ntb.swehashisg.hashi.model.BridgeDirection;
-import ch.ntb.swehashisg.hashi.model.GraphBridge;
-import ch.ntb.swehashisg.hashi.model.GraphField;
-
 public class GraphBridgeTest {
 
-	GraphField field1, field2, field3, field4;
+	GraphField field1, field2, field3, field4, field5;
 	GraphBridge graphBridge1, graphBridge2;
 	HashSet<GraphField> field2neighbor;
 
 	@Before
 	public void preparations() {
-
 		field3 = new GraphField(5, 5, 1); // Dummy
 		HashSet<GraphField> neighbor = new HashSet<GraphField>();
 		neighbor.add(field3);
-		field4 = new GraphField(4, 2, 2, neighbor, null);
+		field4 = new GraphField(4, 2, 2, neighbor, null, null);
+		field5 = new GraphField(6, 2, 2);
 
 		field1 = new GraphField(1, 1, 2);
 		field2neighbor = new HashSet<GraphField>();
 		field2neighbor.add(field1);
-
-		setToVerticalNeighbors(4);
+		
+		setToHorizontalNeighbors(2);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -39,12 +34,12 @@ public class GraphBridgeTest {
 	}
 
 	private void setToVerticalNeighbors(int field2bridges) {
-		field2 = new GraphField(1, 2, field2bridges, field2neighbor, null);
+		field2 = new GraphField(1, 2, field2bridges, field2neighbor, null, null);
 		graphBridge1 = new GraphBridge(field1, field2);
 	}
 
 	private void setToHorizontalNeighbors(int field2bridges) {
-		field2 = new GraphField(2, 1, field2bridges, field2neighbor, null);
+		field2 = new GraphField(2, 1, field2bridges, field2neighbor, null, null);
 		graphBridge1 = new GraphBridge(field1, field2);
 	}
 
@@ -79,6 +74,7 @@ public class GraphBridgeTest {
 
 	@Test
 	public void testGetBridgeDirection() {
+		setToVerticalNeighbors(4);
 		assertTrue("Bridge should be vertical", graphBridge1.getBridgeDirection().equals(BridgeDirection.Vertical));
 		setToHorizontalNeighbors(4);
 		assertTrue("Bridge should be horizontal", graphBridge1.getBridgeDirection().equals(BridgeDirection.Horizontal));
@@ -116,6 +112,7 @@ public class GraphBridgeTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetWeighting3() {
 		setToHorizontalNeighbors(1);
+
 		graphBridge1.setWeighting(2);
 	}
 
@@ -127,6 +124,7 @@ public class GraphBridgeTest {
 	@Test
 	public void testIncrementWeighting() {
 		setToHorizontalNeighbors(2);
+
 		graphBridge1.setWeighting(0);
 		assertTrue("Weighting should be 0", graphBridge1.getWeighting() == 0);
 		graphBridge1.incrementWeighting();
@@ -135,6 +133,7 @@ public class GraphBridgeTest {
 		assertTrue("Weighting should be 2", graphBridge1.getWeighting() == 2);
 
 		setToHorizontalNeighbors(1);
+
 		graphBridge1.setWeighting(0);
 		graphBridge1.incrementWeighting();
 		assertTrue("Weighting should be 1", graphBridge1.getWeighting() == 1);
@@ -159,6 +158,7 @@ public class GraphBridgeTest {
 	@Test
 	public void testDecrementWeighting() {
 		setToHorizontalNeighbors(2);
+
 		graphBridge1.setWeighting(2);
 		assertTrue("Weighting should be 2", graphBridge1.getWeighting() == 2);
 		graphBridge1.decrementWeighting();
@@ -172,7 +172,6 @@ public class GraphBridgeTest {
 		graphBridge1.decrementWeighting();
 		assertTrue("Weighting should be 0", graphBridge1.getWeighting() == 0);
 
-		setToHorizontalNeighbors(4);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
@@ -183,13 +182,13 @@ public class GraphBridgeTest {
 
 	@Test
 	public void testEqualsObject() {
-		graphBridge2 = new GraphBridge(field2, field4);
+		graphBridge2 = new GraphBridge(field5, field4);
 		boolean workaroundForCoverage = graphBridge1.equals(graphBridge2);
 		assertTrue("Should not be the same bridge", !workaroundForCoverage);
 		workaroundForCoverage = graphBridge1.equals(graphBridge1);
 		assertTrue("Should be the same bridge", workaroundForCoverage);
 	}
-	
+
 	@Test
 	public void testEqualsObject2() {
 		assertTrue("Should return a 'null'", graphBridge1.equals(null));

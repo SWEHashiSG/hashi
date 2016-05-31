@@ -13,6 +13,7 @@ import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
 import ch.ntb.swehashisg.hashi.graph.GraphFormat;
 import ch.ntb.swehashisg.hashi.graph.Utilities;
+import ch.ntb.swehashisg.hashi.graph.VersionedGraphDas;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -60,11 +61,13 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void undo() {
 		logger.debug("Undo Clicked");
+		graphDas.undo();
 	}
 
 	@FXML
 	public void redo() {
 		logger.debug("Redo Clicked");
+		graphDas.redo();
 	}
 
 	@FXML

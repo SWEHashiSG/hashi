@@ -49,18 +49,17 @@ public class GameFieldDesignerController extends GameFieldController {
 	void onMouseClicked(MouseEvent mouseEvent) {
 		int x = ((int) mouseEvent.getX() / FieldController.getFieldSize());
 		int y = ((int) mouseEvent.getY() / FieldController.getFieldSize());
-		addNewField(x, y);
+		setBridges(x, y);
 	}
 
 	@Override
 	void clickedOnField(FieldController field) {
-		graphDas.removeField(field.getGraphField());
-		addNewField(field.getGraphField().getX(), field.getGraphField().getY());
+		setBridges(field.getGraphField().getX(), field.getGraphField().getY());
 	}
 
-	private void addNewField(int x, int y) {
+	private void setBridges(int x, int y) {
 		int value = showBridgeValueDialog();
-		graphDas.addField(new GraphField(x, y, value));
+		graphDas.setBridges(new GraphField(x, y, value));
 		logger.debug("Clicked on Game Field in Designer Mode. Add new Field at: x=" + x + " - y=" + y);
 		UpdateThread updateThread = new UpdateThread(this, graphDas);
 		isUpdating = true;
