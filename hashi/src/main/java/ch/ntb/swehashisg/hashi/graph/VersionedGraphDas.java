@@ -115,14 +115,9 @@ public class VersionedGraphDas extends GraphDas {
 	public int getSizeY() {
 		return graphDas.getSizeY();
 	}
-	
-	@Override
-	public void addField(GraphField field) {
-		graphDas.addField(field);
-	}
 
 	@Override
-	public void removeField(GraphField field) {
-		graphDas.removeField(field);		
+	public void setBridges(GraphField field) {
+		graphDas.setBridges(field);
 	}
 }
