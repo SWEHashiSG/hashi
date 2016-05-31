@@ -26,10 +26,14 @@ public abstract class GraphDas {
 	public abstract int getSizeY();
 
 	public abstract void undo();
-	
+
 	public abstract boolean canUndo();
-	
+
 	public abstract void redo();
-	
+
 	public abstract boolean canRedo();
+
+	public abstract void addSolutionBridge(GraphBridge bridge);
+
+	public abstract void removeSolutionBridge(GraphBridge bridge);
 }

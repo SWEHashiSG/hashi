@@ -159,6 +159,7 @@ public class BaseGraphDas extends GraphDas {
 		node1.addEdge("bridge", node2);
 	}
 
+	@Override
 	public void addSolutionBridge(GraphBridge bridge) {
 		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
 				.toList().get(0);
@@ -194,6 +195,7 @@ public class BaseGraphDas extends GraphDas {
 		}
 	}
 
+	@Override
 	public void removeSolutionBridge(GraphBridge bridge) {
 		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
 				.toList().get(0);
