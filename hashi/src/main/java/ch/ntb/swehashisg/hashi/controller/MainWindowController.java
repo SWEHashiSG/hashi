@@ -60,11 +60,13 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void undo() {
 		logger.debug("Undo Clicked");
+		graphDas.undo();
 	}
 
 	@FXML
 	public void redo() {
 		logger.debug("Redo Clicked");
+		graphDas.redo();
 	}
 
 	@FXML

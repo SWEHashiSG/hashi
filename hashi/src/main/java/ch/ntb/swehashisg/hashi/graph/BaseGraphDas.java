@@ -319,4 +319,24 @@ public class BaseGraphDas extends GraphDas {
 	Graph getGraph() {
 		return this.graph;
 	}
+
+	@Override
+	public void undo() {
+		throw new UnsupportedOperationException("undo function is not Implemented in BaseGraphDas");
+	}
+
+	@Override
+	public boolean canUndo() {
+		throw new UnsupportedOperationException("canUndo function is not Implemented in BaseGraphDas");
+	}
+
+	@Override
+	public void redo() {
+		throw new UnsupportedOperationException("redo function is not Implemented in BaseGraphDas");
+	}
+
+	@Override
+	public boolean canRedo() {
+		throw new UnsupportedOperationException("canRedo function is not Implemented in BaseGraphDas");
+	}
 }

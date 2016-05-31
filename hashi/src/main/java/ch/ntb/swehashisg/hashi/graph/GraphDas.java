@@ -24,4 +24,12 @@ public abstract class GraphDas {
 	public abstract int getSizeX();
 
 	public abstract int getSizeY();
+
+	public abstract void undo();
+	
+	public abstract boolean canUndo();
+	
+	public abstract void redo();
+	
+	public abstract boolean canRedo();
 }
