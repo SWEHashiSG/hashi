@@ -86,12 +86,23 @@ public class GraphFieldTest {
 
 	@Test
 	public void testGetNeighbors() {
-		fail("Not yet impemented");
+		HashSet<GraphField> hashSet = new HashSet<GraphField>();
+		hashSet.add(eastN);
+		hashSet.add(westN);
+		hashSet.add(northN);
+		hashSet.add(southN);
+		main = new GraphField(1, 2, 2, hashSet, null);
+		assertTrue("Should be the same", main.getNeighbors().equals(hashSet));
 	}
 
 	@Test
 	public void testGetExistingBridges() {
-		fail("Not yet implemented");
+		assertTrue("Should be empty", main.getExistingBridges().isEmpty());
+	}
+	
+	@Test
+	public void testEqualsObject() {
+		assertTrue("Should be 'null'", main.equals(null));
 	}
 
 }
