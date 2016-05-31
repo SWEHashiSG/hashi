@@ -19,18 +19,28 @@ public class VersionedGraphDas extends GraphDas {
 		this.index = 0;
 		this.listOperations = new ArrayList<BridgeOperation>();
 	}
+	
+	public boolean canUndo()
+	{
+		return (index > 0);
+	}
 
 	public boolean undo() {
-		if (index <= 0)
+		if (!canUndo())
 			return false;
 		index--;
 		BridgeOperation bo = listOperations.get(index);
 		executeOperation(!bo.isAddingBridge, bo.graphBridge);
 		return true;
 	}
+	
+	public boolean canRedo()
+	{
+		return ! ((index >= listOperations.size() || index < 0));
+	}
 
 	public boolean redo() {
-		if (index >= listOperations.size() || index < 0)
+		if (!canRedo())
 			return false;
 		BridgeOperation bo = listOperations.get(index);
 		executeOperation(bo.isAddingBridge, bo.graphBridge);
