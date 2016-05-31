@@ -166,43 +166,6 @@ public class MainWindowController extends AnchorPane {
 		pane.getChildren().add(gameField);
 	}
 
-	@FXML
-	public void loadGame() {
-		logger.debug("Started");
-		graphDas = GraphDasFactory.getGraphDas();
-		gameField = new GameFieldPlayController(graphDas);
-		gameField.loadGame();
-		pane.getChildren().add(gameField);
-	}
-
-	@FXML
-	public void addBridge() {
-		logger.debug("Add Bridge");
-	}
-
-	@FXML
-	public void addDoubleBridge() {
-		logger.debug("Add Double Bridge Test");
-	}
-
-	@FXML
-	public void showHint() {
-		logger.debug("Show Hint");
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Resource File");
-		fileChooser.showOpenDialog(this.getScene().getWindow());
-	}
-
-	@FXML
-	public void removeHint() {
-		logger.debug("Remove Hint");
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Information Dialog");
-		alert.setHeaderText("Look, an Information Dialog");
-		alert.setContentText("I have a great message for you!");
-		alert.showAndWait();
-	}
-
 	public void closeRequest(WindowEvent event) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Saving game?");
