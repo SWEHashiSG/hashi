@@ -63,6 +63,10 @@ public abstract class GameFieldController extends GridPane {
 		}
 		for (GraphField field : graphFields) {
 			for (GraphField neighbor : field.getNeighbors()) {
+				logger.error("field x: " + field.getX());
+				logger.error("field y: " + field.getY());
+				logger.error("neighbor x: " + neighbor.getX());
+				logger.error("neighbor y: " + neighbor.getY());
 				GraphField fullNeighbor = lightFieldToRealField.get(neighbor);
 				GraphBridge newBridge = new GraphBridge(field, fullNeighbor);
 

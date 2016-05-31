@@ -144,9 +144,6 @@ public class BaseGraphDas extends GraphDas {
 		if (!needsBridge(node2)) {
 			throw new IllegalArgumentException("Doesn't need bridge!");
 		}
-		if (!areNeighbors(node1, node2)) {
-			throw new IllegalArgumentException("Need to be neighbors!");
-		}
 		if (!areNeighbors2(node1, node2)) {
 			throw new IllegalArgumentException("Crossing bridges!");
 		}
@@ -158,7 +155,7 @@ public class BaseGraphDas extends GraphDas {
 				.toList().get(0);
 		Vertex node2 = graph.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
 				.toList().get(0);
-		if (!areNeighbors(node1, node2)) {
+		if (!areNeighbors2(node1, node2)) {
 			throw new IllegalArgumentException("Need to be neighbors!");
 		}
 		List<Object> possibleCandidates = node1.graph().traversal().V(node1).outE("bridge").as("edgeToDelete").bothV()
@@ -219,114 +216,94 @@ public class BaseGraphDas extends GraphDas {
 		int x2 = (int) node2.property("x").value();
 		int y2 = (int) node2.property("y").value();
 		Graph g = node1.graph();
-		if (x1 != x2 && y1 != y2) {
+		if (!areOrthogonal(x1, y1, x2, y2)) {
+			return false;
+		} else if (!haveSpaceInBetween(x1, y1, x2, y2)) {
+			return false;
+		} else if (!haveNoBridgesInBetween(node1, x1, y1, x2, y2, g)) {
 			return false;
 		} else {
-			GraphTraversal<Vertex, Vertex> tr = g.traversal().V(node1);
-			Predicate<Traverser<Vertex>> complexFilterColumn = new Predicate<Traverser<Vertex>>() {
-
-				@Override
-				public boolean test(Traverser<Vertex> t) {
-					List<Long> testList = g.traversal().V(t.get())
-							.match(__.<Vertex> as("t").repeat(__.in("row")).until(__.values("bridges").is(P.neq(0)))
-									.bothE("bridge").as("bridge"),
-									__.<Vertex> as("t").repeat(__.out("row")).until(__.values("bridges").is(P.neq(0)))
-											.bothE("bridge").as("bridge"))
-							.select("bridge").count().toList();
-					if (testList.size() > 0) {
-						if (testList.get(0) > 0) {
-							return false;
-						} else {
-							return true;
-						}
-					} else {
-						return true;
-					}
-				}
-			};
-			Predicate<Traverser<Vertex>> complexFilterRow = new Predicate<Traverser<Vertex>>() {
-
-				@Override
-				public boolean test(Traverser<Vertex> t) {
-					List<Long> testList = g.traversal().V(t.get())
-							.match(__.<Vertex> as("t").repeat(__.in("column")).until(__.values("bridges").is(P.neq(0)))
-									.bothE("bridge").as("bridge"),
-									__.<Vertex> as("t").repeat(__.out("column"))
-											.until(__.values("bridges").is(P.neq(0))).bothE("bridge").as("bridge"))
-							.select("bridge").count().toList();
-					if (testList.size() > 0) {
-						if (testList.get(0) > 0) {
-							return false;
-						} else {
-							return true;
-						}
-					} else {
-						return true;
-					}
-				}
-			};
-			if (x1 > x2) {
-				tr = tr.repeat(__.in("row")
-						.or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
-								__.and(__.values("x").is(P.gt(x2)), __.values("bridges").is(0)))
-						.filter(complexFilterRow)).until(__.values("x").is(P.eq(x2)));
-			}
-			if (x1 < x2) {
-				tr = tr.repeat(__.out("row")
-						.or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
-								__.and(__.values("x").is(P.lt(x2)), __.values("bridges").is(0)))
-						.filter(complexFilterRow)).until(__.values("x").is(P.eq(x2)));
-			}
-			if (y1 > y2) {
-				tr = tr.repeat(__.in("column")
-						.or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
-								__.and(__.values("y").is(P.gt(y2)), __.values("bridges").is(0)))
-						.filter(complexFilterColumn)).until(__.values("y").is(P.eq(y2)));
-			}
-			if (y1 < y2) {
-				tr = tr.repeat(__.out("column")
-						.or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
-								__.and(__.values("y").is(P.lt(y2)), __.values("bridges").is(0)))
-						.filter(complexFilterColumn)).until(__.values("y").is(P.eq(y2)));
-			}
-			return tr.toList().size() > 0;
+			return true;
 		}
 	}
 
-	private boolean areNeighbors(Vertex node1, Vertex node2) {
-		int x1 = (int) node1.property("x").value();
-		int y1 = (int) node1.property("y").value();
-		int x2 = (int) node2.property("x").value();
-		int y2 = (int) node2.property("y").value();
-		Graph g = node1.graph();
-		if (x1 != x2 && y1 != y2) {
-			return false;
-		} else {
-			GraphTraversal<Vertex, Vertex> tr = g.traversal().V(node1);
-			if (x1 > x2) {
-				tr = tr.repeat(__.in("row").or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
-						__.and(__.values("x").is(P.gt(x2)), __.values("bridges").is(0))))
-						.until(__.values("x").is(P.eq(x2)));
+	private boolean haveNoBridgesInBetween(Vertex node1, int x1, int y1, int x2, int y2, Graph g) {
+		GraphTraversal<Vertex, Vertex> tr = g.traversal().V(node1);
+		Predicate<Traverser<Vertex>> complexFilterColumn = new Predicate<Traverser<Vertex>>() {
+
+			@Override
+			public boolean test(Traverser<Vertex> t) {
+				List<Long> testList = g.traversal().V(t.get())
+						.match(__.<Vertex> as("t").repeat(__.in("row")).until(__.values("bridges").is(P.neq(0)))
+								.bothE("bridge").as("bridge"),
+								__.<Vertex> as("t").repeat(__.out("row")).until(__.values("bridges").is(P.neq(0)))
+										.bothE("bridge").as("bridge"))
+						.select("bridge").count().toList();
+				if (testList.size() > 0) {
+					if (testList.get(0) > 0) {
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					return true;
+				}
 			}
-			if (x1 < x2) {
-				tr = tr.repeat(__.out("row").or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
-						__.and(__.values("x").is(P.lt(x2)), __.values("bridges").is(0))))
-						.until(__.values("x").is(P.eq(x2)));
+		};
+		Predicate<Traverser<Vertex>> complexFilterRow = new Predicate<Traverser<Vertex>>() {
+
+			@Override
+			public boolean test(Traverser<Vertex> t) {
+				List<Long> testList = g.traversal().V(t.get())
+						.match(__.<Vertex> as("t").repeat(__.in("column")).until(__.values("bridges").is(P.neq(0)))
+								.bothE("bridge").as("bridge"),
+								__.<Vertex> as("t").repeat(__.out("column")).until(__.values("bridges").is(P.neq(0)))
+										.bothE("bridge").as("bridge"))
+						.select("bridge").count().toList();
+				if (testList.size() > 0) {
+					if (testList.get(0) > 0) {
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					return true;
+				}
 			}
-			if (y1 > y2) {
-				tr = tr.repeat(
-						__.in("column").or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
-								__.and(__.values("y").is(P.gt(y2)), __.values("bridges").is(0))))
-						.until(__.values("y").is(P.eq(y2)));
-			}
-			if (y1 < y2) {
-				tr = tr.repeat(
-						__.out("column").or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
-								__.and(__.values("y").is(P.lt(y2)), __.values("bridges").is(0))))
-						.until(__.values("y").is(P.eq(y2)));
-			}
-			return tr.toList().size() > 0;
+		};
+		if (x1 > x2) {
+			tr = tr.repeat(__.in("row")
+					.or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
+							__.and(__.values("x").is(P.gt(x2)), __.values("bridges").is(0)))
+					.filter(complexFilterRow)).until(__.values("x").is(P.eq(x2)));
 		}
+		if (x1 < x2) {
+			tr = tr.repeat(__.out("row")
+					.or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
+							__.and(__.values("x").is(P.lt(x2)), __.values("bridges").is(0)))
+					.filter(complexFilterRow)).until(__.values("x").is(P.eq(x2)));
+		}
+		if (y1 > y2) {
+			tr = tr.repeat(__.in("column")
+					.or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
+							__.and(__.values("y").is(P.gt(y2)), __.values("bridges").is(0)))
+					.filter(complexFilterColumn)).until(__.values("y").is(P.eq(y2)));
+		}
+		if (y1 < y2) {
+			tr = tr.repeat(__.out("column")
+					.or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
+							__.and(__.values("y").is(P.lt(y2)), __.values("bridges").is(0)))
+					.filter(complexFilterColumn)).until(__.values("y").is(P.eq(y2)));
+		}
+		return tr.toList().size() > 0;
+	}
+
+	private boolean haveSpaceInBetween(int x1, int y1, int x2, int y2) {
+		return !(x1 + 1 == x2 || x1 - 1 == x2 || y1 + 1 == y2 || y1 - 1 == y2);
+	}
+
+	private boolean areOrthogonal(int x1, int y1, int x2, int y2) {
+		return !(x1 != x2 && y1 != y2);
 	}
 
 	@Override
