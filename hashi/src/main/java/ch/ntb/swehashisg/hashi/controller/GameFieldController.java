@@ -32,6 +32,7 @@ public abstract class GameFieldController extends GridPane {
 	protected ArrayList<FieldController> fields;
 	protected HashMap<GraphBridge, BridgeController> graphBridgeToBridge;
 	protected HashMap<GraphBridge, HighlightController> graphBridgeToHighlight;
+	protected HashMap<GraphBridge, BridgeController> graphBridgeToSolutionBridge;
 	protected boolean isUpdating = false;
 
 	public GameFieldController(GraphDas graphDas) {
@@ -49,6 +50,10 @@ public abstract class GameFieldController extends GridPane {
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
 		createAllBridgesHighlights(getBridges(graphPlayField));
+		graphBridgeToSolutionBridge = new HashMap<>();
+		for (GraphBridge bridge : graphPlayField.getSolutionBridges()) {
+			graphBridgeToSolutionBridge.put(bridge, new BridgeController(bridge, this, false));
+		}
 	}
 
 	protected abstract Set<GraphBridge> getBridges(GraphPlayField graphPlayField);
@@ -231,6 +236,12 @@ public abstract class GameFieldController extends GridPane {
 					gameField.update(playField);
 				}
 			});
+		}
+	}
+
+	public void showSolution() {
+		for (BridgeController bridgeController : graphBridgeToSolutionBridge.values()) {
+			bridgeController.toggleVisibility();
 		}
 	}
 }

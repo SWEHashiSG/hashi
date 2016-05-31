@@ -78,6 +78,7 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void showSolution() {
 		logger.debug("Show Solution Clicked");
+		gameField.showSolution();
 	}
 
 	@FXML
