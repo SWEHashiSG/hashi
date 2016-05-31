@@ -40,7 +40,7 @@ public class GraphDasFactory {
 			tg.createIndex("y", Vertex.class);
 			Graph g = tg;
 			BaseGraphDas graphDas = new BaseGraphDas(g);
-			return graphDas;
+			return new VersionedGraphDas(graphDas);
 		} catch (Exception ex) {
 			throw new RuntimeException("Couldn't read Graph!", ex);
 		}
@@ -53,7 +53,7 @@ public class GraphDasFactory {
 		Graph g = tg;
 		g = Utilities.generateBasisPlayGround(g,sizeX, sizeY);
 		BaseGraphDas graphDas = new BaseGraphDas(g);
-		return graphDas;
+		return new VersionedGraphDas(graphDas);
 	}
 
 }

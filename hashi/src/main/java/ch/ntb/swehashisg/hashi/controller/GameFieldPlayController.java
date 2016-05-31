@@ -18,8 +18,8 @@ public class GameFieldPlayController extends GameFieldController {
 
 	private GameTime gameTime;
 
-	public GameFieldPlayController(GraphDas graphDas) {
-		super(graphDas);
+	public GameFieldPlayController(GraphDas graphDas, MainWindowController mainWindowController) {
+		super(graphDas, mainWindowController);
 		gameTime = new GameTime();
 	}
 

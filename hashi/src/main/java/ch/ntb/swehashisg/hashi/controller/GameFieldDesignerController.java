@@ -19,8 +19,8 @@ public class GameFieldDesignerController extends GameFieldController {
 
 	private static final Logger logger = LoggerFactory.getLogger(GameFieldDesignerController.class);
 
-	public GameFieldDesignerController(GraphDas graphDas) {
-		super(graphDas);
+	public GameFieldDesignerController(GraphDas graphDas, MainWindowController mainWindowController) {
+		super(graphDas, mainWindowController);
 
 		logger.debug("Is Used???");
 

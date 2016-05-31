@@ -27,6 +27,7 @@ public abstract class GameFieldController extends GridPane {
 
 	private static final Logger logger = LoggerFactory.getLogger(GameFieldController.class);
 
+	private MainWindowController mainWindowController;
 	protected GraphDas graphDas;
 	protected Set<GraphField> graphFields;
 	protected ArrayList<FieldController> fields;
@@ -35,7 +36,7 @@ public abstract class GameFieldController extends GridPane {
 	protected HashMap<GraphBridge, BridgeController> graphBridgeToSolutionBridge;
 	protected boolean isUpdating = false;
 
-	public GameFieldController(GraphDas graphDas) {
+	public GameFieldController(GraphDas graphDas, MainWindowController mainWindowController) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -46,6 +47,7 @@ public abstract class GameFieldController extends GridPane {
 			throw new RuntimeException(exception);
 		}
 		this.graphDas = graphDas;
+		this.mainWindowController = mainWindowController;
 		setFieldSize(graphDas.getSizeX(), graphDas.getSizeY());
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
@@ -179,10 +181,7 @@ public abstract class GameFieldController extends GridPane {
 				removeBridge(bridge);
 			}
 			removeBridge(bridge);
-			logger.debug("-------------Redraw whole gamefield-----------------");
-			UpdateThread updateThread = new UpdateThread(this, graphDas);
-			isUpdating = true;
-			updateThread.run();
+			initiateUpdate();
 		} else {
 			logger.warn("Is already updating, better solution needed!");
 		}
@@ -192,7 +191,6 @@ public abstract class GameFieldController extends GridPane {
 		if (!isUpdating) {
 			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 			addBridge(bridge);
-			logger.debug("-------------Redraw whole gamefield-----------------");
 			initiateUpdate();
 		} else {
 			logger.warn("Is already updating, better solution needed!");
@@ -211,7 +209,8 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	protected void initiateUpdate() {
-		UpdateThread updateThread = new UpdateThread(this, graphDas);
+		logger.debug("-------------Redraw whole gamefield-----------------");
+		UpdateThread updateThread = new UpdateThread(this, graphDas, mainWindowController);
 		isUpdating = true;
 		updateThread.run();
 	}
@@ -220,10 +219,13 @@ public abstract class GameFieldController extends GridPane {
 
 		private GameFieldController gameField;
 		private GraphDas graphDas;
+		private MainWindowController mainWindowController;
 
-		public UpdateThread(GameFieldController gameField, GraphDas graphDas) {
+		public UpdateThread(GameFieldController gameField, GraphDas graphDas,
+				MainWindowController mainWindowController) {
 			this.gameField = gameField;
 			this.graphDas = graphDas;
+			this.mainWindowController = mainWindowController;
 		}
 
 		@Override
@@ -233,6 +235,7 @@ public abstract class GameFieldController extends GridPane {
 
 				@Override
 				public void run() {
+					mainWindowController.updateButtons(graphDas);
 					gameField.update(playField);
 				}
 			});
@@ -243,5 +246,20 @@ public abstract class GameFieldController extends GridPane {
 		for (BridgeController bridgeController : graphBridgeToSolutionBridge.values()) {
 			bridgeController.toggleVisibility();
 		}
+		initiateUpdate();
+	}
+
+	public void undo() {
+		graphDas.undo();
+		initiateUpdate();
+	}
+
+	public void redo() {
+		graphDas.redo();
+		initiateUpdate();
+	}
+
+	public void restart() {
+		throw new UnsupportedOperationException();
 	}
 }

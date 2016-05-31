@@ -44,7 +44,7 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	private Button buttonUndo;
 	@FXML
-	private Button butotnRedo;
+	private Button buttonRedo;
 
 	public MainWindowController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
@@ -61,18 +61,19 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void undo() {
 		logger.debug("Undo Clicked");
-		graphDas.undo();
+		gameField.undo();
 	}
 
 	@FXML
 	public void redo() {
 		logger.debug("Redo Clicked");
-		graphDas.redo();
+		gameField.redo();
 	}
 
 	@FXML
 	public void restart() {
 		logger.debug("Restart Clicked");
+		gameField.restart();
 	}
 
 	@FXML
@@ -118,9 +119,10 @@ public class MainWindowController extends AnchorPane {
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
 			}
-			gameField = new GameFieldPlayController(graphDas);
+			gameField = new GameFieldPlayController(graphDas , this);
 			gameField.loadGame();
 			pane.getChildren().add(gameField);
+			updateButtons(graphDas);
 		} else {
 			logger.debug("Open File Dialog Closed without a choosen File");
 		}
@@ -161,9 +163,10 @@ public class MainWindowController extends AnchorPane {
 
 	private void startEditorMode(int sizeX, int sizeY) {
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
-		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas);
+		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas , this);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);
+		updateButtons(graphDas);
 	}
 
 	public void closeRequest(WindowEvent event) {
@@ -184,5 +187,10 @@ public class MainWindowController extends AnchorPane {
 		} else if (result.get() == buttonTypeCloseWithoutSave) {
 			// simple close Window
 		}
+	}
+
+	public void updateButtons(GraphDas graphDas) {
+		buttonUndo.setDisable(!graphDas.canUndo());
+		buttonRedo.setDisable(!graphDas.canRedo());
 	}
 }
