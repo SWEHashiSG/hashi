@@ -37,15 +37,11 @@ public class GameTime {
 	}
 
 	public long getTime() { // return Gametime
-		if (currentTime > 0) {
-			gameTime = currentTime - startTime;
-		} else {
-			gameTime = System.currentTimeMillis() - startTime;
-		}
+		gameTime = currentTime - startTime;
 		return gameTime / MILLISEC_TO_SEC;
 	}
 
 	public boolean isRunning() {
-		return (startTime != 0);
+		return (startTime == 0) != (currentTime == 0);
 	}
 }
