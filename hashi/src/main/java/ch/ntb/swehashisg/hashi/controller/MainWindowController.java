@@ -13,7 +13,6 @@ import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
 import ch.ntb.swehashisg.hashi.graph.GraphFormat;
 import ch.ntb.swehashisg.hashi.graph.Utilities;
-import ch.ntb.swehashisg.hashi.graph.VersionedGraphDas;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -22,6 +21,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -56,34 +57,39 @@ public class MainWindowController extends AnchorPane {
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}
+		updateButtons(false, false);
 	}
 
 	@FXML
 	public void undo() {
-		logger.debug("Undo Clicked");
 		gameField.undo();
 	}
 
 	@FXML
 	public void redo() {
-		logger.debug("Redo Clicked");
 		gameField.redo();
 	}
 
 	@FXML
 	public void restart() {
-		logger.debug("Restart Clicked");
 		gameField.restart();
 	}
 
 	@FXML
 	public void showSolution() {
-		logger.debug("Show Solution Clicked");
 		gameField.showSolution();
 	}
 
 	@FXML
+	public void check() {
+		logger.debug("Check Clicked");
+	}
+
+	@FXML
 	public void save() {
+		if (graphDas == null) {
+			return;
+		}
 		logger.debug("Save Clicked");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save Game");
@@ -119,18 +125,13 @@ public class MainWindowController extends AnchorPane {
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
 			}
-			gameField = new GameFieldPlayController(graphDas , this);
+			gameField = new GameFieldPlayController(graphDas, this);
 			gameField.loadGame();
 			pane.getChildren().add(gameField);
 			updateButtons(graphDas);
 		} else {
 			logger.debug("Open File Dialog Closed without a choosen File");
 		}
-	}
-
-	@FXML
-	public void check() {
-		logger.debug("Check Clicked");
 	}
 
 	@FXML
@@ -163,13 +164,16 @@ public class MainWindowController extends AnchorPane {
 
 	private void startEditorMode(int sizeX, int sizeY) {
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
-		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas , this);
+		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas, this);
 		gameField.loadGame();
 		pane.getChildren().add(gameField);
 		updateButtons(graphDas);
 	}
 
 	public void closeRequest(WindowEvent event) {
+		if (graphDas == null) {
+			return;
+		}
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Saving game?");
 		alert.setHeaderText("Do you want to save your game before exit?");
@@ -188,9 +192,31 @@ public class MainWindowController extends AnchorPane {
 			// simple close Window
 		}
 	}
+	
+	void updateButtons(GraphDas graphDas){
+		if (graphDas != null){
+			updateButtons(graphDas.canUndo(), graphDas.canRedo());
+		}
+	}
 
-	public void updateButtons(GraphDas graphDas) {
-		buttonUndo.setDisable(!graphDas.canUndo());
-		buttonRedo.setDisable(!graphDas.canRedo());
+	private void updateButtons(boolean canUndo, boolean canRedo) {
+		buttonUndo.setDisable(!canUndo);
+		buttonRedo.setDisable(!canRedo);
+	}
+
+	public void onKeyPressed(KeyEvent event) {
+		if (event.getCode() == KeyCode.S & event.isControlDown()) {
+			logger.debug("CTRL + S pressed");
+			save();
+		} else if (event.getCode() == KeyCode.Z & event.isControlDown()) {
+			logger.debug("CTRL + Z pressed");
+			undo();
+		} else if (event.getCode() == KeyCode.V & event.isControlDown()) {
+			logger.debug("CTRL + Y pressed");
+			redo();
+		} else if (event.getCode() == KeyCode.O & event.isControlDown()) {
+			logger.debug("CTRL + O pressed");
+			open();
+		}
 	}
 }
