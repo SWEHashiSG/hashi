@@ -214,7 +214,7 @@ public class MainWindowController extends AnchorPane {
 		} else if (event.getCode() == KeyCode.Z & event.isControlDown()) {
 			logger.debug("CTRL + Z pressed");
 			undo();
-		} else if (event.getCode() == KeyCode.V & event.isControlDown()) {
+		} else if (event.getCode() == KeyCode.Y & event.isControlDown()) {
 			logger.debug("CTRL + Y pressed");
 			redo();
 		} else if (event.getCode() == KeyCode.O & event.isControlDown()) {

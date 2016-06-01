@@ -10,13 +10,15 @@ import javafx.stage.Stage;
 
 public class MainHashi extends Application {
 
+	private int windowWidth = 520;
+	private int windowHeight = 500;
 	public static void main(String[] args) throws Exception {
 		launch(args);
 	}
 
 	public void start(Stage stage) throws Exception {
 		MainWindowController mainWindow = new MainWindowController();
-		Scene scene = new Scene(mainWindow, 500, 500);
+		Scene scene = new Scene(mainWindow,windowHeight, windowHeight);
         scene.getStylesheets().add("/styles/styles.css");
 		stage.setTitle("Hashi from Team SWEHashiSG");
 		URL url = getClass().getResource("/images/Icon.jpg");
@@ -24,6 +26,10 @@ public class MainHashi extends Application {
 		stage.setScene(scene);
 		stage.show();
 		stage.setOnCloseRequest(event -> mainWindow.closeRequest(event));
-		stage.setResizable(false);
+		stage.setMinWidth(windowWidth);
+		stage.setMinHeight(windowHeight);
+		System.out.println("min Width: " + mainWindow.getMinWidth());
+		System.out.println("max Width: " + mainWindow.getMaxWidth());
+		System.out.println("pref Width: " + mainWindow.getPrefWidth());
 	}
 }
