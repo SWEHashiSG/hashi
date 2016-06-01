@@ -187,6 +187,12 @@ public class GraphBridgeTest {
 		assertTrue("Should not be the same bridge", !workaroundForCoverage);
 		workaroundForCoverage = graphBridge1.equals(graphBridge1);
 		assertTrue("Should be the same bridge", workaroundForCoverage);
+		graphBridge2 = new GraphBridge(field1, field2);
+		assertTrue("SHould be the same bridge", graphBridge1.equals(graphBridge2));
+		graphBridge2 = new GraphBridge(field2, field1);
+		assertTrue("SHould be the same bridge", graphBridge1.equals(graphBridge2));
+		assertTrue("Should be false and throw not an Exception",!graphBridge1.equals(null));
+		assertTrue("Should be false and throw not an Exception", !graphBridge1.equals(new Object()));
 	}
 
 	@Test
