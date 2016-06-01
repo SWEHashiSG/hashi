@@ -46,6 +46,16 @@ public class MainWindowController extends AnchorPane {
 	private Button buttonUndo;
 	@FXML
 	private Button buttonRedo;
+	@FXML
+	private Button buttonSave;
+	@FXML
+	private Button buttonOpen;
+	@FXML
+	private Button buttonShowSolution;
+	@FXML
+	private Button buttonCheck;
+	@FXML
+	private Button buttonRestart;
 
 	public MainWindowController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
@@ -212,6 +222,10 @@ public class MainWindowController extends AnchorPane {
 	private void updateButtons(boolean canUndo, boolean canRedo) {
 		buttonUndo.setDisable(!canUndo);
 		buttonRedo.setDisable(!canRedo);
+		buttonShowSolution.setDisable(graphDas == null);
+		buttonRestart.setDisable(graphDas== null);
+		buttonSave.setDisable(graphDas == null);
+		buttonCheck.setDisable(graphDas == null);
 	}
 
 	public void onKeyPressed(KeyEvent event) {
