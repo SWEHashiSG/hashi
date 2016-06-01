@@ -121,6 +121,9 @@ public abstract class GameFieldController extends GridPane {
 		for (BridgeController bridge : graphBridgeToBridge.values()) {
 			bridge.addToGameField();
 		}
+		for (BridgeController solution: graphBridgeToSolutionBridge.values()){
+			solution.addToGameField();
+		}
 	}
 
 	private void cleanGameField() {
@@ -250,13 +253,17 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	public void undo() {
-		graphDas.undo();
-		initiateUpdate();
+		if (graphDas.canUndo()) {
+			graphDas.undo();
+			initiateUpdate();
+		}
 	}
 
 	public void redo() {
-		graphDas.redo();
-		initiateUpdate();
+		if (graphDas.canRedo()) {
+			graphDas.redo();
+			initiateUpdate();
+		}
 	}
 
 	public void restart() {
