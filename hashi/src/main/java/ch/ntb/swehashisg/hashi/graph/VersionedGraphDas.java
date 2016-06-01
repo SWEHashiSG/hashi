@@ -1,6 +1,7 @@
 package ch.ntb.swehashisg.hashi.graph;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.slf4j.Logger;
@@ -12,50 +13,48 @@ import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
 public class VersionedGraphDas extends GraphDas {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
 
-
 	private BaseGraphDas graphDas;
-	private ArrayList<GraphDasOperation> listOperations;
-	private int index;
+	private Stack<GraphDasOperation> undoOperations;
+	private Stack<GraphDasOperation> redoOperations;
 
 	public VersionedGraphDas(BaseGraphDas gd) {
 		this.graphDas = gd;
-		this.index = 0;
-		this.listOperations = new ArrayList<GraphDasOperation>();
+		undoOperations = new Stack<>();
+		redoOperations = new Stack<>();
 	}
 
 	public boolean canUndo() {
-		return (index > 0);
+		return !undoOperations.isEmpty();
 	}
 
 	public void undo() {
 		if (!canUndo()) {
 			throw new IllegalArgumentException("Nothing to undo!");
 		}
-		logger.debug("@VersionedGraphDas::undo();------------------------");
-		index--;
-		GraphDasOperation graphDasOperation = listOperations.get(index);
+		logger.debug("undo");
+		GraphDasOperation graphDasOperation = undoOperations.pop();
+		redoOperations.push(graphDasOperation);
 		graphDasOperation.undo();
 	}
 
 	public boolean canRedo() {
-		return !((index >= listOperations.size() || index < 0));
+		return !redoOperations.isEmpty();
 	}
 
 	public void redo() {
 		if (!canRedo()) {
 			throw new IllegalArgumentException("Nothing to redo!");
 		}
-		GraphDasOperation graphDasOperation = listOperations.get(index);
+		GraphDasOperation graphDasOperation = redoOperations.pop();
+		undoOperations.push(graphDasOperation);
 		graphDasOperation.redo();
-		index++;
 	}
 
 	private void addOperation(GraphDasOperation bridgeOperation) {
-		listOperations.add(bridgeOperation);
-		index++;
+		undoOperations.push(bridgeOperation);
 	}
 
 	@Override
@@ -81,11 +80,9 @@ public class VersionedGraphDas extends GraphDas {
 	public boolean isFinished() {
 		return graphDas.isFinished();
 	}
-	
-	private void removeNewerOperation()
-	{
-//		while(listOperations.size() > index)
-//			listOperations.remove(index + 1);
+
+	private void removeNewerOperation() {
+		redoOperations.clear();
 	}
 
 	private static interface GraphDasOperation {
@@ -214,7 +211,7 @@ public class VersionedGraphDas extends GraphDas {
 	@Override
 	public void restart() {
 		graphDas.restart();
-		this.index = 0;
-		this.listOperations = new ArrayList<GraphDasOperation>();
+		undoOperations.clear();
+		redoOperations.clear();
 	}
 }
