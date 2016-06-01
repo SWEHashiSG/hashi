@@ -84,8 +84,8 @@ public class VersionedGraphDas extends GraphDas {
 	
 	private void removeNewerOperation()
 	{
-		while(listOperations.size() > index)
-			listOperations.remove(index + 1);
+//		while(listOperations.size() > index)
+//			listOperations.remove(index + 1);
 	}
 
 	private static interface GraphDasOperation {
