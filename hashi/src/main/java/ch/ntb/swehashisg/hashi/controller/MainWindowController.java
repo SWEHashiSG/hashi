@@ -149,8 +149,8 @@ public class MainWindowController extends AnchorPane {
 			choices.add(14);
 			ChoiceDialog<Integer> dialog = new ChoiceDialog<Integer>(8, choices);
 			dialog.setTitle("Starting Editor Mode");
-			dialog.setHeaderText("Pleas select your desired Gamesize");
-			dialog.setContentText("Choos Width");
+			dialog.setHeaderText("Please select your desired Gamesize");
+			dialog.setContentText("Choose Width");
 
 			Optional<Integer> resultWidth = dialog.showAndWait();
 			if (resultWidth.isPresent()) {
