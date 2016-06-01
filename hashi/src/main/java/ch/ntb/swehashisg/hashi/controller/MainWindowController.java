@@ -142,6 +142,7 @@ public class MainWindowController extends AnchorPane {
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
 			}
+			pane.getChildren().remove(gameField);
 			gameField = new GameFieldPlayController(graphDas, this);
 			gameField.loadGame();
 			addGameField(gameField);
@@ -184,6 +185,7 @@ public class MainWindowController extends AnchorPane {
 	}
 
 	private void startEditorMode(int sizeX, int sizeY) {
+		pane.getChildren().remove(gameField);
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
 		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas, this);
 		gameField.loadGame();
