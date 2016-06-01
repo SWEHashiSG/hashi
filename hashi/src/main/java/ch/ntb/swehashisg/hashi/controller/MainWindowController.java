@@ -195,9 +195,9 @@ public class MainWindowController extends AnchorPane {
 			// simple close Window
 		}
 	}
-	
-	void updateButtons(GraphDas graphDas){
-		if (graphDas != null){
+
+	void updateButtons(GraphDas graphDas) {
+		if (graphDas != null) {
 			updateButtons(graphDas.canUndo(), graphDas.canRedo());
 		}
 	}
