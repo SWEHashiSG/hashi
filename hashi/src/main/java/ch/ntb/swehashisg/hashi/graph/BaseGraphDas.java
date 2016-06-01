@@ -75,7 +75,7 @@ public class BaseGraphDas extends GraphDas {
 		return vertices;
 	}
 
-	public boolean isCorrect() {
+	public boolean isFinished() {
 		Set<Vertex> vertices = getRelevantVertices();
 		for (Vertex vertex : vertices) {
 			int numberOfBridges = 0;

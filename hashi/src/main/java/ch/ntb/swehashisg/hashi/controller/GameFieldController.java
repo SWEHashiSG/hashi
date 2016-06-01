@@ -15,12 +15,17 @@ import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 
 public abstract class GameFieldController extends GridPane {
 
@@ -273,5 +278,29 @@ public abstract class GameFieldController extends GridPane {
 	public void restart() {
 		graphDas.restart();
 		initiateUpdate();
+	}
+
+	public boolean isCorrect() {
+		boolean isCorrect = true;
+		if (graphDas.isFinished()){
+			return isCorrect;
+		} else {
+			for (GraphBridge bridge: graphDas.getPlayField().getBridges()) {
+				BridgeController solutionController = graphBridgeToSolutionBridge.get(bridge);
+				if ( solutionController == null){
+					markFaultBridge(graphBridgeToBridge.get(bridge));
+					isCorrect = false;
+				} else if (solutionController.getGraphBridge().getWeighting() < bridge.getWeighting()){
+					markFaultBridge(graphBridgeToBridge.get(bridge));
+					isCorrect = false;
+				}
+			} 
+		}
+		return isCorrect;
+	}
+
+	private void markFaultBridge(BridgeController bridgeController) {
+		logger.warn("You have placed a wrong Bridge");
+		bridgeController.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
 	}
 }

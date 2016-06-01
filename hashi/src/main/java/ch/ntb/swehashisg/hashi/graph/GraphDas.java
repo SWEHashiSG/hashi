@@ -15,7 +15,7 @@ public abstract class GraphDas {
 
 	public abstract void removeBridge(GraphBridge bridge);
 
-	public abstract boolean isCorrect();
+	public abstract boolean isFinished();
 
 	abstract void close();
 
