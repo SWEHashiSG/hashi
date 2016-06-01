@@ -51,16 +51,20 @@ public abstract class GameFieldController extends GridPane {
 		setFieldSize(graphDas.getSizeX(), graphDas.getSizeY());
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(getBridges(graphPlayField));
+		createAllBridges(getBridges(graphPlayField));
+		createAllSolutions(graphPlayField.getSolutionBridges());
+	}
+
+	private void createAllSolutions(Set<GraphBridge> solutionBridges) {
 		graphBridgeToSolutionBridge = new HashMap<>();
-		for (GraphBridge bridge : graphPlayField.getSolutionBridges()) {
+		for (GraphBridge bridge : solutionBridges) {
 			graphBridgeToSolutionBridge.put(bridge, new BridgeController(bridge, this, false));
 		}
 	}
 
 	protected abstract Set<GraphBridge> getBridges(GraphPlayField graphPlayField);
 
-	private void createAllBridgesHighlights(Set<GraphBridge> bridges) {
+	private void createAllBridges(Set<GraphBridge> bridges) {
 		graphBridgeToBridge = new HashMap<>();
 		graphBridgeToHighlight = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
@@ -85,7 +89,7 @@ public abstract class GameFieldController extends GridPane {
 
 	protected void update(GraphPlayField graphPlayField) {
 		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(getBridges(graphPlayField));
+		createAllBridges(getBridges(graphPlayField));
 		loadGame();
 		isUpdating = false;
 	}
@@ -113,7 +117,6 @@ public abstract class GameFieldController extends GridPane {
 			FieldController field = new FieldController(graphField, this);
 			field.addToGameField();
 			fields.add(field);
-
 		}
 		for (HighlightController highlight : graphBridgeToHighlight.values()) {
 			highlight.addToGameField();
@@ -121,7 +124,7 @@ public abstract class GameFieldController extends GridPane {
 		for (BridgeController bridge : graphBridgeToBridge.values()) {
 			bridge.addToGameField();
 		}
-		for (BridgeController solution: graphBridgeToSolutionBridge.values()){
+		for (BridgeController solution : graphBridgeToSolutionBridge.values()) {
 			solution.addToGameField();
 		}
 	}
@@ -246,10 +249,12 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	public void showSolution() {
-		for (BridgeController bridgeController : graphBridgeToSolutionBridge.values()) {
-			bridgeController.toggleVisibility();
+		for (BridgeController solutionBridge : graphBridgeToSolutionBridge.values()) {
+			solutionBridge.toggleVisibility();
 		}
-		initiateUpdate();
+		for (BridgeController bridge : graphBridgeToBridge.values()) {
+			bridge.toggleVisibility();
+		}
 	}
 
 	public void undo() {
