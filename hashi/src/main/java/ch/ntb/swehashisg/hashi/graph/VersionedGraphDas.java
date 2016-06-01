@@ -70,8 +70,8 @@ public class VersionedGraphDas extends GraphDas {
 	}
 
 	@Override
-	public boolean isCorrect() {
-		return graphDas.isCorrect();
+	public boolean isFinished() {
+		return graphDas.isFinished();
 	}
 
 	private static interface GraphDasOperation {

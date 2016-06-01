@@ -82,7 +82,14 @@ public class MainWindowController extends AnchorPane {
 
 	@FXML
 	public void check() {
-		logger.debug("Check Clicked");
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Game Check");
+		if (gameField.isCorrect()){
+			alert.setHeaderText("Your on the right way");
+		} else {
+			alert.setHeaderText("Sorry, but there are some errors in your Game");
+		}
+		alert.showAndWait();
 	}
 
 	@FXML
