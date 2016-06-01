@@ -46,6 +46,16 @@ public class MainWindowController extends AnchorPane {
 	private Button buttonUndo;
 	@FXML
 	private Button buttonRedo;
+	@FXML
+	private Button buttonSave;
+	@FXML
+	private Button buttonOpen;
+	@FXML
+	private Button buttonShowSolution;
+	@FXML
+	private Button buttonCheck;
+	@FXML
+	private Button buttonRestart;
 
 	public MainWindowController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
@@ -82,7 +92,14 @@ public class MainWindowController extends AnchorPane {
 
 	@FXML
 	public void check() {
-		logger.debug("Check Clicked");
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Game Check");
+		if (gameField.isCorrect()){
+			alert.setHeaderText("Your on the right way");
+		} else {
+			alert.setHeaderText("Sorry, but there are some errors in your Game");
+		}
+		alert.showAndWait();
 	}
 
 	@FXML
@@ -125,13 +142,18 @@ public class MainWindowController extends AnchorPane {
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
 			}
+			pane.getChildren().remove(gameField);
 			gameField = new GameFieldPlayController(graphDas, this);
 			gameField.loadGame();
-			pane.getChildren().add(gameField);
-			updateButtons(graphDas);
+			addGameField(gameField);
 		} else {
 			logger.debug("Open File Dialog Closed without a choosen File");
 		}
+	}
+
+	private void addGameField(GameFieldController gameField) {
+		pane.getChildren().add(gameField);
+		updateButtons(graphDas);
 	}
 
 	@FXML
@@ -145,8 +167,8 @@ public class MainWindowController extends AnchorPane {
 			choices.add(14);
 			ChoiceDialog<Integer> dialog = new ChoiceDialog<Integer>(8, choices);
 			dialog.setTitle("Starting Editor Mode");
-			dialog.setHeaderText("Pleas select your desired Gamesize");
-			dialog.setContentText("Choos Width");
+			dialog.setHeaderText("Please select your desired Gamesize");
+			dialog.setContentText("Choose Width");
 
 			Optional<Integer> resultWidth = dialog.showAndWait();
 			if (resultWidth.isPresent()) {
@@ -163,11 +185,11 @@ public class MainWindowController extends AnchorPane {
 	}
 
 	private void startEditorMode(int sizeX, int sizeY) {
+		pane.getChildren().remove(gameField);
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
 		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas, this);
 		gameField.loadGame();
-		pane.getChildren().add(gameField);
-		updateButtons(graphDas);
+		addGameField(gameField);
 	}
 
 	public void closeRequest(WindowEvent event) {
@@ -202,6 +224,10 @@ public class MainWindowController extends AnchorPane {
 	private void updateButtons(boolean canUndo, boolean canRedo) {
 		buttonUndo.setDisable(!canUndo);
 		buttonRedo.setDisable(!canRedo);
+		buttonShowSolution.setDisable(graphDas == null);
+		buttonRestart.setDisable(graphDas== null);
+		buttonSave.setDisable(graphDas == null);
+		buttonCheck.setDisable(graphDas == null);
 	}
 
 	public void onKeyPressed(KeyEvent event) {
@@ -211,7 +237,7 @@ public class MainWindowController extends AnchorPane {
 		} else if (event.getCode() == KeyCode.Z & event.isControlDown()) {
 			logger.debug("CTRL + Z pressed");
 			undo();
-		} else if (event.getCode() == KeyCode.V & event.isControlDown()) {
+		} else if (event.getCode() == KeyCode.Y & event.isControlDown()) {
 			logger.debug("CTRL + Y pressed");
 			redo();
 		} else if (event.getCode() == KeyCode.O & event.isControlDown()) {

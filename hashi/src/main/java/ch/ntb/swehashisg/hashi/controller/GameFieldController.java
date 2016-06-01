@@ -3,7 +3,6 @@ package ch.ntb.swehashisg.hashi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -16,12 +15,17 @@ import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 
 public abstract class GameFieldController extends GridPane {
 
@@ -51,25 +55,29 @@ public abstract class GameFieldController extends GridPane {
 		setFieldSize(graphDas.getSizeX(), graphDas.getSizeY());
 		GraphPlayField graphPlayField = graphDas.getPlayField();
 		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(getBridges(graphPlayField));
+		createAllBridges(getBridges(graphPlayField));
+		createAllSolutions(graphPlayField.getSolutionBridges());
+	}
+
+	private void createAllSolutions(Set<GraphBridge> solutionBridges) {
 		graphBridgeToSolutionBridge = new HashMap<>();
-		for (GraphBridge bridge : graphPlayField.getSolutionBridges()) {
+		for (GraphBridge bridge : solutionBridges) {
 			graphBridgeToSolutionBridge.put(bridge, new BridgeController(bridge, this, false));
 		}
 	}
 
 	protected abstract Set<GraphBridge> getBridges(GraphPlayField graphPlayField);
 
-	private void createAllBridgesHighlights(Set<GraphBridge> bridges) {
+	private void createAllBridges(Set<GraphBridge> bridges) {
 		graphBridgeToBridge = new HashMap<>();
-		graphBridgeToHighlight = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
 			graphBridgeToBridge.put(bridge, new BridgeController(bridge, this));
 		}
-		Map<GraphField, GraphField> lightFieldToRealField = new HashMap<>();
+		HashMap<GraphField, GraphField> lightFieldToRealField = new HashMap<>();
 		for (GraphField field : graphFields) {
 			lightFieldToRealField.put(field, field);
 		}
+		graphBridgeToHighlight = new HashMap<>();
 		for (GraphField field : graphFields) {
 			for (GraphField neighbor : field.getNeighbors()) {
 				GraphField fullNeighbor = lightFieldToRealField.get(neighbor);
@@ -85,7 +93,7 @@ public abstract class GameFieldController extends GridPane {
 
 	protected void update(GraphPlayField graphPlayField) {
 		graphFields = graphPlayField.getFields();
-		createAllBridgesHighlights(getBridges(graphPlayField));
+		createAllBridges(getBridges(graphPlayField));
 		loadGame();
 		isUpdating = false;
 	}
@@ -113,13 +121,15 @@ public abstract class GameFieldController extends GridPane {
 			FieldController field = new FieldController(graphField, this);
 			field.addToGameField();
 			fields.add(field);
-
 		}
 		for (HighlightController highlight : graphBridgeToHighlight.values()) {
 			highlight.addToGameField();
 		}
 		for (BridgeController bridge : graphBridgeToBridge.values()) {
 			bridge.addToGameField();
+		}
+		for (BridgeController solution : graphBridgeToSolutionBridge.values()) {
+			solution.addToGameField();
 		}
 	}
 
@@ -243,23 +253,54 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	public void showSolution() {
-		for (BridgeController bridgeController : graphBridgeToSolutionBridge.values()) {
-			bridgeController.toggleVisibility();
+		for (BridgeController solutionBridge : graphBridgeToSolutionBridge.values()) {
+			solutionBridge.toggleVisibility();
 		}
-		initiateUpdate();
+		for (BridgeController bridge : graphBridgeToBridge.values()) {
+			bridge.toggleVisibility();
+		}
 	}
 
 	public void undo() {
-		graphDas.undo();
-		initiateUpdate();
+		if (graphDas.canUndo()) {
+			graphDas.undo();
+			initiateUpdate();
+		}
 	}
 
 	public void redo() {
-		graphDas.redo();
-		initiateUpdate();
+		if (graphDas.canRedo()) {
+			graphDas.redo();
+			initiateUpdate();
+		}
 	}
 
 	public void restart() {
-		throw new UnsupportedOperationException();
+		graphDas.restart();
+		initiateUpdate();
+	}
+
+	public boolean isCorrect() {
+		boolean isCorrect = true;
+		if (graphDas.isFinished()){
+			return isCorrect;
+		} else {
+			for (GraphBridge bridge: graphDas.getPlayField().getBridges()) {
+				BridgeController solutionController = graphBridgeToSolutionBridge.get(bridge);
+				if ( solutionController == null){
+					markFaultBridge(graphBridgeToBridge.get(bridge));
+					isCorrect = false;
+				} else if (solutionController.getGraphBridge().getWeighting() < bridge.getWeighting()){
+					markFaultBridge(graphBridgeToBridge.get(bridge));
+					isCorrect = false;
+				}
+			} 
+		}
+		return isCorrect;
+	}
+
+	private void markFaultBridge(BridgeController bridgeController) {
+		logger.warn("You have placed a wrong Bridge");
+		bridgeController.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
 	}
 }

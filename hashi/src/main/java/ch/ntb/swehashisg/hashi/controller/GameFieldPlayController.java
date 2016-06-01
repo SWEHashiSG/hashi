@@ -26,7 +26,7 @@ public class GameFieldPlayController extends GameFieldController {
 	@Override
 	protected void update(GraphPlayField graphPlayField) {
 		super.update(graphPlayField);
-		if (graphDas.isCorrect()) {
+		if (graphDas.isFinished()) {
 			finishGame();
 		}
 	}

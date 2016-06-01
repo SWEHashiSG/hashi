@@ -78,8 +78,8 @@ public class VersionedGraphDas extends GraphDas {
 	}
 
 	@Override
-	public boolean isCorrect() {
-		return graphDas.isCorrect();
+	public boolean isFinished() {
+		return graphDas.isFinished();
 	}
 	
 	private void removeNewerOperation()
@@ -209,5 +209,12 @@ public class VersionedGraphDas extends GraphDas {
 	public void removeSolutionBridge(GraphBridge bridge) {
 		graphDas.removeSolutionBridge(bridge);
 		addOperation(new RemoveSolutionBridgeOperation(bridge, graphDas));
+	}
+
+	@Override
+	public void restart() {
+		graphDas.restart();
+		this.index = 0;
+		this.listOperations = new ArrayList<GraphDasOperation>();
 	}
 }

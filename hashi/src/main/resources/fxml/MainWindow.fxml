@@ -67,7 +67,7 @@
 										<fx:include source="../images/solution.fxml" />
 									</graphic>
 								</Button>
-								<Button mnemonicParsing="false" onAction="#check" GridPane.columnIndex="6">
+								<Button fx:id="buttonCheck" mnemonicParsing="false" onAction="#check" GridPane.columnIndex="6">
 									<tooltip>
 										<Tooltip text="Check" />
 									</tooltip>
@@ -75,7 +75,7 @@
 										<fx:include source="../images/check.fxml" />
 									</graphic>
 								</Button>
-								<Button fx:id="buttonUndo" mnemonicParsing="false" onAction="#undo" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+								<Button fx:id="buttonUndo" mnemonicParsing="false" onAction="#undo">
 									<tooltip>
 										<Tooltip text="Undo" />
 									</tooltip>
@@ -97,14 +97,11 @@
 				</AnchorPane>
 			</top>
 			<center>
-				<AnchorPane fx:id="pane" depthTest="ENABLE" onMouseClicked="#clickedOnPane" BorderPane.alignment="CENTER">
-					<opaqueInsets>
-						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-					</opaqueInsets>
-					<BorderPane.margin>
-						<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-					</BorderPane.margin>
-				</AnchorPane>
+            <VBox alignment="TOP_CENTER" StackPane.alignment="TOP_CENTER">
+               <children>
+                  <HBox fx:id="pane" alignment="TOP_CENTER" minHeight="250.0" onMouseClicked="#clickedOnPane" />
+               </children>
+            </VBox>
 			</center>
 		</BorderPane>
 	</children>

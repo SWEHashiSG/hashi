@@ -75,7 +75,7 @@ public class BaseGraphDas extends GraphDas {
 		return vertices;
 	}
 
-	public boolean isCorrect() {
+	public boolean isFinished() {
 		Set<Vertex> vertices = getRelevantVertices();
 		for (Vertex vertex : vertices) {
 			int numberOfBridges = 0;
@@ -408,5 +408,14 @@ public class BaseGraphDas extends GraphDas {
 	@Override
 	public boolean canRedo() {
 		throw new UnsupportedOperationException("canRedo function is not Implemented in BaseGraphDas");
+	}
+
+	@Override
+	public void restart() {
+		for (GraphBridge bridge : getPlayField().getBridges()) {
+			for (int i = 0; i < bridge.getWeighting(); i++) {
+				removeBridge(bridge);
+			}
+		}
 	}
 }
