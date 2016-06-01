@@ -194,4 +194,11 @@ public class VersionedGraphDas extends GraphDas {
 		graphDas.removeSolutionBridge(bridge);
 		addOperation(new RemoveSolutionBridgeOperation(bridge, graphDas));
 	}
+
+	@Override
+	public void restart() {
+		graphDas.restart();
+		this.index = 0;
+		this.listOperations = new ArrayList<GraphDasOperation>();
+	}
 }

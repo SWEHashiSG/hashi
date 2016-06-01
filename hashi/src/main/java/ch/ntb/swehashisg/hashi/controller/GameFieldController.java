@@ -3,7 +3,6 @@ package ch.ntb.swehashisg.hashi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -66,14 +65,14 @@ public abstract class GameFieldController extends GridPane {
 
 	private void createAllBridges(Set<GraphBridge> bridges) {
 		graphBridgeToBridge = new HashMap<>();
-		graphBridgeToHighlight = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
 			graphBridgeToBridge.put(bridge, new BridgeController(bridge, this));
 		}
-		Map<GraphField, GraphField> lightFieldToRealField = new HashMap<>();
+		HashMap<GraphField, GraphField> lightFieldToRealField = new HashMap<>();
 		for (GraphField field : graphFields) {
 			lightFieldToRealField.put(field, field);
 		}
+		graphBridgeToHighlight = new HashMap<>();
 		for (GraphField field : graphFields) {
 			for (GraphField neighbor : field.getNeighbors()) {
 				GraphField fullNeighbor = lightFieldToRealField.get(neighbor);
@@ -272,6 +271,7 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	public void restart() {
-		throw new UnsupportedOperationException();
+		graphDas.restart();
+		initiateUpdate();
 	}
 }

@@ -36,4 +36,6 @@ public abstract class GraphDas {
 	public abstract void addSolutionBridge(GraphBridge bridge);
 
 	public abstract void removeSolutionBridge(GraphBridge bridge);
+
+	public abstract void restart();
 }

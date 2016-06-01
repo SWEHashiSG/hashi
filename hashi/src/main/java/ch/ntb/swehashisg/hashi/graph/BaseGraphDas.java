@@ -409,4 +409,13 @@ public class BaseGraphDas extends GraphDas {
 	public boolean canRedo() {
 		throw new UnsupportedOperationException("canRedo function is not Implemented in BaseGraphDas");
 	}
+
+	@Override
+	public void restart() {
+		for (GraphBridge bridge : getPlayField().getBridges()) {
+			for (int i = 0; i < bridge.getWeighting(); i++) {
+				removeBridge(bridge);
+			}
+		}
+	}
 }
