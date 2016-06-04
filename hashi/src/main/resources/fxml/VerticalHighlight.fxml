@@ -18,7 +18,7 @@
           <RowConstraints vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <Pane fx:id="highliter" style="-fx-background-color: Orange;" visible="false" GridPane.columnIndex="1" />
+            <Pane fx:id="highlight" style="-fx-background-color: Orange;" visible="false" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>

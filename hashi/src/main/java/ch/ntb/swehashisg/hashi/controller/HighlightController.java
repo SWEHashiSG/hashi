@@ -18,17 +18,51 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+/**
+ * Controller class for the JavaFX view HorizontalHighlight and
+ * VerticalHighlight. The JavaFX file is split into horizontal and vertical
+ * Highlight. The constructor of this class decides which JavaFX element would
+ * be draw due to the given GraphBridge. The highlight will be created for all
+ * possible bridges but is only visible if the mouse is on the Bridge or on a
+ * connected Field.
+ * 
+ * @author Martin
+ *
+ */
 public class HighlightController extends StackPane {
 
 	private static final Logger logger = LoggerFactory.getLogger(HighlightController.class);
 
+	/**
+	 * JavaFX Attributes from the FXML-File. Change the visibility of the
+	 * highlight by changing its visibility.
+	 */
 	@FXML
-	private Pane highliter;
+	private Pane highlight;
 
+	/**
+	 * The two neighbors were the possible bridge associate to.
+	 */
 	private GraphField neighbor1;
 	private GraphField neighbor2;
+
+	/**
+	 * Controller of the Game field where the Highlight will be drawn.
+	 */
 	private GameFieldController gameField;
 
+	/**
+	 * Main constructor of the BridgeController. Decides which highlight would
+	 * be loaded (horizontal or vertical). Set default visibility to false
+	 * 
+	 * @param neighbor1
+	 *            one end of the possible bridge
+	 * @param neighbor2
+	 *            the other end of the possible bridge
+	 * @param gameField
+	 *            controller of the Game field where the Highlight will be
+	 *            drawn.
+	 */
 	public HighlightController(GraphField neighbor1, GraphField neighbor2, GameFieldController gameField) {
 		String fxmlFile = "";
 		if (GraphUtil.getDirectionOfNeighbors(neighbor1, neighbor2) == BridgeDirection.Horizontal) {
@@ -52,6 +86,10 @@ public class HighlightController extends StackPane {
 		setHighlite(false);
 	}
 
+	/**
+	 * Add the highlight to the GameField by taking the position from the
+	 * GraphBridge and calculate the span for different lengths of the bridges.
+	 */
 	public void addToGameField() {
 		int columnIndex = neighbor1.getX();
 		int rowIndex = neighbor1.getY();
@@ -73,14 +111,21 @@ public class HighlightController extends StackPane {
 		gameField.add(this, columnIndex, rowIndex, columnSpan, rowSpan);
 	}
 
-	public void setHighlite(boolean highlited) {
-		highliter.setVisible(highlited);
-		if (gameField.getBridge(neighbor1, neighbor2).getWeighting() > 0){
-			highliter.setMouseTransparent(false);
-			this.setMouseTransparent(false);	
+	/**
+	 * set the visibility of the highlight. By default the highlight is mouse
+	 * transparent. If there is one ore more bridges in front the highlight is
+	 * listening on mouse events.
+	 * 
+	 * @param visible
+	 */
+	public void setHighlite(boolean visible) {
+		highlight.setVisible(visible);
+		if (gameField.getBridge(neighbor1, neighbor2).getWeighting() > 0) {
+			highlight.setMouseTransparent(false);
+			this.setMouseTransparent(false);
 		} else {
-			highliter.setMouseTransparent(!highlited);
-			this.setMouseTransparent(!highlited);
+			highlight.setMouseTransparent(!visible);
+			this.setMouseTransparent(!visible);
 		}
 	}
 
@@ -92,17 +137,28 @@ public class HighlightController extends StackPane {
 		return neighbor2;
 	}
 
+	/**
+	 * User input if he clicks on the highlight. Add a bridge if both fields
+	 * needs one. Otherwise remove all bridges.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	protected void onMouseClicked(MouseEvent event) {
-		event.consume();					// Consume Event that not a new Field will be drawn
+		event.consume(); // Consume Event that nothing in Background will be
+							// activated
 		logger.debug("Clicked on Highliter");
-		if(gameField.needsBridge(this)) {
-			gameField.addBridge(this);	
+		if (gameField.needsBridge(this)) {
+			gameField.addBridge(this);
 		} else {
 			gameField.removeBridge(this);
 		}
 	}
 
+	/**
+	 * User input if he move with the mouse on this highlight. if there is
+	 * already one ore more bridges the highlight gets visible. Otherwise not
+	 */
 	@FXML
 	protected void onMouseEntered() {
 		logger.debug("Mouse on Highliter");
@@ -111,12 +167,19 @@ public class HighlightController extends StackPane {
 		}
 	}
 
+	/**
+	 * User input if he move with the mouse from this highlight the highlight
+	 * will disappear.
+	 */
 	@FXML
 	protected void onMouseExited() {
 		logger.debug("Mouse not on Highliter");
 		setHighlite(false);
 	}
 
+	/**
+	 * mark the highlight Read to signal the user a fault.
+	 */
 	public void markRed() {
 		setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
 	}
