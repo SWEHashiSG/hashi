@@ -327,7 +327,7 @@ public abstract class GameFieldController extends GridPane {
 	 * @param event
 	 */
 	@FXML
-	protected void clickedOnPane(MouseEvent event){
+	protected void clickedOnPane(MouseEvent event) {
 		/* Does nothing */
 	}
 
@@ -390,7 +390,8 @@ public abstract class GameFieldController extends GridPane {
 
 	/**
 	 * toggling the visibility of the solutionBridges and of the actual Bridges
-	 * on the Field
+	 * on the Field. Also toggle MouseTransparent to ignore mouseEvents during
+	 * the solution is shown.
 	 */
 	public void showSolution() {
 		for (BridgeController solutionBridge : graphBridgeToSolutionBridge.values()) {
@@ -399,6 +400,7 @@ public abstract class GameFieldController extends GridPane {
 		for (BridgeController bridge : graphBridgeToBridge.values()) {
 			bridge.toggleVisibility();
 		}
+		this.setMouseTransparent(!isMouseTransparent());
 	}
 
 	public void undo() {
