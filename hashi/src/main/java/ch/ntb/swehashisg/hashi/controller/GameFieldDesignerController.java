@@ -51,7 +51,7 @@ public class GameFieldDesignerController extends GameFieldController {
 	}
 
 	@Override
-	void onMouseClicked(MouseEvent mouseEvent) {
+	void clickedOnPane(MouseEvent mouseEvent) {
 		int x = ((int) mouseEvent.getX() / FieldController.getFieldSize());
 		int y = ((int) mouseEvent.getY() / FieldController.getFieldSize());
 		setBridges(x, y);

@@ -42,7 +42,7 @@ public class GameFieldPlayController extends GameFieldController {
 	}
 
 	@Override
-	void onMouseClicked(MouseEvent event) {
+	void clickedOnPane(MouseEvent event) {
 		logger.debug("Clicked on Game Field. No Function in Play Mode");
 		// Nothing to do in Play Mode
 	}
