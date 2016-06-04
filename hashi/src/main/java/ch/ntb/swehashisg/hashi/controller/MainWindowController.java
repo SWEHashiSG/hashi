@@ -71,6 +71,8 @@ public class MainWindowController extends AnchorPane {
 	private Button buttonCheck;
 	@FXML
 	private Button buttonRestart;
+	@FXML
+	private Button buttonHelp;
 
 	/**
 	 * Constructor of the MainWindowController. Loads the FXML-file and also
@@ -128,6 +130,14 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void check() {
 		DialogUtilities.showCheckAlter(gameField.isCorrect());
+	}
+	
+	/**
+	 * User input. Called from GUI if the user clicks on the help button.
+	 */
+	@FXML
+	public void help(){
+		DialogUtilities.showHelpDialog();
 	}
 
 	/**
@@ -296,6 +306,9 @@ public class MainWindowController extends AnchorPane {
 		} else if (event.getCode() == KeyCode.O & event.isControlDown()) {
 			logger.debug("CTRL + O pressed");
 			open();
+		} else if (event.getCode() == KeyCode.F1){
+			logger.debug("F1 pressed");
+			help();
 		}
 	}
 }

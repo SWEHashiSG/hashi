@@ -20,13 +20,14 @@
 					<children>
 						<GridPane layoutX="8.0" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
 							<columnConstraints>
-								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
-								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
-								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
-								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
-								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
-								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" percentWidth="14.28" />
-								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" prefWidth="70.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" prefWidth="70.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" prefWidth="70.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" prefWidth="70.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" prefWidth="70.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" prefWidth="70.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" prefWidth="70.0" />
+                       			<ColumnConstraints hgrow="ALWAYS" minWidth="70.0" prefWidth="70.0" />
 							</columnConstraints>
 							<rowConstraints>
 								<RowConstraints vgrow="SOMETIMES" />
@@ -91,6 +92,14 @@
 										<fx:include source="../images/load.fxml" />
 									</graphic>
 								</Button>
+                        		<Button fx:id="buttonHelp" minHeight="56.0" minWidth="65.0" mnemonicParsing="false" onAction="#help" prefHeight="56.0" prefWidth="65.0" GridPane.columnIndex="7">
+                        			<tooltip>
+										<Tooltip text="show Help" />
+									</tooltip>
+									<graphic>
+										<fx:include source="../images/help.fxml" />
+									</graphic>
+                         		</Button>
 							</children>
 						</GridPane>
 					</children>

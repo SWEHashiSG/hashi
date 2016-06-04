@@ -18,7 +18,7 @@ public class MainHashi extends Application {
 	/**
 	 * Window width and height which is needed for a good optic
 	 */
-	private int windowWidth = 520;
+	private int windowWidth = 580;
 	private int windowHeight = 500;
 	
 	/**
