@@ -34,16 +34,16 @@ public class GraphField {
 		this.existingSolutionBridges = existingSolutionBridges;
 
 		for (GraphField neighbor : this.getNeighbors()) {
-			if (GraphUtil.isEastBridge(this, neighbor)) {
+			if (GraphUtil.isEast(this, neighbor)) {
 				eastNeighbor = neighbor;
 			}
-			if (GraphUtil.isWestBridge(this, neighbor)) {
+			if (GraphUtil.isWest(this, neighbor)) {
 				westNeighbor = neighbor;
 			}
-			if (GraphUtil.isSouthBridge(this, neighbor)) {
+			if (GraphUtil.isSouth(this, neighbor)) {
 				southNeighbor = neighbor;
 			}
-			if (GraphUtil.isNorthBridge(this, neighbor)) {
+			if (GraphUtil.isNorth(this, neighbor)) {
 				northNeighbor = neighbor;
 			}
 		}
