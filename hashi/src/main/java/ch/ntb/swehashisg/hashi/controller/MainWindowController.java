@@ -302,9 +302,6 @@ public class MainWindowController extends AnchorPane {
 		}
 	}
 
-	void updateButtons(GraphDas graphDas) {
-		if (graphDas != null) {
-
 	/**
 	 * Update all buttons on the main window. Called every time if something has
 	 * changed on the model.
