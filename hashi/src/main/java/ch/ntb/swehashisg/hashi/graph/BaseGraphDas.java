@@ -303,42 +303,60 @@ public class BaseGraphDas extends GraphDas {
 
 			@Override
 			public boolean test(Traverser<Vertex> t) {
-				List<Long> testList = g.traversal().V(t.get())
-						.match(__.<Vertex> as("t").repeat(__.in("row")).until(__.values("bridges").is(P.neq(0)))
-								.bothE("bridge").as("bridge"),
-								__.<Vertex> as("t").repeat(__.out("row")).until(__.values("bridges").is(P.neq(0)))
-										.bothE("bridge").as("bridge"))
-						.select("bridge").count().toList();
-				if (testList.size() > 0) {
-					if (testList.get(0) > 0) {
-						return false;
-					} else {
-						return true;
+				List<Vertex> tops = g.traversal().V(t.get()).repeat(__.in("row"))
+						.until(__.values("bridges").is(P.neq(0))).toList();
+				if (tops.size() > 0) {
+					List<Vertex> bottoms = g.traversal().V(t.get()).repeat(__.out("row"))
+							.until(__.values("bridges").is(P.neq(0))).toList();
+					if (bottoms.size() > 0) {
+						Vertex top = tops.get(0);
+						Vertex bottom = bottoms.get(0);
+						Set<Edge> edges = new HashSet<>();
+						Iterator<Edge> topEdges = top.edges(Direction.BOTH, "bridge");
+						while (topEdges.hasNext()) {
+							edges.add(topEdges.next());
+						}
+
+						Iterator<Edge> bottomEdges = bottom.edges(Direction.BOTH, "bridge");
+						while (bottomEdges.hasNext()) {
+							if (edges.contains(bottomEdges.next())) {
+								return false;
+							}
+						}
 					}
-				} else {
-					return true;
 				}
+
+				return true;
 			}
 		};
 		Predicate<Traverser<Vertex>> complexFilterRow = new Predicate<Traverser<Vertex>>() {
 
 			@Override
 			public boolean test(Traverser<Vertex> t) {
-				List<Long> testList = g.traversal().V(t.get())
-						.match(__.<Vertex> as("t").repeat(__.in("column")).until(__.values("bridges").is(P.neq(0)))
-								.bothE("bridge").as("bridge"),
-								__.<Vertex> as("t").repeat(__.out("column")).until(__.values("bridges").is(P.neq(0)))
-										.bothE("bridge").as("bridge"))
-						.select("bridge").count().toList();
-				if (testList.size() > 0) {
-					if (testList.get(0) > 0) {
-						return false;
-					} else {
-						return true;
+				List<Vertex> tops = g.traversal().V(t.get()).repeat(__.in("column"))
+						.until(__.values("bridges").is(P.neq(0))).toList();
+				if (tops.size() > 0) {
+					List<Vertex> bottoms = g.traversal().V(t.get()).repeat(__.out("column"))
+							.until(__.values("bridges").is(P.neq(0))).toList();
+					if (bottoms.size() > 0) {
+						Vertex top = tops.get(0);
+						Vertex bottom = bottoms.get(0);
+						Set<Edge> edges = new HashSet<>();
+						Iterator<Edge> topEdges = top.edges(Direction.BOTH, "bridge");
+						while (topEdges.hasNext()) {
+							edges.add(topEdges.next());
+						}
+
+						Iterator<Edge> bottomEdges = bottom.edges(Direction.BOTH, "bridge");
+						while (bottomEdges.hasNext()) {
+							if (edges.contains(bottomEdges.next())) {
+								return false;
+							}
+						}
 					}
-				} else {
-					return true;
 				}
+
+				return true;
 			}
 		};
 		if (x1 > x2) {
