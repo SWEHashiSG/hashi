@@ -160,20 +160,11 @@ public class MainWindowController extends AnchorPane {
 			return;
 		}
 		logger.debug("Save Clicked");
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Save Game");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(XML_DESCRIPTION, "*.xml"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(JSON_DESCRIPTION, "*.json"));
-
-		File file = fileChooser.showSaveDialog(this.getScene().getWindow());
-		if (file != null) {
-			if (fileChooser.getSelectedExtensionFilter().getDescription().equals(XML_DESCRIPTION)) {
-				Utilities.persistGraphDas(graphDas, file.getAbsolutePath(), GraphFormat.XML);
-			} else if (fileChooser.getSelectedExtensionFilter().getDescription().equals(JSON_DESCRIPTION)) {
-				Utilities.persistGraphDas(graphDas, file.getAbsolutePath(), GraphFormat.JSON);
-			} else {
-				throw new IllegalArgumentException("Unknown File Type");
-			}
+		GraphPersistence graphPersistence = DialogUtilities.selectSaveGraph("Save Game", this.getScene().getWindow());
+		if (graphPersistence != null) {
+			Utilities.persistGraphDas(graphDas, graphPersistence);
+		} else {
+			logger.debug("Open File Dialog Closed without a choosen File");
 		}
 	}
 
@@ -185,20 +176,10 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void open() {
 		logger.debug("Open Clicked");
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Load Game");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(XML_DESCRIPTION, "*.xml"));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(JSON_DESCRIPTION, "*.json"));
-
-		File file = fileChooser.showOpenDialog(this.getScene().getWindow());
-		if (file != null) {
-			if (fileChooser.getSelectedExtensionFilter().getDescription().equals(XML_DESCRIPTION)) {
-				graphDas = Utilities.loadGraphDas(file.getAbsolutePath(), GraphFormat.XML);
-			} else if (fileChooser.getSelectedExtensionFilter().getDescription().equals(JSON_DESCRIPTION)) {
-				graphDas = Utilities.loadGraphDas(file.getAbsolutePath(), GraphFormat.JSON);
-			} else {
-				throw new IllegalArgumentException("Unknown File Type");
-			}
+		GraphPersistence graphPersistence = DialogUtilities.selectOpenGraph("Load Game", this.getScene().getWindow());
+		if (graphPersistence != null) {
+			GraphDas newGraphDas = Utilities.loadGraphDas(graphPersistence);
+			graphDas = newGraphDas;
 			pane.getChildren().remove(gameField);
 			gameField = new GameFieldPlayController(graphDas, this);
 			gameField.loadGame();
