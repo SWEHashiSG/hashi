@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Number of Unique Operators (NUOprtr)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Number of Unique Operators (NUOprtr)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+
+<p>This measure is used as an input to the Halstead Software Science metrics. 
+It counts the number of unique operators used in a class.</p>
+
+<p>Example:
+
+<pre>
+01 public class Class1 {
+02     public void x(bool v) {
+03         int i;
+04         if (v) {
+05             i = 1;
+06         } else {
+07             i = 2;
+08         }
+09         switch(i) {
+10             case 1: break;
+11             case 2: break;
+12             default: break;
+13         }
+14         try {
+15             while(v) {
+16                 v = false;
+17                 int r = 1;
+18                 Exception ex = new Exception("!!!");
+19                 i = i * i + r;
+20                 break;
+21             }
+22         } catch (Exception e) {
+23             throw e;
+24         }
+25     }
+26 }
+</pre>
+
+
+
+
+</p>
+
+<table cellspacing="2" cellpadding="2" border="1">
+
+<tr>
+  
+<td>Line</td> <td>N1</td>     <td>n1</td>     <td>N2</td>       <td>n2</td>
+
+</tr>
+<tr>
+    
+<td>04</td> <td>if</td>     <td>if</td>     <td>v</td>        <td>v</td>
+
+</tr>
+<tr>
+    
+<td>05</td> <td>=</td>      <td>=</td>      <td>i, 1</td>     <td>i, 1</td>
+
+</tr>
+<tr>
+    
+<td>07</td> <td>=</td>      <td>&nbsp;</td> <td>i, 2</td>     <td>2</td>
+
+</tr>
+<tr>
+    
+<td>09</td> <td>switch</td> <td>switch</td> <td>i</td>        <td>&nbsp;</td>
+
+</tr>
+<tr>
+   
+<td>15</td> <td>loop</td>   <td>loop</td>   <td>v</td>        <td>&nbsp;</td>
+
+</tr>
+<tr>
+    
+<td>16</td> <td>=</td>      <td>&nbsp;</td> <td>v, false</td> <td>false</td>
+
+</tr>
+<tr>
+    
+<td>17</td> <td>=</td>      <td>&nbsp;</td> <td>1</td>        <td>&nbsp;</td>
+
+</tr>
+<tr>
+    
+<td>18</td> <td>=, new, call</td> <td>new, call</td> <td>Exception, "!!!"</td>  <td>Exception, "!!!"</td>
+
+</tr>
+<tr>
+    
+<td>19</td> <td>=, *, +</td> <td>*, +</td> <td>i, i, i, r</td> <td>r</td>
+
+</tr>
+<tr>
+    
+<td>23</td> <td>throw</td>  <td>throw</td>  <td>e</td>         <td>e</td>
+
+</tr>
+<tr>
+    
+<td>Total</td> <td>14</td>  <td>9</td>      <td>17</td>        <td>9</td>
+
+</tr>
+
+</table>
+
+<p>Where</p>
+
+<ul>
+
+<li>N1 is NOprtr (Number of Operators),</li>
+
+<li>n1 is NUOprtr (Number of Unique Operators),</li>
+
+<li>N2 is NOprnd (Number of Operands),</li>
+
+<li>n2 is NUOprnd (Number of Unique Operands)</li>
+
+</ul>
+
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Lack of Cohesion of Methods 1 (LCOM1)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Lack of Cohesion of Methods 1 (LCOM1)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+Takes each pair of methods in the class and determines the set of
+fields they each access. If they have disjoint sets of field accesses,
+increase the count P by one. If they share at least one field access,
+then increase Q by one. After considering each pair of methods:
+</p>
+<code>
+RESULT = (P &gt; Q) ? (P - Q) : 0
+</code>
+<p>
+A low value indicates high coupling between methods, which indicates a high testing
+effort because many methods can affect the same a 
+attributes and potentially has low reusability.
+The definition of this metric was provided by Chidamber and Kemerer in 1993.
+</p>
+</BODY>
+</HTML>

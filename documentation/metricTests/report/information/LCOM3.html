@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Lack Of Cohesion Of Methods 3 (LCOM3)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Lack Of Cohesion Of Methods 3 (LCOM3)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+
+<p>Measures the dissimilarity of methods in a class by its 
+attributes.</p>
+
+
+<p>Consider:<br>
+m - number of methods in a class<br>
+a - number of 
+attributes in a class<br>
+mA - number of methods that access 
+an attribute<br>
+EmA - sum of mA for each 
+attribute<br>
+
+<br>
+Then:<br>
+RESULT = 100*(EmA/a-m)/(1-m)</p>
+
+
+<p>The definition of this metric was proposed by Henderson-Sellers in 1995.
+A low value indicates good class subdivision, implying simplicity and high reusability.
+A high lacking of cohesion increases complexity, thereby increasing the likelihood of 
+errors during the development process.</p>
+
+<p>If there are no more than one method in a class, LCOM3 is undefined.
+If there are no variables in a class, LCOM3 is undefined. An undefined LCOM3 is displayed as -1.
+Methods that do not access any class variables are not taken into account.</p>
+
+</p>
+</BODY>
+</HTML>

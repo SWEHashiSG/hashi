@@ -1,0 +1,139 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Violations of Demeters Law (VOD)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Violations of Demeters Law (VOD)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+
+<p>
+<b>Law of Demeter</b>
+</p>
+
+<p>
+<b>Definition 1 (Client)</b> Method <i>M</i> is a client of method <i>f</i> attached to class <i>C</i>, if inside <i>M</i> message <i>f</i> is sent to an object of class <i>C</i>, or to <i>C</i>. If <i>f</i> is specialized in one or more subclasses, then <i>M</i> is only a client of <i>f</i> attached to the highest class in the hierarchy. Method <i>M</i> is a client of some method attached to <i>C</i>.</p>
+
+<p>
+<b>Definition 2 (Supplier)</b> If <i>M</i> is a client of class <i>C</i> then <i>C</i> is a supplier to <i>M</i>. In other words, a supplier class to a method is a class whose methods are called in the method.</p>
+
+<p>
+<b>Definition 3 (Acquaintance Class)</b> A class <i>C1</i> is an acquaintance class of method <i>M</i> attached to class <i>C2</i>, if <i>C1</i> is a supplier to <i>M</i> and <i>C1</i> is not one of the following:</p>
+
+<ol type="1">
+
+<li>the same as <i>C2</i>;</li>
+
+<li>a class used in the declaration of an argument of <i>M</i>
+</li>
+
+<li>a class used in the declaration of an instance variable of <i>C2</i>
+</li>
+
+</ol>
+
+<p>
+<b>Definition 4 (Preferred-acquaintance Class)</b> A preferred-acquaintance class of method <i>M</i> is either:</p>
+
+<ol type="1">
+
+<li>a class of objects created directly in <i>M</i>, or</li>
+
+<li>a class used in the declaration of a global variable used in <i>M</i>.</li>
+
+</ol>
+
+<p>
+<b>Realization note.</b> Direct creation means that a given object is created via operator <b><i>new</i></b>.</p>
+
+<p>
+<b>Definition 5 (Preferred-supplier class)</b> Class <i>B</i> is called a preferred-supplier to method <i>M</i> (attached to class <i>C</i>) if <i>B</i> is a supplier to <i>M</i> and one of the following conditions holds:</p>
+
+<ol type="1">
+
+<li>
+<i>B</i> is used in the declaration of an instance variable of <i>C</i>,</li>
+
+<li>
+<i>B</i> is used in the declaration of an argument of <i>M</i>, including <i>C</i> and its superclasses,</li>
+
+<li>
+<i>B</i> is a preferred acquaintance class of <i>M</i>.</li>
+
+</ol>
+
+<div align="center"><img src="vod.gif"></div>
+
+<div align="center">
+<p>The relation among the different types of supplier classes.</p>
+</div>
+
+<p>The class form of Demeters Law has two versions: a strict version and a minimization version. The strict form of the law states that every supplier class of a method must be a preferred supplier.</p>
+
+<p>The minimization form is more permissive than the first version and requires only to minimize the number of acquaintance classes of each method.</p>
+
+<p>
+<b>Observations.</b>
+</p>
+
+<ol type="1">
+
+<li>The motivation behind the Law of Demeter is to ensure that the software is as modular as possible. The Law effectively reduces the occurrences of certain nested message sends and simplifies the methods.</li>
+
+<li>The definition of the Law makes a difference between the classes associated with
+ the declaration of the method and the classes used in the body of the method,
+ i.e. the classes associated with its implementation.
+ The former includes the class where the method is attached,
+ its superclasses, the classes used in the declarations of the instance variables
+ and the classes used to declare the arguments of the method.
+ In some sense, there are 'automatic' consequences of the method declaration.
+ They can be easily derived from the code and shown by a browser.
+ All other supplier classes to the methods are introduced in the body of the function,
+ that means these couples were created at the time of concretely implementing the method.
+ They can only be determined by a careful reading of the implementation.</li>
+
+</ol>
+
+<p>
+<b>Violations of Demeters Law - VOD</b>
+</p>
+
+<p>The definition of this metric is based on the minimization form of the Law of Demeter.</p>
+Based on the concepts defined there, and remembering that the minimization form of Demeters Law requires that the number of acquaintance classes should be kept low, we define the VOD metric.
+<p>
+<b>Definition 6 (VOD Metric)</b> Being given a class <i>C</i> and <i>A</i> the set of all its acquaintance classes,</p>
+
+<p>
+<b>VOD(C) = |A|</b>
+</p>
+
+<p>Informally, VOD is the number of acquaintance classes of a given class.</p>
+
+<p>Keeping the VOD value for a class low offers a number of benefits, enumerated below:</p>
+
+<ol type="1">
+
+<li>Coupling control. A project with a low VOD value is the sign of minimal "use" coupling between abstractions. That means that a reduced number of methods can be invoked. This makes the methods more reusable.</li>
+
+<li>Structure hiding. Reducing VOD represents in fact the reducing of the direct retrieval of subparts of the "part-of" hierarchy. In other words, public members should be used in a restricted way.</li>
+
+<li>Localization of information. A low VOD value also means that the class information is localized. This reduces the programming complexity.</li>
+
+</ol>
+
+<p>
+<b>Source:</b> Ing. Radu Marinescu. <i>An Object Oriented Metrics Suite on Coupling.</i>
+Universitatea "Politehnica" Timisoara, Facultatea de Automatica si Calculatoare, Departamentul de Calculatoare si Inginerie Software.
+September, 1998.</p>
+
+</p>
+</BODY>
+</HTML>

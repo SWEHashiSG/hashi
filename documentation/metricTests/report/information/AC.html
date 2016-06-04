@@ -1,0 +1,59 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Attribute Complexity (AC)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Attribute Complexity (AC)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+Defined as the sum of each
+attribute's
+
+ weight in the class.
+</p>
+<p>
+You can set up weights for types, the enum type and the array type separately.
+Use <code>"*"</code> to define types of a
+package
+ with all its
+subpackages
+
+. For example, 
+<code>java.lang.*</code>
+
+
+ means that the row defines all classes of the
+<code>java.lang</code>
+
+
+package
+ and its
+subpackages
+
+. To process all types not listed in the table, specify the last row as <code>"*"</code>.
+</p>
+<p>
+The row order is important, because checking of 
+attributes goes from the top 
+of the table downwards. (Repetitions of a type aren't counted, so if a specific type 
+follows a more general type that already included it, the specific type isn't counted. 
+For example,
+<code>java.lang.*</code>
+
+
+won't be counted if it comes after
+<code>java.*</code>
+
+
+.)
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Class Locality (CL)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Class Locality (CL)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+CL is computed as the relative number of dependencies 
+that a class has in its own package
+.
+</p>
+<p>
+CL is computed by dividing the number of local classes on which the 
+measured class depends by the total number of classes on which it depends;<br>
+number of local classes is computed by subtracting <code>NOED</code> value from the total
+number of classes on which the measured class depends:<br>
+
+<br>
+
+<code>(numOfImportedClasses - NOED)/numOfImportedClasses</code>
+<br>
+
+<br>
+where <code>numOfImportedClasses</code> is the total number of classes the measured class depends on, and the 
+<code>NOED</code> is the number of its external dependencies.
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Coupling Between Objects (CBO)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Coupling Between Objects (CBO)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+Represents the number of other classes to which a class is coupled to.
+Counts the number of reference types that are used in 
+attribute declarations,
+formal parameters, return types, throws declarations, local variables,
+and types from which 
+attribute and method selections are made.
+
+Primitive types, types from <code>java.lang</code> package
+ and supertypes are not counted.
+
+</p>
+<p>
+Excessive coupling between objects is detrimental to modular design and
+prevents reuse. The more independent a class is, the easier it is to reuse
+it in another application. In order to improve modularity and promote
+encapsulation, inter-object class coupling should be kept to a minimum.
+The larger the number of coupling, the higher the sensitivity to changes
+in other parts of the design, and therefore maintenance is more difficult.
+A measure of coupling is useful to determine how complex the testing of
+various parts of a design is likely to be. The higher the inter-object
+class coupling, the more rigorous the testing needs to be.
+</p>
+</BODY>
+</HTML>

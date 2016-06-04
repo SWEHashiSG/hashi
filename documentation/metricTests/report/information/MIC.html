@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Method Invocation Coupling  (MIC)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Method Invocation Coupling  (MIC)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p> 
+MIC is the (relative) number of other 
+classes to which a certain class sends messages.</p>
+<p>MIC<sub>norm</sub> = n<sub><font size="-1">MIC</font></sub>/(N -1)</p>
+<p>where N is the total number of classes defined in the project, 
+and n<sub><font size="-1">MIC</font></sub> the number of 
+classes to which messages are sent.</p>
+<p>
+<b>Viewpoints.</b> These viewpoints 
+summarize the impact that coupling has 
+on some external 
+attributes.</p>
+<ol type="1">
+
+<li>
+<b>Maintainability.</b> 
+The maintenance of a strongly coupled class 
+(high MIC value) is more difficult to do because of 
+its dependency on the classes it is coupled to.</li>
+
+<li>
+<b>Comprehensibility.</b> A strongly coupled 
+class is more difficult to understand, as its 
+understanding implies a partial (or sometimes total) 
+understanding of the classes it is coupled to.</li>
+
+<li>
+<b>Error-prone and Testability.</b> Errors in 
+a class is directly proportional to the number of 
+couplings to other classes. Consequently high coupling 
+has a negative impact on testability.</li>
+
+</ol>
+<p>
+<b>Observations</b>
+</p>
+<ol type="1">
+
+<li>The proposed definition of MIC is obviously a 
+normalized one. Although this has advantages, but for some 
+viewpoints, like maintainability, it is more important 
+to operate on the absolute values, i.e. the number of 
+classes to which it is coupled.</li>
+
+<li>For some viewpoints it might be important to 
+count only the couplings of the system to user-defined 
+classes, i.e. exclude the library classes.</li>
+
+</ol>
+<p>
+<b>Source:</b> Ing. Radu Marinescu. 
+<i>An Object Oriented Metrics Suite on Coupling.</i>
+Universitatea "Politehnica" Timisoara, 
+Facultatea de Automatica si Calculatoare, Departamentul
+ de Calculatoare si Inginerie Software.
+September, 1998.</p>
+</BODY>
+</HTML>

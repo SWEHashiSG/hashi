@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Inheritance Usage Ratio (IUR)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Inheritance Usage Ratio (IUR)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+The IUR metric is a metric defined between a subclass and
+one of its ancestor classes.  It is the relative number of 
+inheritance-specific members from the ancestor class used in the
+derived class.
+</p>
+<p>
+A member of an ancestor class is an 
+inheritance-specific member if its usage is related to inheritance.
+We identify the following inheritance-specific members:
+<ul>
+
+<li> protected data members and methods;</li>
+
+<li> non-private virtual methods.</li>
+
+</ul>
+
+The IUR is computed by counting the number of inheritance-specific
+members of the ancestor class that are used in the subclass, and then 
+divide it by the total numbers of inheritance-specific members
+from the ancestor. The only usages that are counted are: the access of
+protected data members, the call of protected methods and the redefinition
+of a virtual method.
+</p>
+</BODY>
+</HTML>

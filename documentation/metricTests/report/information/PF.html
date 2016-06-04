@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Polymorphism Factor (PF)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Polymorphism Factor (PF)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+This measure is from the MOOD (Metrics for Object-Oriented Development) suite. 
+It is calculated as a fraction. The numerator is the sum of overriding methods 
+in all classes. This is the actual number of possible different polymorphic situations. 
+A given message sent to a class can be bound, statically or dynamically, to a named 
+method implementation. The latter can have as many shapes (morphs) as the number of 
+times this same method is overridden in that class's descendants. 
+The denominator represents the maximum number of possible distinct polymorphic situations 
+for that class as the sum for each class of the number of new methods multiplied 
+by the number of descendants. This maximum would be the case where all new methods defined 
+in each class would be overridden in all of their derived classes.
+</p>
+</BODY>
+</HTML>

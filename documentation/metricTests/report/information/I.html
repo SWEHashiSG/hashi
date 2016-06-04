@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Instability (I)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Instability (I)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+Instability is:
+</p>
+<pre>
+  I = NOED / (NOED + NCC)
+</pre>
+<p>This metric was proposed by Robert C. Martin and
+measures the instability of packages
+,
+where stability is measured by calculating the effort
+to change a package
+ without impacting 
+other packages
+ within
+the application. The number of incoming and outgoing dependencies is
+one indicator determining the stability and instability
+of a package
+, where:
+</p>
+<ol type="1">
+
+<li>Packages
+ that contain multiple outgoing but few incoming dependencies are less
+stable because of the consequences of changes in these packages
+.</li>
+
+<li>Packages
+ containing more incoming dependencies 
+are more stable because they are more difficult to change.</li>
+
+<li>0% indicates a maximally stable package
+ and 100% indicates a maximally unstable
+package
+.</li> 
+
+<li>Designs of packages
+ should intentionally be made 
+as stable [ 0%,30% ] or unstable [ 70%,100% ] as possible.</li>
+
+</ol>
+</BODY>
+</HTML>

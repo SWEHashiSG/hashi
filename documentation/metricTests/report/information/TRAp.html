@@ -1,0 +1,323 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Total Reuse of Ancestor percentage (TRAp)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Total Reuse of Ancestor percentage (TRAp)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+
+<p>
+<b>Reuse of Ancestors</b>
+</p>
+
+<p>
+<b>The RA Metric</b>
+</p>
+
+
+<p>
+<b>Definition 1 (Reuse of Ancestor-class - RA)</b> 
+The RA metric between a class <b><i>C</i></b> and one of 
+its ancestor classes <b><i>A</i></b> is formally expressed as:<br>
+</p>
+
+
+<table border="0" cellspacing="0" cellpadding="0">
+ 
+<tr>
+  
+<td valign="top"></td>
+  <td valign="top"></td>
+  <td colspan="2" valign="bottom">
+  <i>i = n<i><sub>C</sub></i></i>
+  </td>
+ 
+</tr>
+ 
+<tr>
+  
+<td>RA(C; A)</td>
+  <td>=</td>
+  <td>
+  <img src="summa.gif">
+  </td>
+  <td valign="middle">
+  RDA(mth<sub> <i>i</i></sub>; A)/n<i><sub>C</sub></i>
+  </td>
+ 
+</tr>
+ 
+<tr>
+  
+<td valign="top"></td>
+  <td valign="top"></td>
+  <td colspan="2" valign="top">
+  <i>i </i>= 1
+  </td>
+ 
+</tr>
+
+</table>
+
+
+<p>where mthi (i = 1; n<i><sub>C</sub></i>) represent the 
+methods defined in class <b><i>C</i></b>.</p>
+
+
+<p>
+<b>Explanations</b> The RA metric quantifies the 
+reuse from a super class by totalizing
+this reuse from all of its methods. The degree to
+ which a method reuses an
+ancestor class is variable. We consider that the 
+way this reuse degree is
+calculated depends on the goals of the measurement. 
+Consequently we decided to
+parameterize the metric with a family of metrics called Reuse
+Degree of Ancestor-class (RDA), that evaluates 
+this reuse degree. A description
+of this family of metrics is presented below.</p>
+
+
+<p>
+<b>The RDA Metrics</b>
+</p>
+
+
+<p>
+<b>Definition 2 (Reuse Degree of Ancestor-class)</b> 
+A function expressing the measure of reuse of an
+ancestor class <b><i>A</i></b> in method mthi of 
+class <b><i>C</i></b> is
+called Reuse Degree of Ancestor-class <b><i>A</i></b> 
+in method mth<i><sub>i </sub></i>.</p>
+
+
+<p>RDA : SMF<sub>C</sub> X SAC<sub>C</sub> --&gt; [0; 1]</p>
+
+
+<p>where SMF<sub>C</sub> is the set of all member
+functions (methods) in class <b><i>C</i></b> and 
+SAC<sub>C </sub>is the set of
+ancestors classes <b><i>A</i></b> for class <b><i>C</i></b>.</p>
+
+
+<p>
+<b>Percentage RDA - RDA<i><sub>perc</sub></i></b> 
+The Percentage Reuse Degree 
+  of Ancestor-class is defined as:<br>
+</p>
+
+
+<table border="0" cellspacing="0" cellpadding="0">
+ 
+<tr>
+  
+<td valign="top"></td>
+  <td valign="top">
+  
+<p>n<i><sub>A</sub><sup>imp</sup></i>
+</p>
+  
+</td>
+  <td valign="top"></td>
+  <td valign="top"></td>
+  <td valign="top">
+  
+<p>n<i><sub>A</sub><sup>int</sup></i>
+</p>
+  
+</td>
+  <td valign="top"></td>
+ 
+</tr>
+ 
+<tr>
+  
+<td valign="top"></td>
+  <td valign="top">
+  <img src="summa.gif">
+  </td>
+  <td valign="middle">
+  uses(m<i><sub>i</sub><sup>imp</sup></i>; mth<i><sub>C</sub></i>)
+  </td>
+  <td valign="middle">
+  +(1-k<b><sub>A</sub></b>)
+  </td>
+  <td valign="top">
+  <img src="summa.gif">
+  </td>
+  <td valign="middle">
+  Uses(m<i><sub>j</sub><sup>int</sup></i>; mth<i><sub>C</sub></i>)
+  </td>
+ 
+</tr>
+ 
+<tr>
+  
+<td valign="top"></td>
+  <td valign="top">i=1</td>
+  <td valign="top"></td>
+  <td valign="top"></td>
+  <td valign="top">j=1</td>
+  <td valign="top"></td>
+ 
+</tr>
+ 
+<tr>
+  
+<td valign="top">RDA<i><sub>perc</sub></i>(mth<i><sub>C</sub></i>; A) =
+  </td>
+  <td colspan="5" valign="top">
+  
+<div>
+  
+<hr size="2" width="100%" align="center">
+</div>
+  
+</td>
+ 
+</tr>
+ 
+<tr>
+  
+<td valign="top"></td>
+  <td colspan="5" valign="top">
+  n<sub>A</sub><i><sup>imp</sup></i>+(1-k<b><sub>A</sub></b>) n<i><sub>A</sub><sup>int</sup></i>
+  </td>
+ 
+</tr>
+
+</table>
+
+
+<p>where m<i><sub>i</sub></i><b><sup>imp</sup></b>
+(i = 1; n<i><sub>A</sub><sup>imp</sup></i>)
+represent the usable class members of <b><i>A</i></b> belonging to the
+implementation of the class and m<i><sub>j</sub></i><b><sup>int</sup></b> (j = 1; n<i><sub>A</sub><sup>int</sup></i>) represent
+the class members of <b><i>A</i></b> belonging to the interface of the class. Function
+uses is defined as:<br>
+</p>
+
+
+<table border="0" cellspacing="0" cellpadding="0">
+ 
+<tr>
+  
+<td rowspan="2">
+  uses(m<i><sub>A</sub></i>; mth<i><sub>C</sub></i>) =
+  </td>
+  <td rowspan="2" valign="top"><font size="+3">{</font></td>
+  <td valign="top">
+  1 if class member m<i><sub>A</sub></i> is used in method 
+mth<b><sub>C</sub></b>
+  </td>
+ 
+</tr>
+ 
+<tr>
+  
+<td valign="top">
+  0 if not
+  </td>
+ 
+</tr>
+
+</table>
+
+
+<p>
+<b>Observations</b> Because the stability of the 
+ancestor-class plays an important 
+  role from the perspective of the client class, we 
+proposed this definition of 
+  RDA that also considers the stability of ancestors 
+interface.</p>
+
+
+<p>
+<b>The Total RA Metric - TRA</b>
+</p>
+
+
+<p>As we have seen the RA metric has two parameters: a
+particular class and one of its ancestor classes. We 
+think that it is necessary
+to have also a metric that expresses the total reuse 
+(from all the ancestors)
+for a given class. We will base the definition of this 
+new metric, on the
+definition of the already defined RA metric.</p>
+
+
+<p>
+<b>Definition 3 (Total Reuse from Ancestors - TRA)</b> 
+The Total Reuse from Ancestors metric for a class <b><i>C</i></b>
+is defined as the sum of all RA values between class 
+<b><i>C</i></b> and its
+superclasses. This can be formally expressed as:<br>
+</p>
+
+
+<table border="0" cellspacing="0" cellpadding="0">
+ 
+<tr>
+  
+<td valign="top"></td>
+  <td valign="top"></td>
+  <td colspan="2" valign="bottom">
+  <i>i </i>= n<i><sub>A</sub></i>
+  </td>
+ 
+</tr>
+ 
+<tr>
+  
+<td>TRA(C)</td>
+  <td>=</td>
+  <td>
+  <img src="summa.gif">
+  </td>
+  <td valign="middle">
+  RA(C; A<i><sub>i</sub></i>)
+  </td>
+ 
+</tr>
+ 
+<tr>
+  
+<td valign="top"></td>
+  <td valign="top"></td>
+  <td colspan="2" valign="top"><i>i </i>= 1
+  </td>
+ 
+</tr>
+
+</table>
+
+
+<p>where n<i><sub>A</sub></i> represents the number o
+f ancestor-classes for class 
+  <b><i>C</i></b>, and A<i><sub>i</sub></i> is the 
+iterator of its ancestor classes.</p>
+
+<p>
+<b>Source:</b> Ing. Radu Marinescu. <i>An Object 
+Oriented Metrics Suite on Coupling.</i>
+Universitatea "Politehnica" Timisoara, Facultatea de 
+Automatica si Calculatoare, Departamentul de Calculatoare 
+si Inginerie Software.
+September, 1998.</p>
+
+</p>
+</BODY>
+</HTML>

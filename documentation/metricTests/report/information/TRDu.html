@@ -1,0 +1,230 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Total Reuse in Descendants unitary (TRDu)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Total Reuse in Descendants unitary (TRDu)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+
+<p>
+<b>Reuse in Descendants</b>
+</p>
+
+<p>
+<b>The RD Metric</b>
+</p>
+  
+<p>
+<b>Definition 1 (Reuse in Descendant-class - RD)</b> 
+The RD metric between a class <b><i>C</i></b> and one 
+of its descendant classes <b><i>D</i></b> is formally expressed as:<br>
+</p>
+
+    
+<table border="0" cellspacing="0" cellpadding="0">
+      
+<tr> 
+      
+<td valign="top"></td>
+      <td valign="top"></td>
+      <td colspan="2" valign="bottom"> <font size="-1">
+        <i><font size="-2">i</font></i><font size="-2">= n<i><sub>C</sub></i></font>
+        </font> </td>
+      
+</tr>
+      
+<tr> 
+        
+<td>RD(C; D)</td>
+        <td>=</td>     
+        <td> 
+        <img src="summa.gif">
+        </td>
+        <td> 
+        RDD(m<i><sub><font size="-1">i</font></sub></i>;D) / n<i><sub><font size="-1">C</font></sub></i>
+        </td>
+      
+</tr>
+      
+<tr> 
+    
+<td valign="top"></td>
+    <td valign="top"></td>  
+        <td colspan="2" valign="top"> <font size="-1">
+        <i><font size="-2">i </font></i><font size="-2">= 1</font>
+        </font> </td>
+      
+</tr>
+    
+</table>
+
+  
+<p>where mi (i = 1; n<i><sub><font size="-1">C</font></sub></i>) 
+represent the usable class members of <b><i>C</i></b>.</p>
+  
+<p>
+<b>Explanations</b> The RD metric quantities the totalized 
+reuse of all the members of a class <b><i>C</i></b>, in one of 
+its descendant classes. The degree to which a particular member 
+is reused in a descendant class is variable. We consider that 
+the way this reuse degree is calculated depends on the goals of 
+the measurement. Analogous to RA we decided to parameterize the 
+metric with a family of metrics called Reuse Degree in 
+Descendant-class (RDD), that quantities this reuse degree. 
+A description of this family of metrics is presented below.</p>
+ 
+<p>
+<b>The RDD Metrics</b>
+</p>
+ 
+<p>
+<b>Definition 2 (Reuse Degree in Descendant Class)</b>
+A function expressing the measure of reuse of a class 
+member m<i><sub>C</sub></i> class <b><i>C</i></b> in 
+a descendent class <b><i>D</i></b> is called Reuse 
+Degree of m<i><sub><font size="-1">C</font></sub></i> 
+in Descendant-class <b><i>D</i></b>.</p>
+ 
+
+<p>RDD : SM<sub><font size="-1"><i>C</i></font></sub>X
+SDC<i><sub><font size="-1">C</font></sub></i>-- 
+  [0; 1]</p>
+  
+
+<p>where <sub><b><i>C</i></b></sub> is the set of all
+ members in class <b><i>C</i></b> 
+  and SDC<i><sub><font size="-1">C</font></sub></i> is the 
+  set of descendant classes <b><i>D</i></b> for class <b><i>C</i></b>.</p>
+  
+<p>
+<b>Unitary RDD - RDD</b><i><sub>unit</sub></i> The Unitary Reuse 
+Degree in Descendant-class is defined as:<br>
+</p>
+
+  
+<table border="0" cellspacing="0" cellpadding="0">
+    
+<tr> 
+      
+<td rowspan="2"> 
+        RDD<i><sub>unit</sub></i>(m<i><sub>C</sub></i>; D)=
+      </td>
+      <td rowspan="2" valign="top">
+      <font size="+3">{</font>
+      </td>
+      <td valign="bottom"> 
+        1 if m<i><sub>C</sub></i> is used in at least one method of class <b><i>D</i></b>
+      </td>
+    
+</tr>
+    
+<tr> 
+      
+<td valign="bottom"> 
+        0 if m<i><sub>C</sub></i> is not used at all in class <b><i>D</i></b>
+      </td>
+    
+</tr>
+  
+</table>
+
+
+<p>
+<b>The Total RD Metric - TRD</b>
+</p>
+
+<p>In the previous sections we defined the RD metric with two parameters: a particular class and a descendant of that class. In the same way we defined TRA we also considered that it is necessary to define a metric that expresses the total value for the reuse of a class by all its descendants.</p>
+  
+<p>We considered following two viewpoints for 
+the interpretation of this metric.</p>
+  
+<ol type="1">
+    
+<li>
+<b>Maintainability.</b> A high 
+  TRD value for a class indicates that a change in that class has a high impact 
+  on the underlying class-hierarchy, i.e. its descendants.</li> 
+    
+<li>
+<b>Degree of Member Reuse.</b> A high TRD for a class 
+indicates that the very most of its members are reused in the sub-classes.</li>
+  
+</ol>
+  
+<p>In proposing these two viewpoints, we observed that because 
+their focus is strongly different it would be quite impossible
+ to have a single definition for TRD. So we proposed a definition 
+for each one of the two viewpoints:</p>
+  
+<p>
+<b>Definition 3 (Descendants-based Definition of TRD)</b> 
+The Total Reuse in Descendants metric for a class <b><i>C</i></b> 
+is defined as the sum of all RD values between class <b><i>C</i></b> 
+and its descendants. This can be formally expressed as:<br>
+</p>
+    
+  
+<table border="0" cellspacing="0" cellpadding="0">
+    
+<tr> 
+      
+<td valign="top"></td>
+      <td valign="top"></td>  
+      <td colspan="2" valign="bottom"> 
+        <i><font size="-2">i </font></i><font size="-2">= 
+          n<i><sub>D</sub></i></font>
+       </td>
+      
+</tr>
+      
+<tr>  
+        
+<td>TRD(C)</td>
+        <td>=</td>
+        <td> 
+        <img src="summa.gif">
+        </td>     
+        <td> 
+         RD(C;D<i><sub>i</sub></i>)
+        </td>
+      
+</tr>
+      
+<tr> 
+    
+<td valign="top"></td>
+    <td valign="top"></td>
+        <td colspan="2" valign="top"> 
+         <i><font size="-2">i </font></i><font size="-2">= 1</font>
+        </td>
+      
+</tr>
+    
+</table>
+
+  
+<p>where n<i><sub>D</sub></i> represents the number of 
+descendant-classes for class <b><i>C</i></b>, and 
+D<i><sub>i</sub></i> is the iterator of its descendants.</p>
+
+
+<p>
+<b>Source:</b> Ing. Radu Marinescu. <i>An Object 
+Oriented Metrics Suite on Coupling.</i>
+Universitatea "Politehnica" Timisoara, Facultatea 
+de Automatica si Calculatoare, Departamentul de 
+Calculatoare si Inginerie Software.
+September, 1998.</p>
+
+</p>
+</BODY>
+</HTML>

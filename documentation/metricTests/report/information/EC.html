@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Essential Complexity (EC)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Essential Complexity (EC)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+The essential complexity, ev(G), of a method is calculated by first removing 
+structured programming primitives from the method's 
+control flow graph until the graph cannot be reduced any further,
+and then calculating the cyclomatic complexity, v(G), of the reduced graph.</p>
+<p>An immediate consequence is that 1 &lt;= ev(G) &lt;= v(G).
+A somewhat less obvious consequence, which can help when
+evaluating complexity analysis tools, is that ev(G) can never be equal to 2.
+This is because after all sequential nodes have been eliminated,
+the only graphs with v(G) equal to 2 are structured programming primitives,
+which can then be removed to get an ev(G) of 1.</p>
+<p>The reduction proceeds from the deepest level of nesting outward,
+which means that a primitive construct can be removed only when
+ no other constructs are nested within it.</p>
+</BODY>
+</HTML>

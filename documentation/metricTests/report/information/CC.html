@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK TYPE="text/css" CHARSET="ISO-8859-1" HREF="book.css" REL="STYLESHEET">
+<TITLE>
+Cyclomatic Complexity (CC)
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<h4>
+Cyclomatic Complexity (CC)
+</h4>
+<p>
+<i>Description:</i>
+</p>
+<p>
+CC represents number of cycles in the measured method. This measure represents the 
+cognitive complexity of the class. It counts the number of possible paths through an algorithm 
+by counting the number of distinct regions on a flowgraph, meaning the number of if, for, and 
+while statements in the operation's body. Case labels for switch statements are counted if the 
+<i>Case as branch</i> property is activated.
+</p>
+<p>
+A strict definition of CC (introduced by McCabe in 1976) looks at a program's control flow graph as a measure of its complexity: 
+</p>
+<p>
+<i>
+CC = L - N + 2P
+</i>
+</p>
+<p>
+where <i>L</i> is the number of links in the control flow graph, <i>N</i> is the number of nodes 
+in the control flow graph, and <i>P</i> is the number of disconnected parts in the control flow graph.
+</p>
+<p>
+For example, consider a method which consists of an if statement:
+</p>
+<p>
+
+
+<pre>
+   if (x &gt; 0) { 
+       x++; 
+   } else { 
+       x--; 
+   } 
+</pre>
+
+
+
+
+</p>
+<p>
+
+<i>CC = L - N + 2P = 4 - 4 + 2*1 = 2</i>
+
+</p>
+<p>
+A less formal definition is:</p>
+<p>
+<i>CC = D + 1</i>
+</p>
+<p>where <i>D</i> is the number of binary decisions in the control flow graph, if it has 
+only one entry and exit. In other words, the number of if, for and while statements and 
+number of logical and and or operators.</p>
+<p>
+For the example above: <i>CC = D + 1 = 1 + 1 = 2</i> 
+
+</p>
+</BODY>
+</HTML>
