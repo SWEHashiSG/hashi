@@ -321,12 +321,15 @@ public abstract class GameFieldController extends GridPane {
 
 	/**
 	 * Abstract Method which will be called if the user clicked on the empty
-	 * Pane. The Implementation decides what to do with this event
+	 * Pane. Normally it does nothing but can be overwritten in the
+	 * implementation
 	 * 
 	 * @param event
 	 */
 	@FXML
-	abstract void clickedOnPane(MouseEvent event);
+	protected void clickedOnPane(MouseEvent event){
+		/* Does nothing */
+	}
 
 	/**
 	 * This method will be called form the FieldController when the user clicks
