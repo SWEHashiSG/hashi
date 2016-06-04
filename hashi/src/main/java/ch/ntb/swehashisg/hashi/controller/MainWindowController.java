@@ -1,9 +1,6 @@
 package ch.ntb.swehashisg.hashi.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -11,23 +8,21 @@ import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
-import ch.ntb.swehashisg.hashi.graph.GraphFormat;
 import ch.ntb.swehashisg.hashi.graph.Utilities;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Dimension2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
 /**
@@ -40,13 +35,6 @@ import javafx.stage.WindowEvent;
 public class MainWindowController extends AnchorPane {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
-
-	/**
-	 * Description type for XML and JSon files used for the open- and save-file
-	 * dialog.
-	 */
-	private static final String XML_DESCRIPTION = "XML File";
-	private static final String JSON_DESCRIPTION = "JSon File";
 
 	/**
 	 * Controller of the game field which will be placed on this panel.
@@ -139,14 +127,7 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void check() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Game Check");
-		if (gameField.isCorrect()) {
-			alert.setHeaderText("Your on the right way");
-		} else {
-			alert.setHeaderText("Sorry, but there are some errors in your Game");
-		}
-		alert.showAndWait();
+		DialogUtilities.showCheckAlter(gameField.isCorrect());
 	}
 
 	/**
@@ -211,27 +192,9 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void clickedOnPane(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.MIDDLE) {
-			List<Integer> choices = new ArrayList<>();
-			choices.add(6);
-			choices.add(8);
-			choices.add(10);
-			choices.add(12);
-			choices.add(14);
-			ChoiceDialog<Integer> dialog = new ChoiceDialog<Integer>(8, choices);
-			dialog.setTitle("Starting Editor Mode");
-			dialog.setHeaderText("Please select your desired Gamesize");
-			dialog.setContentText("Choose Width");
-
-			Optional<Integer> resultWidth = dialog.showAndWait();
-			if (resultWidth.isPresent()) {
-				int width = resultWidth.get();
-				dialog.setContentText("Choos Height");
-
-				Optional<Integer> resultHeight = dialog.showAndWait();
-				if (resultHeight.isPresent()) {
-					int heigth = resultHeight.get();
-					startEditorMode(width, heigth);
-				}
+			Dimension2D dim = DialogUtilities.showEditorModeDialog();
+			if (dim != null) {
+				startEditorMode((int) dim.getWidth(), (int) dim.getHeight());
 			}
 		}
 	}
