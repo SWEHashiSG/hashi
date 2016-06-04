@@ -102,7 +102,7 @@ public class GraphFieldTest {
 	
 	@Test
 	public void testEqualsObject() {
-		assertTrue("Should be 'null'", main.equals(null));
+		assertFalse("Should be 'null'", main.equals(null));
 	}
 
 }

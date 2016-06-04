@@ -7,23 +7,62 @@ import java.util.Set;
 
 import ch.ntb.swehashisg.hashi.controller.GraphUtil;
 
+/**
+ * Represents a Field in the model from the MVC.
+ * 
+ * @author Martin
+ */
 public class GraphField {
+
+	/**
+	 * X position from this field
+	 */
 	private int x;
+
+	/**
+	 * Y position from this field
+	 */
 	private int y;
+
+	/**
+	 * number of bridges who this fields needs. Must be between 1 and 8
+	 */
 	private int bridges;
+
+	/**
+	 * Set of the direct first horizontal and vertical neighbors.
+	 */
 	private Set<GraphField> neighbors;
+
+	/**
+	 * List of bridges connected to this field.
+	 */
 	private List<GraphBridge> existingBridges;
-	private List<GraphBridge> existingSolutionBridges;
 
-	public List<GraphBridge> getExistingSolutionBridges() {
-		return existingSolutionBridges;
-	}
-
+	/**
+	 * All neighbors from this field. North, south, east and west
+	 */
 	private GraphField southNeighbor = null;
 	private GraphField northNeighbor = null;
 	private GraphField eastNeighbor = null;
 	private GraphField westNeighbor = null;
 
+	/**
+	 * Constructor of GraphField
+	 * 
+	 * @param x
+	 *            position from this field
+	 * @param y
+	 *            position from this field
+	 * @param bridges
+	 *            number of needed bridges
+	 * @param neighbors
+	 *            set of neighbors
+	 * @param existingBridges
+	 *            list of existing bridges which are connected to this field
+	 * @param existingSolutionBridges
+	 *            list of solution bridges which are connected to this field
+	 */
 	public GraphField(int x, int y, int bridges, Set<GraphField> neighbors, List<GraphBridge> existingBridges,
 			List<GraphBridge> existingSolutionBridges) {
 		this.x = x;
@@ -31,7 +70,6 @@ public class GraphField {
 		this.bridges = bridges;
 		this.neighbors = neighbors;
 		this.existingBridges = existingBridges;
-		this.existingSolutionBridges = existingSolutionBridges;
 
 		for (GraphField neighbor : this.getNeighbors()) {
 			if (GraphUtil.isEast(this, neighbor)) {
@@ -47,7 +85,6 @@ public class GraphField {
 				northNeighbor = neighbor;
 			}
 		}
-
 	}
 
 	public GraphField(int x, int y, int bridges) {
@@ -119,6 +156,9 @@ public class GraphField {
 		return result;
 	}
 
+	/**
+	 * fields are equals if X and Y position are the same
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
