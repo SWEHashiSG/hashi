@@ -42,6 +42,7 @@ public class BridgeController extends StackPane {
 	 * the bridge which associate to this controller
 	 */
 	private GraphBridge graphBridge;
+	
 	/**
 	 * controller of the Game field where the bridge will be drawn.
 	 */
