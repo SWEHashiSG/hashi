@@ -18,7 +18,7 @@
           <RowConstraints />
         </rowConstraints>
          <children>
-            <Pane fx:id="highliter" style="-fx-background-color: Orange;" visible="false" GridPane.rowIndex="1" />
+            <Pane fx:id="highlight" style="-fx-background-color: Orange;" visible="false" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
