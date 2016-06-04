@@ -297,10 +297,11 @@ public class MainWindowController extends AnchorPane {
 			event.consume();
 		} else if (result.get() == buttonTypeSave) {
 			save();
+			System.exit(0);
 		} else if (result.get() == buttonTypeCloseWithoutSave) {
 			// simple close Window
+			System.exit(0);
 		}
-		System.exit(0);
 	}
 
 	/**
