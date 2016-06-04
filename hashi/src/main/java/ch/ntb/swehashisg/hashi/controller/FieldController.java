@@ -1,17 +1,17 @@
 package ch.ntb.swehashisg.hashi.controller;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.model.GraphField;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Font;
 
 /**
  * Controller class for the JavaFX view Field. Set the Number of needed Bridges
@@ -35,9 +35,7 @@ public class FieldController extends StackPane {
 	 * number and also a highlight which toggle its visibility when the mouse is
 	 * on the field.
 	 */
-	@FXML
 	private Label label;
-	@FXML
 	private Circle highlight;
 
 	/**
@@ -61,15 +59,74 @@ public class FieldController extends StackPane {
 	 *            controller of the Game field where the field will be drawn.
 	 */
 	public FieldController(GraphField graphField, GameFieldController gameField) {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Field.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
+		// <Circle id="highliter" fx:id="highlight" fill="ORANGE"
+		// mouseTransparent="true" radius="20.0" stroke="BLACK"
+		// strokeType="INSIDE" strokeWidth="0.0" visible="false" />
+		Circle circle1 = new Circle();
+		circle1.setId("highliter");
+		circle1.setFill(Paint.valueOf("ORANGE"));
+		circle1.setMouseTransparent(true);
+		circle1.setRadius(20);
+		circle1.setStroke(Paint.valueOf("BLACK"));
+		circle1.setStrokeType(StrokeType.INSIDE);
+		circle1.setStrokeWidth(0);
+		circle1.setVisible(false);
+		highlight = circle1;
+		this.getChildren().add(circle1);
 
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
-		}
+		// <Circle centerX="20.0" centerY="20.0" fill="#ffffff00"
+		// mouseTransparent="true" radius="20.0" stroke="BLACK"
+		// strokeType="INSIDE" styleClass="field" />
+		// .field{
+		// -fx-stroke-width: 2.0;
+		// }
+		Circle circle2 = new Circle();
+		circle2.setCenterX(20);
+		circle2.setCenterY(20);
+		circle2.setFill(Paint.valueOf("#ffffff00"));
+		circle2.setMouseTransparent(true);
+		circle2.setRadius(20);
+		circle2.setStroke(Paint.valueOf("BLACK"));
+		circle2.setStrokeType(StrokeType.INSIDE);
+		circle2.setStrokeWidth(2);
+
+		this.getChildren().add(circle2);
+
+		// <Label fx:id="label" mouseTransparent="true" text="0">
+		// <font>
+		// <Font size="18.0" />
+		// </font>
+		// </Label>
+		label = new Label();
+		label.setId("label");
+		label.setMouseTransparent(true);
+		label.setFont(Font.font(18));
+
+		this.getChildren().add(label);
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				onMouseClicked();
+			}
+		});
+
+		this.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				onMouseEntered();
+			}
+		});
+
+		this.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				onMouseExited(event);
+			}
+		});
+
 		this.graphField = graphField;
 		this.gameField = gameField;
 		label.setText(Integer.toString(graphField.getBridges()));
@@ -88,7 +145,6 @@ public class FieldController extends StackPane {
 	/**
 	 * User input if he clicks on the field
 	 */
-	@FXML
 	protected void onMouseClicked() {
 		logger.debug("Clicked on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
 		gameField.clickedOnField(this);
@@ -98,7 +154,6 @@ public class FieldController extends StackPane {
 	 * User input if he move with the mouse on this field, the highlight appear
 	 * and also the highlight from all possible bridges will appear.
 	 */
-	@FXML
 	protected void onMouseEntered() {
 		logger.debug("Mouse on Field! X=" + graphField.getX() + "  Y=" + graphField.getY());
 		highlight.setVisible(true);
@@ -114,7 +169,6 @@ public class FieldController extends StackPane {
 	 * @param event
 	 *            MouseEvent to get the actual position of the mouse
 	 */
-	@FXML
 	protected void onMouseExited(MouseEvent event) {
 		highlight.setVisible(false);
 		setHighlighterFromBridges(false);

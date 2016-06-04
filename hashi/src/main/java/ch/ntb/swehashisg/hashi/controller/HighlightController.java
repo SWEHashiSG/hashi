@@ -1,20 +1,22 @@
 package ch.ntb.swehashisg.hashi.controller;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphField;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
@@ -37,7 +39,6 @@ public class HighlightController extends StackPane {
 	 * JavaFX Attributes from the FXML-File. Change the visibility of the
 	 * highlight by changing its visibility.
 	 */
-	@FXML
 	private Pane highlight;
 
 	/**
@@ -64,26 +65,121 @@ public class HighlightController extends StackPane {
 	 *            drawn.
 	 */
 	public HighlightController(GraphField neighbor1, GraphField neighbor2, GameFieldController gameField) {
-		String fxmlFile = "";
-		if (GraphUtil.getDirectionOfNeighbors(neighbor1, neighbor2) == BridgeDirection.Horizontal) {
-			fxmlFile = "/fxml/HorizontalHighlight.fxml";
-		} else {
-			fxmlFile = "/fxml/VerticalHighlight.fxml";
-		}
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
+		// <fx:root minHeight="40" minWidth="40"
+		// type="javafx.scene.layout.StackPane"
+		// xmlns="http://javafx.com/javafx/8"
+		// xmlns:fx="http://javafx.com/fxml/1" onMouseEntered="#onMouseEntered"
+		// onMouseExited="#onMouseExited" onMouseClicked="#onMouseClicked">
+		this.minHeight(40);
+		this.minWidth(40);
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
-		try {
-			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
+			@Override
+			public void handle(MouseEvent event) {
+				onMouseClicked(event);
+			}
+		});
+
+		this.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				onMouseEntered();
+			}
+		});
+
+		this.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				onMouseExited();
+			}
+		});
+		GridPane gridPane = null;
+		if (GraphUtil.getDirectionOfNeighbors(neighbor1, neighbor2) == BridgeDirection.Horizontal) {
+			gridPane = horizontalGridpane();
+		} else {
+			gridPane = verticalGridpane();
 		}
+
+		this.getChildren().add(gridPane);
 
 		this.neighbor1 = neighbor1;
 		this.neighbor2 = neighbor2;
 		this.gameField = gameField;
 		setHighlite(false);
+	}
+
+	private GridPane horizontalGridpane() {
+		// <GridPane>
+		// <columnConstraints>
+		// <ColumnConstraints hgrow="ALWAYS" />
+		// </columnConstraints>
+		// <rowConstraints>
+		// <RowConstraints percentHeight="33.3" />
+		// <RowConstraints percentHeight="33.3" />
+		// <RowConstraints />
+		// </rowConstraints>
+		// <children>
+		// <Pane fx:id="highlight" style="-fx-background-color: Orange;"
+		// visible="false" GridPane.rowIndex="1" />
+		// </children>
+		// </GridPane>
+		GridPane gridPane = new GridPane();
+
+		ColumnConstraints column = new ColumnConstraints();
+		column.setHgrow(Priority.ALWAYS);
+		gridPane.getColumnConstraints().add(column);
+		RowConstraints row1 = new RowConstraints();
+		row1.setPercentHeight(33.3);
+		gridPane.getRowConstraints().add(row1);
+		RowConstraints row2 = new RowConstraints();
+		row2.setPercentHeight(33.3);
+		gridPane.getRowConstraints().add(row2);
+		RowConstraints row3 = new RowConstraints();
+		gridPane.getRowConstraints().add(row3);
+
+		highlight = new Pane();
+		highlight.setStyle("-fx-background-color: Orange;");
+		highlight.setVisible(false);
+
+		gridPane.add(highlight, 0, 1);
+		return gridPane;
+	}
+
+	private GridPane verticalGridpane() {
+		// <GridPane>
+		// <columnConstraints>
+		// <ColumnConstraints percentWidth="33.3" />
+		// <ColumnConstraints percentWidth="33.3" />
+		// <ColumnConstraints />
+		// </columnConstraints>
+		// <rowConstraints>
+		// <RowConstraints vgrow="ALWAYS" />
+		// </rowConstraints>
+		// <children>
+		// <Pane fx:id="highlight" style="-fx-background-color: Orange;"
+		// visible="false" GridPane.columnIndex="1" />
+		// </children>
+		// </GridPane>
+		GridPane gridPane = new GridPane();
+
+		RowConstraints column = new RowConstraints();
+		column.setVgrow(Priority.ALWAYS);
+		gridPane.getRowConstraints().add(column);
+		ColumnConstraints row1 = new ColumnConstraints();
+		row1.setPercentWidth(33.3);
+		gridPane.getColumnConstraints().add(row1);
+		ColumnConstraints row2 = new ColumnConstraints();
+		row2.setPercentWidth(33.3);
+		gridPane.getColumnConstraints().add(row2);
+
+		highlight = new Pane();
+		highlight.setStyle("-fx-background-color: Orange;");
+		highlight.setVisible(false);
+
+		gridPane.add(highlight, 1, 0);
+		return gridPane;
 	}
 
 	/**
