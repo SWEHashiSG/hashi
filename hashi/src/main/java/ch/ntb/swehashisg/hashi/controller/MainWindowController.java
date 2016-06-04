@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
 import ch.ntb.swehashisg.hashi.graph.Utilities;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Dimension2D;
@@ -251,10 +252,11 @@ public class MainWindowController extends AnchorPane {
 			event.consume();
 		} else if (result.get() == buttonTypeSave) {
 			save();
-			System.exit(0);
+			GraphDasFactory.closeGraphDas(graphDas);
+			Platform.exit();
 		} else if (result.get() == buttonTypeCloseWithoutSave) {
-			// simple close Window
-			System.exit(0);
+			GraphDasFactory.closeGraphDas(graphDas);
+			Platform.exit();
 		}
 	}
 
