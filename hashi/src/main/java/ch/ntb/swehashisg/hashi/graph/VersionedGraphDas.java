@@ -1,6 +1,5 @@
 package ch.ntb.swehashisg.hashi.graph;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;

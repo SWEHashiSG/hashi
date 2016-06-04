@@ -1,12 +1,11 @@
 package ch.ntb.swehashisg.hashi.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 
 import org.junit.Test;
-
-import ch.ntb.swehashisg.hashi.model.GraphField;
 
 public class GraphFieldTest {
 
