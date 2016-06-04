@@ -300,6 +300,7 @@ public class MainWindowController extends AnchorPane {
 		} else if (result.get() == buttonTypeCloseWithoutSave) {
 			// simple close Window
 		}
+		System.exit(0);
 	}
 
 	/**

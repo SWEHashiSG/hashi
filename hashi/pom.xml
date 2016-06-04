@@ -25,6 +25,7 @@
 		<miglayout-javafx.version>5.0</miglayout-javafx.version>
 		<javafx-maven-plugin.version>8.1.5</javafx-maven-plugin.version>
 		<tinkergraph-gremlin.version>3.2.0-incubating</tinkergraph-gremlin.version>
+		<neo4j.version>0.3-2.3.3</neo4j.version>
 		<junit.version>4.12</junit.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -36,6 +37,16 @@
 			<groupId>org.apache.tinkerpop</groupId>
 			<artifactId>tinkergraph-gremlin</artifactId>
 			<version>${tinkergraph-gremlin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tinkerpop</groupId>
+			<artifactId>neo4j-gremlin</artifactId>
+			<version>${tinkergraph-gremlin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-tinkerpop-api-impl</artifactId>
+			<version>${neo4j.version}</version>
 		</dependency>
 		<!-- MigLayout -->
 		<dependency>
