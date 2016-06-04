@@ -15,7 +15,7 @@ public class GraphBridgeTest {
 
 	@Before
 	public void preparations() {
-		field3 = new GraphField(5, 5, 1); // Dummy
+		field3 = new GraphField(5, 5, 1);
 		HashSet<GraphField> neighbor = new HashSet<GraphField>();
 		neighbor.add(field3);
 		field4 = new GraphField(4, 2, 2, neighbor, null, null);
@@ -82,20 +82,6 @@ public class GraphBridgeTest {
 	}
 
 	@Test
-	public void testIsHighlited() {
-		assertTrue("Should not be highlighted", graphBridge1.isHighlited() == false);
-		graphBridge1.setHighliter(true);
-		assertTrue("Should be hihglighted now", graphBridge1.isHighlited() == true);
-		graphBridge1.setHighliter(false);
-		assertTrue("Shouldn't be highlighted anymore", graphBridge1.isHighlited() == false);
-	}
-
-	@Test
-	public void testSetHighliter() {
-		// already tested in testIsHighlighted()
-	}
-
-	@Test
 	public void testSetWeighting() {
 		assertTrue("Weighting should be 0", graphBridge1.getWeighting() == 0);
 		graphBridge1.setWeighting(1);
@@ -110,74 +96,8 @@ public class GraphBridgeTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testSetWeighting3() {
-		setToHorizontalNeighbors(1);
-
-		graphBridge1.setWeighting(2);
-	}
-
-	@Test
-	public void testGetWeighting() {
-		// already tested in testSetWeighting()
-	}
-
-	@Test
-	public void testIncrementWeighting() {
-		setToHorizontalNeighbors(2);
-
-		graphBridge1.setWeighting(0);
-		assertTrue("Weighting should be 0", graphBridge1.getWeighting() == 0);
-		graphBridge1.incrementWeighting();
-		assertTrue("Weighting should be 1", graphBridge1.getWeighting() == 1);
-		graphBridge1.incrementWeighting();
-		assertTrue("Weighting should be 2", graphBridge1.getWeighting() == 2);
-
-		setToHorizontalNeighbors(1);
-
-		graphBridge1.setWeighting(0);
-		graphBridge1.incrementWeighting();
-		assertTrue("Weighting should be 1", graphBridge1.getWeighting() == 1);
-
-		setToHorizontalNeighbors(4);
-	}
-
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testIncrementWeighting2() {
-		setToHorizontalNeighbors(2);
-		graphBridge1.setWeighting(2);
-		graphBridge1.incrementWeighting();
-	}
-
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testIncrementWeighting3() {
-		setToHorizontalNeighbors(1);
-		graphBridge1.setWeighting(1);
-		graphBridge1.incrementWeighting();
-	}
-
-	@Test
-	public void testDecrementWeighting() {
-		setToHorizontalNeighbors(2);
-
-		graphBridge1.setWeighting(2);
-		assertTrue("Weighting should be 2", graphBridge1.getWeighting() == 2);
-		graphBridge1.decrementWeighting();
-		assertTrue("Weighting should be 1", graphBridge1.getWeighting() == 1);
-		graphBridge1.decrementWeighting();
-		assertTrue("Weighting should be 0", graphBridge1.getWeighting() == 0);
-
-		setToHorizontalNeighbors(1);
-
-		graphBridge1.setWeighting(1);
-		graphBridge1.decrementWeighting();
-		assertTrue("Weighting should be 0", graphBridge1.getWeighting() == 0);
-
-	}
-
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testDecrementWeighting2() {
-		graphBridge1.setWeighting(0);
-		graphBridge1.decrementWeighting();
+	public void testSetWeightingMinus1() {
+		graphBridge1.setWeighting(-1);
 	}
 
 	@Test
@@ -194,10 +114,4 @@ public class GraphBridgeTest {
 		assertTrue("Should be false and throw not an Exception",!graphBridge1.equals(null));
 		assertTrue("Should be false and throw not an Exception", !graphBridge1.equals(new Object()));
 	}
-
-	@Test
-	public void testEqualsObject2() {
-		assertTrue("Should return a 'null'", graphBridge1.equals(null));
-	}
-
 }
