@@ -22,7 +22,7 @@ public class MainHashi extends Application {
 	private int windowHeight = 500;
 	
 	/**
-	 * Main class which is called at the Programm start
+	 * Main class which is called at the Program start
 	 * @param args
 	 * @throws Exception
 	 */
