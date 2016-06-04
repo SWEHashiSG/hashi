@@ -96,12 +96,13 @@ public class BaseGraphDas extends GraphDas {
 
 	@Override
 	public int getSizeX() {
-		return graph.traversal().V().has("name").toList().get(0).value("sizeX");
+		
+		return graph.traversal().V().has("name", "test").toList().get(0).value("sizeX");
 	}
 
 	@Override
 	public int getSizeY() {
-		return graph.traversal().V().has("name").toList().get(0).value("sizeY");
+		return graph.traversal().V().has("name", "test").toList().get(0).value("sizeY");
 	}
 
 	private Set<GraphField> convertVerticesToFields(Set<Vertex> vertices) {
