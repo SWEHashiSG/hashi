@@ -28,8 +28,5 @@ public class MainHashi extends Application {
 		stage.setOnCloseRequest(event -> mainWindow.closeRequest(event));
 		stage.setMinWidth(windowWidth);
 		stage.setMinHeight(windowHeight);
-		System.out.println("min Width: " + mainWindow.getMinWidth());
-		System.out.println("max Width: " + mainWindow.getMaxWidth());
-		System.out.println("pref Width: " + mainWindow.getPrefWidth());
 	}
 }

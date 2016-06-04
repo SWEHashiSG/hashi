@@ -46,6 +46,16 @@ public class MainWindowController extends AnchorPane {
 	private Button buttonUndo;
 	@FXML
 	private Button buttonRedo;
+	@FXML
+	private Button buttonSave;
+	@FXML
+	private Button buttonOpen;
+	@FXML
+	private Button buttonShowSolution;
+	@FXML
+	private Button buttonCheck;
+	@FXML
+	private Button buttonRestart;
 
 	public MainWindowController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
@@ -132,6 +142,7 @@ public class MainWindowController extends AnchorPane {
 			} else {
 				throw new IllegalArgumentException("Unknown File Type");
 			}
+			pane.getChildren().remove(gameField);
 			gameField = new GameFieldPlayController(graphDas, this);
 			gameField.loadGame();
 			addGameField(gameField);
@@ -174,6 +185,7 @@ public class MainWindowController extends AnchorPane {
 	}
 
 	private void startEditorMode(int sizeX, int sizeY) {
+		pane.getChildren().remove(gameField);
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
 		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas, this);
 		gameField.loadGame();
@@ -212,6 +224,10 @@ public class MainWindowController extends AnchorPane {
 	private void updateButtons(boolean canUndo, boolean canRedo) {
 		buttonUndo.setDisable(!canUndo);
 		buttonRedo.setDisable(!canRedo);
+		buttonShowSolution.setDisable(graphDas == null);
+		buttonRestart.setDisable(graphDas== null);
+		buttonSave.setDisable(graphDas == null);
+		buttonCheck.setDisable(graphDas == null);
 	}
 
 	public void onKeyPressed(KeyEvent event) {

@@ -15,31 +15,76 @@ import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
 
+/**
+ * Abstract controller class for the JavaFX view game field. The game field
+ * extends a simple JavaFX Grid Pane where the fields and bridges are placed on
+ * the screen. The methods are implemented in GameFieldPlayController for
+ * playing the game and in GameFieldDesignerController to design own games.
+ * 
+ * @author Martin
+ *
+ */
 public abstract class GameFieldController extends GridPane {
 
 	private static final Logger logger = LoggerFactory.getLogger(GameFieldController.class);
 
+	/**
+	 * Controller of the main window where the game field will be placed.
+	 */
 	private MainWindowController mainWindowController;
+
+	/**
+	 * Model of the MVC Pattern where the data is saved
+	 */
 	protected GraphDas graphDas;
+
+	/**
+	 * A set of GraphFields which are all on the gameField
+	 */
 	protected Set<GraphField> graphFields;
+
+	/**
+	 * List of all FieldController which control the GraphFields
+	 */
 	protected ArrayList<FieldController> fields;
+
+	/**
+	 * Map to get the needed controller from a bridge
+	 */
 	protected HashMap<GraphBridge, BridgeController> graphBridgeToBridge;
+
+	/**
+	 * Map to get the needed controller from the highlighter of a bridge
+	 */
 	protected HashMap<GraphBridge, HighlightController> graphBridgeToHighlight;
+
+	/**
+	 * Map to get the solution controller of a bridge
+	 */
 	protected HashMap<GraphBridge, BridgeController> graphBridgeToSolutionBridge;
+
+	/**
+	 * is set during update the GraphDas model and redraw the game field
+	 */
 	protected boolean isUpdating = false;
 
+	/**
+	 * Constructor of the abstract class GameFieldController. Loads the
+	 * FXML-file and placed it on the main Window. Sets the size of the game
+	 * field and create all bridges and solution bridges
+	 * 
+	 * @param graphDas
+	 *            Model of the MVC Pattern where the data is saved
+	 * @param mainWindowController
+	 *            Controller of the window where this game field will be placed
+	 */
 	public GameFieldController(GraphDas graphDas, MainWindowController mainWindowController) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
 		fxmlLoader.setRoot(this);
@@ -59,6 +104,12 @@ public abstract class GameFieldController extends GridPane {
 		createAllSolutions(graphPlayField.getSolutionBridges());
 	}
 
+	/**
+	 * Create all solution bridges on the game field and placed it invisible on
+	 * the screen
+	 * 
+	 * @param solutionBridges
+	 */
 	private void createAllSolutions(Set<GraphBridge> solutionBridges) {
 		graphBridgeToSolutionBridge = new HashMap<>();
 		for (GraphBridge bridge : solutionBridges) {
@@ -66,8 +117,22 @@ public abstract class GameFieldController extends GridPane {
 		}
 	}
 
+	/**
+	 * From Template Pattern. Abstract getBridges method so the implementation
+	 * of this class can decide which bridges will be returned;
+	 * 
+	 * @param graphPlayField
+	 *            data model from GraphDas
+	 * @return bridge choose by the implementation
+	 */
 	protected abstract Set<GraphBridge> getBridges(GraphPlayField graphPlayField);
 
+	/**
+	 * Create all bridges and the associated controllers and add them to the
+	 * maps and lists
+	 * 
+	 * @param bridges
+	 */
 	private void createAllBridges(Set<GraphBridge> bridges) {
 		graphBridgeToBridge = new HashMap<>();
 		for (GraphBridge bridge : bridges) {
@@ -91,6 +156,12 @@ public abstract class GameFieldController extends GridPane {
 		}
 	}
 
+	/**
+	 * update Method will be called after every change on the game
+	 * 
+	 * @param graphPlayField
+	 *            new data modell from the background system
+	 */
 	protected void update(GraphPlayField graphPlayField) {
 		graphFields = graphPlayField.getFields();
 		createAllBridges(getBridges(graphPlayField));
@@ -98,6 +169,15 @@ public abstract class GameFieldController extends GridPane {
 		isUpdating = false;
 	}
 
+	/**
+	 * initiate the grid pane from the JavaFX. Add columns and rows and set its
+	 * size
+	 * 
+	 * @param sizeX
+	 *            horizontal size of the game
+	 * @param sizeY
+	 *            vertical size of the game
+	 */
 	private void setFieldSize(int sizeX, int sizeY) {
 		getRowConstraints().clear();
 		getColumnConstraints().clear();
@@ -113,6 +193,10 @@ public abstract class GameFieldController extends GridPane {
 		}
 	}
 
+	/**
+	 * clear the exisiting game field and all all fields, bridges, highliter,
+	 * and solution bridges on the game
+	 */
 	public void loadGame() {
 		logger.debug("Draw all Fields");
 		cleanGameField();
@@ -133,6 +217,11 @@ public abstract class GameFieldController extends GridPane {
 		}
 	}
 
+	/**
+	 * cleaning the game field by deleting all children of the grid pane. With
+	 * one exception, because the visibility of the grid lines are also saved in
+	 * the children of the grid pane
+	 */
 	private void cleanGameField() {
 		if (!getChildren().isEmpty()) {
 			Node n = getChildren().get(0);
@@ -172,6 +261,13 @@ public abstract class GameFieldController extends GridPane {
 		return graphBridgeToBridge.get(new GraphBridge(neighbor1, neighbor2)).getGraphBridge();
 	}
 
+	/**
+	 * take both neighbors and compare the number of existing bridges and the
+	 * number of bridges needed
+	 * 
+	 * @param highlight
+	 * @return true if the highlight needs a Bridge
+	 */
 	boolean needsBridge(HighlightController highlight) {
 		GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
 		int weighting = graphBridgeToBridge.get(bridge).getGraphBridge().getWeighting();
@@ -184,6 +280,13 @@ public abstract class GameFieldController extends GridPane {
 		return false;
 	}
 
+	/**
+	 * remove the bridges were the highlight is associated to. If there are two
+	 * bridges, both will be deleted
+	 * 
+	 * @param highlight
+	 *            which associated to the bridge
+	 */
 	public void removeBridge(HighlightController highlight) {
 		if (!isUpdating) {
 			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
@@ -197,6 +300,11 @@ public abstract class GameFieldController extends GridPane {
 		}
 	}
 
+	/**
+	 * adding a new Bridge to the game Field.
+	 * 
+	 * @param highlight
+	 */
 	public void addBridge(HighlightController highlight) {
 		if (!isUpdating) {
 			GraphBridge bridge = new GraphBridge(highlight.getNeighbor1(), highlight.getNeighbor2());
@@ -211,13 +319,34 @@ public abstract class GameFieldController extends GridPane {
 
 	protected abstract void removeBridge(GraphBridge graphBridge);
 
+	/**
+	 * Abstract Method which will be called if the user clicked on the empty
+	 * Pane. Normally it does nothing but can be overwritten in the
+	 * implementation
+	 * 
+	 * @param event
+	 */
 	@FXML
-	abstract void onMouseClicked(MouseEvent event);
-
-	protected void clickedOnField(FieldController field) {
-		// Do nothing
+	protected void clickedOnPane(MouseEvent event){
+		/* Does nothing */
 	}
 
+	/**
+	 * This method will be called form the FieldController when the user clicks
+	 * on its field. Normally it does nothing but can be overwritten in the
+	 * implementation
+	 * 
+	 * @param field
+	 *            controller of the field where the user has clicked
+	 */
+	protected void clickedOnField(FieldController field) {
+		/* Does nothing */
+	}
+
+	/**
+	 * Initiate the Update of the gameField when something has changed. Create a
+	 * new UpdateThread which is doing the work so the GUI will not be blocked
+	 */
 	protected void initiateUpdate() {
 		logger.debug("-------------Redraw whole gamefield-----------------");
 		UpdateThread updateThread = new UpdateThread(this, graphDas, mainWindowController);
@@ -225,6 +354,13 @@ public abstract class GameFieldController extends GridPane {
 		updateThread.run();
 	}
 
+	/**
+	 * private class to Update the gameField in a own thread, that the GUI is
+	 * not blocked
+	 * 
+	 * @author Martin
+	 *
+	 */
 	static class UpdateThread extends Thread {
 
 		private GameFieldController gameField;
@@ -252,6 +388,10 @@ public abstract class GameFieldController extends GridPane {
 		}
 	}
 
+	/**
+	 * toggling the visibility of the solutionBridges and of the actual Bridges
+	 * on the Field
+	 */
 	public void showSolution() {
 		for (BridgeController solutionBridge : graphBridgeToSolutionBridge.values()) {
 			solutionBridge.toggleVisibility();
@@ -280,27 +420,40 @@ public abstract class GameFieldController extends GridPane {
 		initiateUpdate();
 	}
 
+	/**
+	 * Check all bridges if they are correct. compare if for all bridges there
+	 * is a solution bridge and the solution doesn't have a higher weighting If
+	 * a fault is found, the bridge will be marked.
+	 * 
+	 * @return true if game is correct or false if a fault was found
+	 */
 	public boolean isCorrect() {
 		boolean isCorrect = true;
-		if (graphDas.isFinished()){
+		if (graphDas.isFinished()) {
 			return isCorrect;
 		} else {
-			for (GraphBridge bridge: graphDas.getPlayField().getBridges()) {
+			for (GraphBridge bridge : graphDas.getPlayField().getBridges()) {
 				BridgeController solutionController = graphBridgeToSolutionBridge.get(bridge);
-				if ( solutionController == null){
+				if (solutionController == null) {
 					markFaultBridge(graphBridgeToBridge.get(bridge));
 					isCorrect = false;
-				} else if (solutionController.getGraphBridge().getWeighting() < bridge.getWeighting()){
+				} else if (solutionController.getGraphBridge().getWeighting() < bridge.getWeighting()) {
 					markFaultBridge(graphBridgeToBridge.get(bridge));
 					isCorrect = false;
 				}
-			} 
+			}
 		}
 		return isCorrect;
 	}
 
+	/**
+	 * Mark a fault bridge with a Red Background
+	 * 
+	 * @param bridgeController
+	 *            controller of the graphBridge which is not correct
+	 */
 	private void markFaultBridge(BridgeController bridgeController) {
 		logger.warn("You have placed a wrong Bridge");
-		bridgeController.setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
+		graphBridgeToHighlight.get(bridgeController.getGraphBridge()).markRed();
 	}
 }

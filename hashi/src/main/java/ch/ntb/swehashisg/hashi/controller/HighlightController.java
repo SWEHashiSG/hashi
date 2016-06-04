@@ -9,9 +9,14 @@ import ch.ntb.swehashisg.hashi.model.BridgeDirection;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 public class HighlightController extends StackPane {
 
@@ -110,5 +115,9 @@ public class HighlightController extends StackPane {
 	protected void onMouseExited() {
 		logger.debug("Mouse not on Highliter");
 		setHighlite(false);
+	}
+
+	public void markRed() {
+		setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(10), Insets.EMPTY)));
 	}
 }

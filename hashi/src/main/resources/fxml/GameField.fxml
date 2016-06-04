@@ -5,5 +5,5 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<fx:root alignment="TOP_CENTER" onMouseClicked="#onMouseClicked" styleClass="gameField" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="TOP_CENTER" onMouseClicked="#clickedOnPane" styleClass="gameField" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 </fx:root>
