@@ -74,7 +74,7 @@ public abstract class GameFieldController extends GridPane {
 	 * is set during update the GraphDas model and redraw the game field
 	 */
 	protected boolean isUpdating = false;
-	
+
 	/**
 	 * is set when solution is shown
 	 */
@@ -103,10 +103,6 @@ public abstract class GameFieldController extends GridPane {
 		this.graphDas = graphDas;
 		this.mainWindowController = mainWindowController;
 		setFieldSize(graphDas.getSizeX(), graphDas.getSizeY());
-		GraphPlayField graphPlayField = graphDas.getPlayField();
-		graphFields = graphPlayField.getFields();
-		createAllBridges(getBridges(graphPlayField));
-		createAllSolutions(graphPlayField.getSolutionBridges());
 	}
 
 	/**
@@ -116,9 +112,11 @@ public abstract class GameFieldController extends GridPane {
 	 * @param solutionBridges
 	 */
 	private void createAllSolutions(Set<GraphBridge> solutionBridges) {
-		graphBridgeToSolutionBridge = new HashMap<>();
-		for (GraphBridge bridge : solutionBridges) {
-			graphBridgeToSolutionBridge.put(bridge, new BridgeController(bridge, this, false));
+		if (graphBridgeToSolutionBridge == null) {
+			graphBridgeToSolutionBridge = new HashMap<>();
+			for (GraphBridge bridge : solutionBridges) {
+				graphBridgeToSolutionBridge.put(bridge, new BridgeController(bridge, this, false));
+			}
 		}
 	}
 
@@ -169,6 +167,7 @@ public abstract class GameFieldController extends GridPane {
 	 */
 	protected void update(GraphPlayField graphPlayField) {
 		graphFields = graphPlayField.getFields();
+		createAllSolutions(graphPlayField.getSolutionBridges());
 		createAllBridges(getBridges(graphPlayField));
 		loadGame();
 		isUpdating = false;
@@ -352,7 +351,7 @@ public abstract class GameFieldController extends GridPane {
 	 * Initiate the Update of the gameField when something has changed. Create a
 	 * new UpdateThread which is doing the work so the GUI will not be blocked
 	 */
-	protected void initiateUpdate() {
+	public void initiateUpdate() {
 		logger.debug("-------------Redraw whole gamefield-----------------");
 		UpdateThread updateThread = new UpdateThread(this, graphDas, mainWindowController);
 		isUpdating = true;
@@ -366,7 +365,7 @@ public abstract class GameFieldController extends GridPane {
 	 * @author Martin
 	 *
 	 */
-	static class UpdateThread extends Thread {
+	private static class UpdateThread extends Thread {
 
 		private GameFieldController gameField;
 		private GraphDas graphDas;
@@ -381,15 +380,25 @@ public abstract class GameFieldController extends GridPane {
 
 		@Override
 		public void run() {
-			GraphPlayField playField = graphDas.getPlayField();
-			Platform.runLater(new Runnable() {
+			try {
+				GraphPlayField playField = graphDas.getPlayField();
+				Platform.runLater(new Runnable() {
 
-				@Override
-				public void run() {
-					mainWindowController.updateButtons(graphDas);
-					gameField.update(playField);
-				}
-			});
+					@Override
+					public void run() {
+						mainWindowController.updateButtons(graphDas);
+						gameField.update(playField);
+					}
+				});
+			} catch (Exception ex) {
+				Platform.runLater(new Runnable() {
+
+					@Override
+					public void run() {
+						mainWindowController.error(ex);
+					}
+				});
+			}
 		}
 	}
 
@@ -408,9 +417,10 @@ public abstract class GameFieldController extends GridPane {
 		}
 		this.setMouseTransparent(!isMouseTransparent());
 	}
-	
+
 	/**
-	 * Returns actual solution status, needed to hide solution when game-restart is performed
+	 * Returns actual solution status, needed to hide solution when game-restart
+	 * is performed
 	 */
 	public boolean isShowingSolution() {
 		return isShowingSolution;
