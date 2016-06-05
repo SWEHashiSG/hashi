@@ -2,7 +2,6 @@ package ch.ntb.swehashisg.hashi.graph;
 
 import java.util.Stack;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +10,7 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
-public class VersionedGraphDas extends GraphDas {
+public class VersionedGraphDas implements GraphDas {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
 
@@ -19,16 +18,18 @@ public class VersionedGraphDas extends GraphDas {
 	private Stack<GraphDasOperation> undoOperations;
 	private Stack<GraphDasOperation> redoOperations;
 
-	public VersionedGraphDas(BaseGraphDas gd) {
+	VersionedGraphDas(BaseGraphDas gd) {
 		this.graphDas = gd;
 		undoOperations = new Stack<>();
 		redoOperations = new Stack<>();
 	}
 
+	@Override
 	public boolean canUndo() {
 		return !undoOperations.isEmpty();
 	}
 
+	@Override
 	public void undo() {
 		if (!canUndo()) {
 			throw new IllegalArgumentException("Nothing to undo!");
@@ -39,10 +40,12 @@ public class VersionedGraphDas extends GraphDas {
 		graphDasOperation.undo();
 	}
 
+	@Override
 	public boolean canRedo() {
 		return !redoOperations.isEmpty();
 	}
 
+	@Override
 	public void redo() {
 		if (!canRedo()) {
 			throw new IllegalArgumentException("Nothing to redo!");
@@ -168,16 +171,6 @@ public class VersionedGraphDas extends GraphDas {
 		public void redo() {
 			addSolutionBridgeOperation.undo();
 		}
-	}
-
-	@Override
-	void close() {
-		graphDas.close();
-	}
-
-	@Override
-	Graph getGraph() {
-		return graphDas.getGraph();
 	}
 
 	@Override

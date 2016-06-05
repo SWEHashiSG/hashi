@@ -6,17 +6,14 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import ch.ntb.swehashisg.hashi.controller.GraphPersistence;
 
 public class Utilities {
 
 	private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
-	protected static Graph generateBasisPlayGround(Graph g, int sizeX, int sizeY) {
+	static Graph generateBasisPlayGround(Graph g, int sizeX, int sizeY) {
 		logger.debug("Generate Basis Play Ground");
 		Vertex play = g.addVertex("name", "test");
 		play.property("sizeX", sizeX);
@@ -64,25 +61,6 @@ public class Utilities {
 		play.addEdge("field", root);
 
 		return g;
-	}
-
-	public static void persistGraphDas(GraphDas g, GraphPersistence graphPersistence) {
-		try {
-			if (graphPersistence.getGraphFormat() == GraphFormat.XML) {
-				g.getGraph().io(IoCore.graphml()).writeGraph(graphPersistence.getPath());
-			} else if (graphPersistence.getGraphFormat() == GraphFormat.JSON) {
-				g.getGraph().io(IoCore.graphson()).writeGraph(graphPersistence.getPath());
-			} else {
-				throw new IllegalArgumentException("Unknown GraphFormat: " + graphPersistence.getGraphFormat());
-			}
-		} catch (Exception ex) {
-			throw new RuntimeException("Couldn't persist Graph!", ex);
-		}
-	}
-
-	public static GraphDas loadGraphDas(GraphPersistence graphPersistence) {
-		GraphDas graphDas = GraphDasFactory.loadGraphDas(graphPersistence.getPath(), graphPersistence.getGraphFormat());
-		return graphDas;
 	}
 
 }

@@ -1,41 +1,36 @@
 package ch.ntb.swehashisg.hashi.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
-public abstract class GraphDas {
-	public abstract GraphPlayField getPlayField();
+public interface GraphDas {
 
-	public abstract void addBridge(GraphBridge bridge);
+	public GraphPlayField getPlayField();
 
-	public abstract void setBridges(GraphField field);
+	public void addBridge(GraphBridge bridge);
 
-	public abstract void removeBridge(GraphBridge bridge);
+	public void setBridges(GraphField field);
 
-	public abstract boolean isFinished();
+	public void removeBridge(GraphBridge bridge);
 
-	abstract void close();
+	public boolean isFinished();
 
-	abstract Graph getGraph();
+	public int getSizeX();
 
-	public abstract int getSizeX();
+	public int getSizeY();
 
-	public abstract int getSizeY();
+	public void undo();
 
-	public abstract void undo();
+	public boolean canUndo();
 
-	public abstract boolean canUndo();
+	public void redo();
 
-	public abstract void redo();
+	public boolean canRedo();
 
-	public abstract boolean canRedo();
+	public void addSolutionBridge(GraphBridge bridge);
 
-	public abstract void addSolutionBridge(GraphBridge bridge);
+	public void removeSolutionBridge(GraphBridge bridge);
 
-	public abstract void removeSolutionBridge(GraphBridge bridge);
-
-	public abstract void restart();
+	public void restart();
 }

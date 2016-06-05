@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.graph.GraphDas;
 import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
-import ch.ntb.swehashisg.hashi.graph.Utilities;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -163,7 +162,7 @@ public class MainWindowController extends AnchorPane {
 		logger.debug("Save Clicked");
 		GraphPersistence graphPersistence = DialogUtilities.selectSaveGraph("Save Game", this.getScene().getWindow());
 		if (graphPersistence != null) {
-			Utilities.persistGraphDas(graphDas, graphPersistence);
+			GraphDasFactory.persistGraphDas(graphDas, graphPersistence);
 		} else {
 			logger.debug("Open File Dialog Closed without a choosen File");
 		}
@@ -179,7 +178,7 @@ public class MainWindowController extends AnchorPane {
 		logger.debug("Open Clicked");
 		GraphPersistence graphPersistence = DialogUtilities.selectOpenGraph("Load Game", this.getScene().getWindow());
 		if (graphPersistence != null) {
-			GraphDas newGraphDas = Utilities.loadGraphDas(graphPersistence);
+			GraphDas newGraphDas = GraphDasFactory.loadGraphDas(graphPersistence);
 			graphDas = newGraphDas;
 			gameField = new GameFieldPlayController(graphDas, this);
 			addGameField(gameField);

@@ -22,25 +22,20 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
-public class BaseGraphDas extends GraphDas {
+public class BaseGraphDas implements GraphDas {
 
 	private Graph graph;
 
 	private HashMap<GraphBridge, Integer> bridgesToWeight;
 	private HashMap<GraphBridge, Integer> solutionBridgesToWeight;
 
-	public BaseGraphDas(Graph graph) {
+	BaseGraphDas(Graph graph) {
 		this.graph = graph;
 		this.bridgesToWeight = new HashMap<>();
 		this.solutionBridgesToWeight = new HashMap<>();
 	}
 
 	@Override
-	public void setBridges(GraphField field) {
-		Vertex node = getVertexForField(field);
-		node.property("bridges", field.getBridges());
-	}
-
 	public GraphPlayField getPlayField() {
 		bridgesToWeight = new HashMap<>();
 		solutionBridgesToWeight = new HashMap<>();
@@ -83,6 +78,13 @@ public class BaseGraphDas extends GraphDas {
 		return graph.traversal().V().has("x", 0).has("y", 0).toList().get(0);
 	}
 
+	@Override
+	public void setBridges(GraphField field) {
+		Vertex node = getVertexForField(field);
+		node.property("bridges", field.getBridges());
+	}
+	
+	@Override
 	public boolean isFinished() {
 		Set<Vertex> vertices = getRelevantVertices();
 		for (Vertex vertex : vertices) {
@@ -155,6 +157,7 @@ public class BaseGraphDas extends GraphDas {
 		return new GraphField(x, y, bridges);
 	}
 
+	@Override
 	public void addBridge(GraphBridge bridge) {
 		addGenericBridge(BridgeType.NORMAL, bridge);
 	}
@@ -179,6 +182,7 @@ public class BaseGraphDas extends GraphDas {
 		node1.addEdge(bridgeType.getLabel(), node2);
 	}
 
+	@Override
 	public void removeBridge(GraphBridge bridge) {
 		removeGenericBridge(BridgeType.NORMAL, bridge);
 	}
@@ -411,20 +415,6 @@ public class BaseGraphDas extends GraphDas {
 
 	private boolean areOrthogonal(GraphField field1, GraphField field2) {
 		return !(field1.getX() != field2.getX() && field1.getY() != field2.getY());
-	}
-
-	@Override
-	void close() {
-		try {
-			graph.close();
-		} catch (Exception e) {
-			throw new RuntimeException("Couldn't close graph!");
-		}
-	}
-
-	@Override
-	Graph getGraph() {
-		return this.graph;
 	}
 
 	@Override

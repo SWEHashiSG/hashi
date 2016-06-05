@@ -10,6 +10,8 @@ import org.neo4j.io.fs.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.ntb.swehashisg.hashi.controller.GraphPersistence;
+
 public class GraphDasFactory {
 
 	private static final Logger logger = LoggerFactory.getLogger(GraphDasFactory.class);
@@ -32,7 +34,11 @@ public class GraphDasFactory {
 	}
 
 	public static void closeGraphDas(GraphDas graphDas) {
-		graphDas.close();
+		try {
+			actualGraph.close();
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't close graph!");
+		}
 	}
 
 	private static void registerShutdownHook() {
@@ -62,26 +68,6 @@ public class GraphDasFactory {
 		}
 	}
 
-	public static GraphDas loadGraphDas(String absolutpath, GraphFormat graphFormat) {
-		try {
-			closePreviousGraph();
-			Neo4jGraph ne = Neo4jGraph.open("./neo4j");
-			actualGraph = ne;
-			if (graphFormat == GraphFormat.XML) {
-				ne.io(IoCore.graphml()).readGraph(absolutpath);
-			} else if (graphFormat == GraphFormat.JSON) {
-				ne.io(IoCore.graphson()).readGraph(absolutpath);
-			} else {
-				throw new IllegalArgumentException("Unknown GraphFormat: " + graphFormat);
-			}
-			Graph g = ne;
-			BaseGraphDas graphDas = new BaseGraphDas(g);
-			return new VersionedGraphDas(graphDas);
-		} catch (Exception ex) {
-			throw new RuntimeException("Couldn't read Graph!", ex);
-		}
-	}
-
 	public static GraphDas getEmptyGraphDas(int sizeX, int sizeY) {
 		closePreviousGraph();
 		Neo4jGraph ne = Neo4jGraph.open("./neo4j");
@@ -90,6 +76,40 @@ public class GraphDasFactory {
 		g = Utilities.generateBasisPlayGround(g, sizeX, sizeY);
 		BaseGraphDas graphDas = new BaseGraphDas(g);
 		return new VersionedGraphDas(graphDas);
+	}
+
+	public static void persistGraphDas(GraphDas g, GraphPersistence graphPersistence) {
+		try {
+			if (graphPersistence.getGraphFormat() == GraphFormat.XML) {
+				actualGraph.io(IoCore.graphml()).writeGraph(graphPersistence.getPath());
+			} else if (graphPersistence.getGraphFormat() == GraphFormat.JSON) {
+				actualGraph.io(IoCore.graphson()).writeGraph(graphPersistence.getPath());
+			} else {
+				throw new IllegalArgumentException("Unknown GraphFormat: " + graphPersistence.getGraphFormat());
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException("Couldn't persist Graph!", ex);
+		}
+	}
+
+	public static GraphDas loadGraphDas(GraphPersistence graphPersistence) {
+		try {
+			closePreviousGraph();
+			Neo4jGraph ne = Neo4jGraph.open("./neo4j");
+			actualGraph = ne;
+			if (graphPersistence.getGraphFormat() == GraphFormat.XML) {
+				ne.io(IoCore.graphml()).readGraph(graphPersistence.getPath());
+			} else if (graphPersistence.getGraphFormat() == GraphFormat.JSON) {
+				ne.io(IoCore.graphson()).readGraph(graphPersistence.getPath());
+			} else {
+				throw new IllegalArgumentException("Unknown GraphFormat: " + graphPersistence.getGraphFormat());
+			}
+			Graph g = ne;
+			BaseGraphDas graphDas = new BaseGraphDas(g);
+			return new VersionedGraphDas(graphDas);
+		} catch (Exception ex) {
+			throw new RuntimeException("Couldn't read Graph!", ex);
+		}
 	}
 
 }
