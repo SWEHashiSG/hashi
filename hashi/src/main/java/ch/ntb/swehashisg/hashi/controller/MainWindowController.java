@@ -175,7 +175,6 @@ public class MainWindowController extends AnchorPane {
 		if (graphPersistence != null) {
 			GraphDas newGraphDas = Utilities.loadGraphDas(graphPersistence);
 			graphDas = newGraphDas;
-			pane.getChildren().remove(gameField);
 			gameField = new GameFieldPlayController(graphDas, this);
 			gameField.loadGame();
 			addGameField(gameField);
@@ -191,6 +190,7 @@ public class MainWindowController extends AnchorPane {
 	 *            to add on the main window
 	 */
 	private void addGameField(GameFieldController gameField) {
+		pane.getChildren().clear();
 		pane.getChildren().add(gameField);
 		updateButtons(graphDas);
 	}
@@ -223,7 +223,6 @@ public class MainWindowController extends AnchorPane {
 	 *            vertical size of new game
 	 */
 	private void startEditorMode(int sizeX, int sizeY) {
-		pane.getChildren().remove(gameField);
 		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
 		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas, this);
 		gameField.loadGame();
