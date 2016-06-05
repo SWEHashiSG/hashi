@@ -7,11 +7,13 @@ import java.util.Optional;
 
 import ch.ntb.swehashisg.hashi.graph.GraphFormat;
 import javafx.geometry.Dimension2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.Dialog;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class DialogUtilities {
@@ -94,11 +96,14 @@ public class DialogUtilities {
 	}
 
 	public static void showHelpDialog() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Hashi");
-		alert.setHeaderText("About this Programm");
-		String text = "More information about this Program: \n" + "www.github.com/swehashisg";
-		alert.setContentText(text);
-		alert.showAndWait();
+		Stage stage = new Stage();
+		HelpWindowController mainWindow = new HelpWindowController();
+		Scene scene = new Scene(mainWindow, 300,300);
+		scene.getStylesheets().add("/styles/styles.css");
+		stage.setTitle("Hashi from Team SWEHashiSG");
+		stage.getIcons().add(new Image("/images/Icon.jpg"));
+		stage.setScene(scene);
+		stage.show();
+		stage.setResizable(false);
 	}
 }

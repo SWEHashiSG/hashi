@@ -33,3 +33,12 @@
 -fx-padding: 10.0;
 -fx-background-radius: 10.0;
 }
+
+.title{
+	    -fx-font-size: 25.0px;
+}
+
+.hyperlink{
+	-fx-font-size: 18.0px;
+    -fx-font-weight: bold;
+}

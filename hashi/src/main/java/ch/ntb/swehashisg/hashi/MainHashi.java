@@ -46,5 +46,5 @@ public class MainHashi extends Application {
 		stage.setOnCloseRequest(event -> mainWindow.closeRequest(event));
 		stage.setMinWidth(windowWidth);
 		stage.setMinHeight(windowHeight);
-	}
+	}	
 }
