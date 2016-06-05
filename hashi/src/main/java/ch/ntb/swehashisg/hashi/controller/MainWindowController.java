@@ -1,6 +1,8 @@
 package ch.ntb.swehashisg.hashi.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -18,12 +20,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.WindowEvent;
 
 /**
@@ -176,8 +182,8 @@ public class MainWindowController extends AnchorPane {
 			GraphDas newGraphDas = Utilities.loadGraphDas(graphPersistence);
 			graphDas = newGraphDas;
 			gameField = new GameFieldPlayController(graphDas, this);
-			gameField.loadGame();
 			addGameField(gameField);
+			gameField.initiateUpdate();
 		} else {
 			logger.debug("Open File Dialog Closed without a choosen File");
 		}
@@ -314,5 +320,37 @@ public class MainWindowController extends AnchorPane {
 			logger.debug("F1 pressed");
 			help();
 		}
+	}
+
+	public void error(Exception ex) {
+		logger.error(ex.getMessage(), ex);
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Applikations Fehler");
+		alert.setHeaderText("Es gab einen Fehler in der Applikation!");
+		alert.setContentText(ex.getMessage());
+		StringWriter writer = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(writer);
+		ex.printStackTrace(printWriter);
+		printWriter.flush();
+		String exceptionText = writer.toString();
+		Label label = new Label("The exception stacktrace was:");
+
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
+
+		textArea.setMaxWidth(Double.MAX_VALUE);
+		textArea.setMaxHeight(Double.MAX_VALUE);
+		GridPane.setVgrow(textArea, Priority.ALWAYS);
+		GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(Double.MAX_VALUE);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
+
+		// Set expandable Exception into the dialog pane.
+		alert.getDialogPane().setExpandableContent(expContent);
+		alert.showAndWait();
 	}
 }
