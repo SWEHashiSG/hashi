@@ -201,7 +201,7 @@ public abstract class GameFieldController extends GridPane {
 	 * clear the exisiting game field and all all fields, bridges, highliter,
 	 * and solution bridges on the game
 	 */
-	public void loadGame() {
+	protected void loadGame() {
 		logger.debug("Draw all Fields");
 		cleanGameField();
 		fields = new ArrayList<FieldController>();
