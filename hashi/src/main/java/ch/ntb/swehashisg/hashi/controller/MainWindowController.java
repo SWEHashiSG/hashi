@@ -92,6 +92,7 @@ public class MainWindowController extends AnchorPane {
 		try {
 			fxmlLoader.load();
 		} catch (IOException exception) {
+			error(exception);
 			throw new RuntimeException(exception);
 		}
 		updateButtons(false, false);
@@ -102,7 +103,11 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void undo() {
-		gameField.undo();
+		try {
+			gameField.undo();
+		} catch (Exception e) {
+			error(e);
+		}
 	}
 
 	/**
@@ -110,7 +115,11 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void redo() {
-		gameField.redo();
+		try {
+			gameField.redo();
+		} catch (Exception e) {
+			error(e);
+		}
 	}
 
 	/**
@@ -118,9 +127,13 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void restart() {
-		gameField.restart();
-		if (gameField.isShowingSolution()) {
-			gameField.showSolution();
+		try {
+			gameField.restart();
+			if (gameField.isShowingSolution()) {
+				gameField.showSolution();
+			}
+		} catch (Exception e) {
+			error(e);
 		}
 	}
 
@@ -130,7 +143,11 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void showSolution() {
-		gameField.showSolution();
+		try {
+			gameField.showSolution();
+		} catch (Exception e) {
+			error(e);
+		}
 	}
 
 	/**
@@ -138,7 +155,11 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void check() {
-		DialogUtilities.showCheckAlter(gameField.isCorrect());
+		try {
+			DialogUtilities.showCheckAlter(gameField.isCorrect());
+		} catch (Exception e) {
+			error(e);
+		}
 	}
 
 	/**
@@ -146,7 +167,11 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void help() {
-		DialogUtilities.showHelpDialog();
+		try {
+			DialogUtilities.showHelpDialog();
+		} catch (Exception e) {
+			error(e);
+		}
 	}
 
 	/**
@@ -156,15 +181,20 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void save() {
-		if (graphDas == null) {
-			return;
-		}
-		logger.debug("Save Clicked");
-		GraphPersistence graphPersistence = DialogUtilities.selectSaveGraph("Save Game", this.getScene().getWindow());
-		if (graphPersistence != null) {
-			GraphDasFactory.persistGraphDas(graphDas, graphPersistence);
-		} else {
-			logger.debug("Open File Dialog Closed without a choosen File");
+		try {
+			if (graphDas == null) {
+				return;
+			}
+			logger.debug("Save Clicked");
+			GraphPersistence graphPersistence = DialogUtilities.selectSaveGraph("Save Game",
+					this.getScene().getWindow());
+			if (graphPersistence != null) {
+				GraphDasFactory.persistGraphDas(graphDas, graphPersistence);
+			} else {
+				logger.debug("Open File Dialog Closed without a choosen File");
+			}
+		} catch (Exception e) {
+			error(e);
 		}
 	}
 
@@ -175,16 +205,21 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void open() {
-		logger.debug("Open Clicked");
-		GraphPersistence graphPersistence = DialogUtilities.selectOpenGraph("Load Game", this.getScene().getWindow());
-		if (graphPersistence != null) {
-			GraphDas newGraphDas = GraphDasFactory.loadGraphDas(graphPersistence);
-			graphDas = newGraphDas;
-			gameField = new GameFieldPlayController(graphDas, this);
-			addGameField(gameField);
-			gameField.initiateUpdate();
-		} else {
-			logger.debug("Open File Dialog Closed without a choosen File");
+		try {
+			logger.debug("Open Clicked");
+			GraphPersistence graphPersistence = DialogUtilities.selectOpenGraph("Load Game",
+					this.getScene().getWindow());
+			if (graphPersistence != null) {
+				GraphDas newGraphDas = GraphDasFactory.loadGraphDas(graphPersistence);
+				graphDas = newGraphDas;
+				gameField = new GameFieldPlayController(graphDas, this);
+				addGameField(gameField);
+				gameField.initiateUpdate();
+			} else {
+				logger.debug("Open File Dialog Closed without a choosen File");
+			}
+		} catch (Exception e) {
+			error(e);
 		}
 	}
 
@@ -210,11 +245,15 @@ public class MainWindowController extends AnchorPane {
 	 */
 	@FXML
 	public void clickedOnPane(MouseEvent mouseEvent) {
-		if (mouseEvent.getButton() == MouseButton.MIDDLE) {
-			Dimension2D dim = DialogUtilities.showEditorModeDialog();
-			if (dim != null) {
-				startEditorMode((int) dim.getWidth(), (int) dim.getHeight());
+		try {
+			if (mouseEvent.getButton() == MouseButton.MIDDLE) {
+				Dimension2D dim = DialogUtilities.showEditorModeDialog();
+				if (dim != null) {
+					startEditorMode((int) dim.getWidth(), (int) dim.getHeight());
+				}
 			}
+		} catch (Exception e) {
+			error(e);
 		}
 	}
 
@@ -324,8 +363,8 @@ public class MainWindowController extends AnchorPane {
 	public void error(Exception ex) {
 		logger.error(ex.getMessage(), ex);
 		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Applikations Fehler");
-		alert.setHeaderText("Es gab einen Fehler in der Applikation!");
+		alert.setTitle("Application fault");
+		alert.setHeaderText("Sorry but there was an error in this application!");
 		alert.setContentText(ex.getMessage());
 		StringWriter writer = new StringWriter();
 		PrintWriter printWriter = new PrintWriter(writer);
@@ -348,7 +387,6 @@ public class MainWindowController extends AnchorPane {
 		expContent.add(label, 0, 0);
 		expContent.add(textArea, 0, 1);
 
-		// Set expandable Exception into the dialog pane.
 		alert.getDialogPane().setExpandableContent(expContent);
 		alert.showAndWait();
 	}
