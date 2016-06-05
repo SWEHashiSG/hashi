@@ -114,6 +114,9 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void restart() {
 		gameField.restart();
+		if (gameField.isShowingSolution()) {
+			gameField.showSolution();
+		}
 	}
 
 	/**
@@ -132,12 +135,12 @@ public class MainWindowController extends AnchorPane {
 	public void check() {
 		DialogUtilities.showCheckAlter(gameField.isCorrect());
 	}
-	
+
 	/**
 	 * User input. Called from GUI if the user clicks on the help button.
 	 */
 	@FXML
-	public void help(){
+	public void help() {
 		DialogUtilities.showHelpDialog();
 	}
 
@@ -308,7 +311,7 @@ public class MainWindowController extends AnchorPane {
 		} else if (event.getCode() == KeyCode.O & event.isControlDown()) {
 			logger.debug("CTRL + O pressed");
 			open();
-		} else if (event.getCode() == KeyCode.F1){
+		} else if (event.getCode() == KeyCode.F1) {
 			logger.debug("F1 pressed");
 			help();
 		}

@@ -74,6 +74,11 @@ public abstract class GameFieldController extends GridPane {
 	 * is set during update the GraphDas model and redraw the game field
 	 */
 	protected boolean isUpdating = false;
+	
+	/**
+	 * is set when solution is shown
+	 */
+	protected boolean isShowingSolution = false;
 
 	/**
 	 * Constructor of the abstract class GameFieldController. Loads the
@@ -394,6 +399,7 @@ public abstract class GameFieldController extends GridPane {
 	 * the solution is shown.
 	 */
 	public void showSolution() {
+		isShowingSolution = !isShowingSolution;
 		for (BridgeController solutionBridge : graphBridgeToSolutionBridge.values()) {
 			solutionBridge.toggleVisibility();
 		}
@@ -401,6 +407,13 @@ public abstract class GameFieldController extends GridPane {
 			bridge.toggleVisibility();
 		}
 		this.setMouseTransparent(!isMouseTransparent());
+	}
+	
+	/**
+	 * Returns actual solution status, needed to hide solution when game-restart is performed
+	 */
+	public boolean isShowingSolution() {
+		return isShowingSolution;
 	}
 
 	public void undo() {
