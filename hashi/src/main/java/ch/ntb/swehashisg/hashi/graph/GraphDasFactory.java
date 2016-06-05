@@ -17,11 +17,8 @@ public class GraphDasFactory {
 	private static Neo4jGraph actualGraph;
 
 	public static GraphDas getGraphDas() {
-		// TinkerGraph tg = TinkerGraph.open();
 		closePreviousGraph();
 		Neo4jGraph ne = Neo4jGraph.open("./neo4j");
-		// tg.createIndex("x", Vertex.class);
-		// tg.createIndex("y", Vertex.class);
 		actualGraph = ne;
 		Graph g = ne;
 
@@ -77,8 +74,6 @@ public class GraphDasFactory {
 			} else {
 				throw new IllegalArgumentException("Unknown GraphFormat: " + graphFormat);
 			}
-			// tg.createIndex("x", Vertex.class);
-			// tg.createIndex("y", Vertex.class);
 			Graph g = ne;
 			BaseGraphDas graphDas = new BaseGraphDas(g);
 			return new VersionedGraphDas(graphDas);
@@ -91,8 +86,6 @@ public class GraphDasFactory {
 		closePreviousGraph();
 		Neo4jGraph ne = Neo4jGraph.open("./neo4j");
 		actualGraph = ne;
-		// tg.createIndex("x", Vertex.class);
-		// tg.createIndex("y", Vertex.class);
 		Graph g = ne;
 		g = Utilities.generateBasisPlayGround(g, sizeX, sizeY);
 		BaseGraphDas graphDas = new BaseGraphDas(g);
