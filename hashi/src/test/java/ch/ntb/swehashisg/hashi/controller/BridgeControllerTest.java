@@ -6,28 +6,45 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 
 public class BridgeControllerTest {
-	
+
 	GameFieldController gameFieldController;
 	BridgeController bridgeController;
 	GraphBridge graphBridge;
 	GraphField field1, field2;
-	
+	GameFieldController gameField;
+
 	@Before
 	public void preparations() {
 		field1 = new GraphField(1, 2, 2);
 		field2 = new GraphField(2, 2, 2);
+		gameField = new GameFieldPlayController(GraphDasFactory.getEmptyGraphDas(6, 6), null);
 		graphBridge = new GraphBridge(field1, field2);
-		bridgeController = new BridgeController(graphBridge, null);
+
+		bridgeController = new BridgeController(graphBridge, gameField);
 	}
 
 	@Test
 	public void testAddToGameField() {
-		// How to test this one?
-		fail("Not yet implemented");
+		try {
+			field1 = new GraphField(1, 2, 2);
+			field2 = new GraphField(2, 2, 5);
+			graphBridge = new GraphBridge(field1, field2);
+			bridgeController = new BridgeController(graphBridge, gameField);
+			bridgeController.addToGameField();
+			fail("Dit not throw an Exception");
+		} catch (IllegalArgumentException e) {
+			// Expected Exception if bridge Length is 0
+		}
+		field1 = new GraphField(1, 2, 2);
+		field2 = new GraphField(3, 2, 5);
+		graphBridge = new GraphBridge(field1, field2);
+		bridgeController = new BridgeController(graphBridge, gameField);
+		bridgeController.addToGameField();
 	}
 
 	@Test
