@@ -33,6 +33,17 @@ public class DialogUtilities {
 		return selectGraph(false, title, window);
 	}
 
+	/**
+	 * Open a File Select dialog to save or load a file
+	 * 
+	 * @param save
+	 *            if true save file if false load file
+	 * @param title
+	 *            title of file dialog
+	 * @param window
+	 *            window where this dialog will be attached
+	 * @return GraphPersistence with file informations
+	 */
 	private static GraphPersistence selectGraph(boolean save, String title, Window window) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(title);
@@ -58,6 +69,12 @@ public class DialogUtilities {
 		}
 	}
 
+	/**
+	 * Shows Alert Window after user has started a check.
+	 * 
+	 * @param correct
+	 *            if chack hasn't found a fault
+	 */
 	public static void showCheckAlter(boolean correct) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Game Check");
@@ -69,6 +86,12 @@ public class DialogUtilities {
 		alert.showAndWait();
 	}
 
+	/**
+	 * Shows editor Start Dialogs for user to choose desired game size to create
+	 * a new Game
+	 * 
+	 * @return Dimension2D for X and Y game size
+	 */
 	public static Dimension2D showEditorModeDialog() {
 		List<Integer> choices = new ArrayList<>();
 		choices.add(6);
@@ -95,10 +118,13 @@ public class DialogUtilities {
 		return null;
 	}
 
+	/**
+	 * open a help window for the user for more informations
+	 */
 	public static void showHelpDialog() {
 		Stage stage = new Stage();
 		HelpWindowController mainWindow = new HelpWindowController();
-		Scene scene = new Scene(mainWindow, 300,300);
+		Scene scene = new Scene(mainWindow, 300, 300);
 		scene.getStylesheets().add("/styles/styles.css");
 		stage.setTitle("Hashi from Team SWEHashiSG");
 		stage.getIcons().add(new Image("/images/Icon.jpg"));
