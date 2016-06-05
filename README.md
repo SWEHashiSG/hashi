@@ -6,6 +6,6 @@ Ziel des Projektes ist es, das bekannte Spiel "Hashi" mittels der Scrum Methodik
 
 [Lizenzen](LICENSE)
 
-[Dokumentation zum Projekt](documentation/Dokumentation_Hashi_TeamSG.docx)
+[Dokumentation zum Projekt](documentation/Dokumentation_Hashi_TeamSG.pdf)
 
-[Spielanleitung](documentation/Spielanleitung.pdf) todo
+[Spielanleitung](documentation/Spielanleitung.pdf)
