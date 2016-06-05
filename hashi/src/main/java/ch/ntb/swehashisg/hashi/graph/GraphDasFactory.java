@@ -1,8 +1,12 @@
 package ch.ntb.swehashisg.hashi.graph;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
+import org.neo4j.io.fs.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +57,11 @@ public class GraphDasFactory {
 			}
 		} else {
 			registerShutdownHook();
+		}
+		try {
+			FileUtils.deleteRecursively(new File("./neo4j"));
+		} catch (IOException e) {
+			logger.error("Could not clear database");
 		}
 	}
 
