@@ -48,6 +48,14 @@ public class BaseGraphDas extends GraphDas {
 
 		Set<GraphField> graphFields = convertVerticesToFields(vertices);
 
+		correctWeightingOfBridges();
+
+		GraphPlayField graphPlayField = new GraphPlayField(bridgesToWeight.keySet(), solutionBridgesToWeight.keySet(),
+				graphFields);
+		return graphPlayField;
+	}
+
+	private void correctWeightingOfBridges() {
 		for (Entry<GraphBridge, Integer> bridge : bridgesToWeight.entrySet()) {
 			bridge.getKey().setWeighting(bridge.getValue() / 2);
 		}
@@ -55,14 +63,10 @@ public class BaseGraphDas extends GraphDas {
 		for (Entry<GraphBridge, Integer> bridge : solutionBridgesToWeight.entrySet()) {
 			bridge.getKey().setWeighting(bridge.getValue() / 2);
 		}
-
-		GraphPlayField graphPlayField = new GraphPlayField(bridgesToWeight.keySet(), solutionBridgesToWeight.keySet(),
-				graphFields);
-		return graphPlayField;
 	}
 
 	private Set<Vertex> getRelevantVertices() {
-		Vertex root = graph.traversal().V().has("x", 0).has("y", 0).toList().get(0);
+		Vertex root = getRootField();
 
 		Set<Vertex> vertices = new HashSet<>();
 		graph.traversal().V(root).dedup().repeat(__.out("row", "column").sideEffect(t -> {
@@ -75,15 +79,14 @@ public class BaseGraphDas extends GraphDas {
 		return vertices;
 	}
 
+	private Vertex getRootField() {
+		return graph.traversal().V().has("x", 0).has("y", 0).toList().get(0);
+	}
+
 	public boolean isFinished() {
 		Set<Vertex> vertices = getRelevantVertices();
 		for (Vertex vertex : vertices) {
-			int numberOfBridges = 0;
-			Iterator<Edge> iterator = vertex.edges(Direction.BOTH, "bridge");
-			while (iterator.hasNext()) {
-				iterator.next();
-				numberOfBridges++;
-			}
+			int numberOfBridges = getNumberOfBridges(vertex);
 
 			int neededBridges = vertex.value("bridges");
 			if (neededBridges != numberOfBridges) {
@@ -94,9 +97,18 @@ public class BaseGraphDas extends GraphDas {
 		return true;
 	}
 
+	private int getNumberOfBridges(Vertex v) {
+		int numberOfBridges = 0;
+		Iterator<Edge> iterator = v.edges(Direction.BOTH, "bridge");
+		while (iterator.hasNext()) {
+			iterator.next();
+			numberOfBridges++;
+		}
+		return numberOfBridges;
+	}
+
 	@Override
 	public int getSizeX() {
-		
 		return graph.traversal().V().has("name", "test").toList().get(0).value("sizeX");
 	}
 
@@ -144,103 +156,107 @@ public class BaseGraphDas extends GraphDas {
 	}
 
 	public void addBridge(GraphBridge bridge) {
-		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
-				.toList().get(0);
-		Vertex node2 = graph.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
-				.toList().get(0);
-		if (!needsBridge(node1)) {
-			throw new IllegalArgumentException("Doesn't need bridge!");
-		}
-		if (!needsBridge(node2)) {
-			throw new IllegalArgumentException("Doesn't need bridge!");
-		}
-		if (!areNeighbors2(node1, node2)) {
-			throw new IllegalArgumentException("Crossing bridges!");
-		}
-		node1.addEdge("bridge", node2);
+		addGenericBridge(BridgeType.NORMAL, bridge);
 	}
 
 	@Override
 	public void addSolutionBridge(GraphBridge bridge) {
-		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
-				.toList().get(0);
-		Vertex node2 = graph.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
-				.toList().get(0);
-		if (!needsSolutionBridge(node1)) {
+		addGenericBridge(BridgeType.SOLUTION, bridge);
+	}
+
+	private void addGenericBridge(BridgeType bridgeType, GraphBridge bridge) {
+		Vertex node1 = getVertexForField(bridge.getField1());
+		Vertex node2 = getVertexForField(bridge.getField2());
+		if (!needsBridge(bridgeType, node1)) {
 			throw new IllegalArgumentException("Doesn't need bridge!");
 		}
-		if (!needsSolutionBridge(node2)) {
+		if (!needsBridge(bridgeType, node2)) {
 			throw new IllegalArgumentException("Doesn't need bridge!");
 		}
-		if (!areNeighbors2(node1, node2)) {
+		if (!areNeighbors(node1, node2)) {
 			throw new IllegalArgumentException("Crossing bridges!");
 		}
-		node1.addEdge("solutionBridge", node2);
+		node1.addEdge(bridgeType.getLabel(), node2);
 	}
 
 	public void removeBridge(GraphBridge bridge) {
-		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
-				.toList().get(0);
-		Vertex node2 = graph.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
-				.toList().get(0);
-		if (!areNeighbors2(node1, node2)) {
-			throw new IllegalArgumentException("Need to be neighbors!");
-		}
-		List<Object> possibleCandidates = node1.graph().traversal().V(node1).outE("bridge").as("edgeToDelete").bothV()
-				.is(node2).select("edgeToDelete").toList();
-		if (possibleCandidates.size() == 0) {
-			throw new IllegalArgumentException("No bridge to delete found!");
-		} else {
-			Edge e = (Edge) possibleCandidates.get(0);
-			e.remove();
-		}
+		removeGenericBridge(BridgeType.NORMAL, bridge);
 	}
 
 	@Override
 	public void removeSolutionBridge(GraphBridge bridge) {
-		Vertex node1 = graph.traversal().V().has("x", bridge.getField1().getX()).has("y", bridge.getField1().getY())
-				.toList().get(0);
-		Vertex node2 = graph.traversal().V().has("x", bridge.getField2().getX()).has("y", bridge.getField2().getY())
-				.toList().get(0);
-		if (!areNeighbors2(node1, node2)) {
+		removeGenericBridge(BridgeType.SOLUTION, bridge);
+	}
+
+	private void removeGenericBridge(BridgeType bridgeType, GraphBridge bridge) {
+		Vertex node1 = getVertexForField(bridge.getField1());
+		Vertex node2 = getVertexForField(bridge.getField2());
+		if (!areNeighbors(node1, node2)) {
 			throw new IllegalArgumentException("Need to be neighbors!");
 		}
-		List<Object> possibleCandidates = node1.graph().traversal().V(node1).outE("solutionBridge").as("edgeToDelete")
-				.bothV().is(node2).select("edgeToDelete").toList();
+		List<Object> possibleCandidates = getCandidateBridges(bridgeType, node1, node2);
 		if (possibleCandidates.size() == 0) {
-			throw new IllegalArgumentException("No solutionBridge to delete found!");
+			throw new IllegalArgumentException("No " + bridgeType.getLabel() + " to delete found!");
 		} else {
 			Edge e = (Edge) possibleCandidates.get(0);
 			e.remove();
 		}
 	}
 
-	private boolean needsBridge(Vertex node) {
-		return (int) node.property("bridges").value() > node.graph().traversal().V(node).bothE("bridge").count()
-				.toList().get(0);
+	private List<Object> getCandidateBridges(BridgeType bridgeType, Vertex node1, Vertex node2) {
+		return node1.graph().traversal().V(node1).outE(bridgeType.getLabel()).as("edgeToDelete").bothV().is(node2)
+				.select("edgeToDelete").toList();
 	}
 
-	private boolean needsSolutionBridge(Vertex node) {
-		return (int) node.property("bridges").value() > node.graph().traversal().V(node).bothE("solutionBridge").count()
-				.toList().get(0);
+	private static enum BridgeType {
+		SOLUTION("solutionBridge"), NORMAL("bridge");
+		String label;
+
+		private BridgeType(String label) {
+			this.label = label;
+		}
+
+		public String getLabel() {
+			return this.label;
+		}
+	}
+
+	private boolean needsBridge(BridgeType bridgeType, Vertex node) {
+		return (int) node.property("bridges").value() > node.graph().traversal().V(node).bothE(bridgeType.getLabel())
+				.count().toList().get(0);
 	}
 
 	private Set<Vertex> getNeighbors(Vertex node) {
 		Set<Vertex> vertices = new HashSet<>();
 		Graph g = node.graph();
 
-		vertices.addAll(g.traversal().V(node).repeat(__.in("row")).until(__.values("bridges").is(P.neq(0))).toSet());
-		vertices.addAll(g.traversal().V(node).repeat(__.out("row")).until(__.values("bridges").is(P.neq(0))).toSet());
-		vertices.addAll(g.traversal().V(node).repeat(__.in("column")).until(__.values("bridges").is(P.neq(0))).toSet());
-		vertices.addAll(
-				g.traversal().V(node).repeat(__.out("column")).until(__.values("bridges").is(P.neq(0))).toSet());
+		vertices.addAll(getTopNeighbors(node, g));
+		vertices.addAll(getBottomNeighbors(node, g));
+		vertices.addAll(getLeftNeighbors(node, g));
+		vertices.addAll(getRightNeighbors(node, g));
 		Set<Vertex> realVertices = new HashSet<>();
 		for (Vertex v : vertices) {
-			if (areNeighbors2(node, v)) {
+			if (areNeighbors(node, v)) {
 				realVertices.add(v);
 			}
 		}
 		return realVertices;
+	}
+
+	private Set<Vertex> getRightNeighbors(Vertex node, Graph g) {
+		return g.traversal().V(node).repeat(__.out("column")).until(__.values("bridges").is(P.neq(0))).toSet();
+	}
+
+	private Set<Vertex> getLeftNeighbors(Vertex node, Graph g) {
+		return g.traversal().V(node).repeat(__.in("column")).until(__.values("bridges").is(P.neq(0))).toSet();
+	}
+
+	private Set<Vertex> getBottomNeighbors(Vertex node, Graph g) {
+		return g.traversal().V(node).repeat(__.out("row")).until(__.values("bridges").is(P.neq(0))).toSet();
+	}
+
+	private Set<Vertex> getTopNeighbors(Vertex node, Graph g) {
+		return g.traversal().V(node).repeat(__.in("row")).until(__.values("bridges").is(P.neq(0))).toSet();
 	}
 
 	private List<GraphBridge> getBridges(Vertex node) {
@@ -248,9 +264,7 @@ public class BaseGraphDas extends GraphDas {
 		Iterator<Edge> edges = node.edges(Direction.BOTH, "bridge");
 		while (edges.hasNext()) {
 			Edge edge = edges.next();
-			GraphField node1 = convertVertexToFieldLight(edge.outVertex());
-			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
-			GraphBridge bridge = new GraphBridge(node1, node2);
+			GraphBridge bridge = convertBridgeEdgeToGraphBridge(edge);
 			if (bridgesToWeight.containsKey(bridge)) {
 				bridgesToWeight.put(bridge, bridgesToWeight.get(bridge) + 1);
 			} else {
@@ -262,14 +276,19 @@ public class BaseGraphDas extends GraphDas {
 		return bridges;
 	}
 
+	private GraphBridge convertBridgeEdgeToGraphBridge(Edge edge) {
+		GraphField node1 = convertVertexToFieldLight(edge.outVertex());
+		GraphField node2 = convertVertexToFieldLight(edge.inVertex());
+		GraphBridge bridge = new GraphBridge(node1, node2);
+		return bridge;
+	}
+
 	private List<GraphBridge> getSolutionBridges(Vertex node) {
 		List<GraphBridge> bridges = new ArrayList<>();
 		Iterator<Edge> edges = node.edges(Direction.BOTH, "solutionBridge");
 		while (edges.hasNext()) {
 			Edge edge = edges.next();
-			GraphField node1 = convertVertexToFieldLight(edge.outVertex());
-			GraphField node2 = convertVertexToFieldLight(edge.inVertex());
-			GraphBridge bridge = new GraphBridge(node1, node2);
+			GraphBridge bridge = convertBridgeEdgeToGraphBridge(edge);
 			if (solutionBridgesToWeight.containsKey(bridge)) {
 				solutionBridgesToWeight.put(bridge, solutionBridgesToWeight.get(bridge) + 1);
 			} else {
@@ -281,24 +300,22 @@ public class BaseGraphDas extends GraphDas {
 		return bridges;
 	}
 
-	private boolean areNeighbors2(Vertex node1, Vertex node2) {
-		int x1 = (int) node1.property("x").value();
-		int y1 = (int) node1.property("y").value();
-		int x2 = (int) node2.property("x").value();
-		int y2 = (int) node2.property("y").value();
+	private boolean areNeighbors(Vertex node1, Vertex node2) {
+		GraphField field1 = convertVertexToFieldLight(node1);
+		GraphField field2 = convertVertexToFieldLight(node2);
 		Graph g = node1.graph();
-		if (!areOrthogonal(x1, y1, x2, y2)) {
+		if (!areOrthogonal(field1, field2)) {
 			return false;
-		} else if (!haveSpaceInBetween(x1, y1, x2, y2)) {
+		} else if (!haveSpaceInBetween(field1, field2)) {
 			return false;
-		} else if (!haveNoBridgesInBetween(node1, x1, y1, x2, y2, g)) {
+		} else if (!haveNoBridgesInBetween(node1, field1, field2, g)) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 
-	private boolean haveNoBridgesInBetween(Vertex node1, int x1, int y1, int x2, int y2, Graph g) {
+	private boolean haveNoBridgesInBetween(Vertex node1, GraphField field1, GraphField field2, Graph g) {
 		GraphTraversal<Vertex, Vertex> tr = g.traversal().V(node1);
 		Predicate<Traverser<Vertex>> complexFilterColumn = new Predicate<Traverser<Vertex>>() {
 
@@ -360,39 +377,40 @@ public class BaseGraphDas extends GraphDas {
 				return true;
 			}
 		};
-		if (x1 > x2) {
+		if (field1.getX() > field2.getX()) {
 			tr = tr.repeat(__.in("row")
-					.or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
-							__.and(__.values("x").is(P.gt(x2)), __.values("bridges").is(0)))
-					.filter(complexFilterRow)).until(__.values("x").is(P.eq(x2)));
+					.or(__.and(__.values("x").is(P.eq(field2.getX())), __.values("bridges").is(P.neq(0))),
+							__.and(__.values("x").is(P.gt(field2.getX())), __.values("bridges").is(0)))
+					.filter(complexFilterRow)).until(__.values("x").is(P.eq(field2.getX())));
 		}
-		if (x1 < x2) {
+		if (field1.getX() < field2.getX()) {
 			tr = tr.repeat(__.out("row")
-					.or(__.and(__.values("x").is(P.eq(x2)), __.values("bridges").is(P.neq(0))),
-							__.and(__.values("x").is(P.lt(x2)), __.values("bridges").is(0)))
-					.filter(complexFilterRow)).until(__.values("x").is(P.eq(x2)));
+					.or(__.and(__.values("x").is(P.eq(field2.getX())), __.values("bridges").is(P.neq(0))),
+							__.and(__.values("x").is(P.lt(field2.getX())), __.values("bridges").is(0)))
+					.filter(complexFilterRow)).until(__.values("x").is(P.eq(field2.getX())));
 		}
-		if (y1 > y2) {
+		if (field1.getY() > field2.getY()) {
 			tr = tr.repeat(__.in("column")
-					.or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
-							__.and(__.values("y").is(P.gt(y2)), __.values("bridges").is(0)))
-					.filter(complexFilterColumn)).until(__.values("y").is(P.eq(y2)));
+					.or(__.and(__.values("y").is(P.eq(field2.getY())), __.values("bridges").is(P.neq(0))),
+							__.and(__.values("y").is(P.gt(field2.getY())), __.values("bridges").is(0)))
+					.filter(complexFilterColumn)).until(__.values("y").is(P.eq(field2.getY())));
 		}
-		if (y1 < y2) {
+		if (field1.getY() < field2.getY()) {
 			tr = tr.repeat(__.out("column")
-					.or(__.and(__.values("y").is(P.eq(y2)), __.values("bridges").is(P.neq(0))),
-							__.and(__.values("y").is(P.lt(y2)), __.values("bridges").is(0)))
-					.filter(complexFilterColumn)).until(__.values("y").is(P.eq(y2)));
+					.or(__.and(__.values("y").is(P.eq(field2.getY())), __.values("bridges").is(P.neq(0))),
+							__.and(__.values("y").is(P.lt(field2.getY())), __.values("bridges").is(0)))
+					.filter(complexFilterColumn)).until(__.values("y").is(P.eq(field2.getY())));
 		}
 		return tr.toList().size() > 0;
 	}
 
-	private boolean haveSpaceInBetween(int x1, int y1, int x2, int y2) {
-		return !(x1 + 1 == x2 || x1 - 1 == x2 || y1 + 1 == y2 || y1 - 1 == y2);
+	private boolean haveSpaceInBetween(GraphField field1, GraphField field2) {
+		return !(field1.getX() + 1 == field2.getX() || field1.getX() - 1 == field2.getX()
+				|| field1.getY() + 1 == field2.getY() || field1.getY() - 1 == field2.getY());
 	}
 
-	private boolean areOrthogonal(int x1, int y1, int x2, int y2) {
-		return !(x1 != x2 && y1 != y2);
+	private boolean areOrthogonal(GraphField field1, GraphField field2) {
+		return !(field1.getX() != field2.getX() && field1.getY() != field2.getY());
 	}
 
 	@Override
