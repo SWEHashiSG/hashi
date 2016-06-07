@@ -445,7 +445,7 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	public void restart() {
-		graphService.restart();
+		graphService.restart(graphPlayField);
 		initiateUpdate();
 	}
 

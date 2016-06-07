@@ -22,6 +22,10 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
+/**
+ * Handles the persistence of the graphPlayField
+ *
+ */
 public class BaseGraphDas implements GraphDas {
 
 	private Graph graph;
@@ -35,6 +39,10 @@ public class BaseGraphDas implements GraphDas {
 		this.solutionBridgesToWeight = new HashMap<>();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphDas#getPlayField()
+	 */
 	@Override
 	public GraphPlayField getPlayField() {
 		bridgesToWeight = new HashMap<>();
@@ -81,6 +89,10 @@ public class BaseGraphDas implements GraphDas {
 		return graph.traversal().V().has("x", 0).has("y", 0).toList().get(0);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphDas#setBridges(ch.ntb.swehashisg.hashi.model.GraphField)
+	 */
 	@Override
 	public void setBridges(GraphField field) {
 		Vertex node = getVertexForField(field);
@@ -133,11 +145,19 @@ public class BaseGraphDas implements GraphDas {
 		return new GraphField(x, y, bridges);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphDas#addBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	 */
 	@Override
 	public void addBridge(GraphBridge bridge) {
 		addGenericBridge(BridgeType.NORMAL, bridge);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphDas#addSolutionBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	 */
 	@Override
 	public void addSolutionBridge(GraphBridge bridge) {
 		addGenericBridge(BridgeType.SOLUTION, bridge);
@@ -158,11 +178,19 @@ public class BaseGraphDas implements GraphDas {
 		node1.addEdge(bridgeType.getLabel(), node2);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphDas#removeBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	 */
 	@Override
 	public void removeBridge(GraphBridge bridge) {
 		removeGenericBridge(BridgeType.NORMAL, bridge);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphDas#removeSolutionBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	 */
 	@Override
 	public void removeSolutionBridge(GraphBridge bridge) {
 		removeGenericBridge(BridgeType.SOLUTION, bridge);

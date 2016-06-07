@@ -195,8 +195,8 @@ public class BaseGraphService implements GraphService {
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#restart()
 	 */
 	@Override
-	public void restart() {
-		for (GraphBridge bridge : getPlayField().getBridges()) {
+	public void restart(GraphPlayField graphPlayField) {
+		for (GraphBridge bridge : graphPlayField.getBridges()) {
 			for (int i = 0; i < bridge.getWeighting(); i++) {
 				graphDas.removeBridge(bridge);
 			}
