@@ -10,6 +10,10 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
+/**
+ * Provides a decorator for graphService, so that operations can be undone, redone.
+ *
+ */
 public class VersionedGraphService implements GraphService {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
@@ -24,11 +28,19 @@ public class VersionedGraphService implements GraphService {
 		redoOperations = new Stack<>();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#canUndo()
+	 */
 	@Override
 	public boolean canUndo() {
 		return !undoOperations.isEmpty();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#undo()
+	 */
 	@Override
 	public void undo(GraphPlayField graphPlayField) {
 		if (!canUndo()) {
@@ -40,11 +52,19 @@ public class VersionedGraphService implements GraphService {
 		graphServiceOperation.undo(graphPlayField);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#canRedo()
+	 */
 	@Override
 	public boolean canRedo() {
 		return !redoOperations.isEmpty();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#redo()
+	 */
 	@Override
 	public void redo(GraphPlayField graphPlayField) {
 		if (!canRedo()) {
@@ -59,11 +79,19 @@ public class VersionedGraphService implements GraphService {
 		undoOperations.push(bridgeOperation);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#getPlayField()
+	 */
 	@Override
 	public GraphPlayField getPlayField() {
 		return graphService.getPlayField();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#addBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	 */
 	@Override
 	public void addBridge(GraphBridge bridge) {
 		graphService.addBridge(bridge);
@@ -71,6 +99,10 @@ public class VersionedGraphService implements GraphService {
 		removeNewerOperation();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#removeBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	 */
 	@Override
 	public void removeBridge(GraphBridge bridge) {
 		graphService.removeBridge(bridge);
@@ -78,6 +110,10 @@ public class VersionedGraphService implements GraphService {
 		removeNewerOperation();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#isFinished(ch.ntb.swehashisg.hashi.model.GraphPlayField)
+	 */
 	@Override
 	public boolean isFinished(GraphPlayField graphPlayField) {
 		return graphService.isFinished(graphPlayField);
@@ -191,26 +227,42 @@ public class VersionedGraphService implements GraphService {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#setBridges(ch.ntb.swehashisg.hashi.model.GraphField)
+	 */
 	@Override
 	public void setBridges(GraphField field) {
 		graphService.setBridges(field);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#addSolutionBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	 */
 	@Override
 	public void addSolutionBridge(GraphBridge bridge) {
 		graphService.addSolutionBridge(bridge);
 		addOperation(new AddSolutionBridgeOperation(bridge, graphService));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#removeSolutionBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	 */
 	@Override
 	public void removeSolutionBridge(GraphBridge bridge) {
 		graphService.removeSolutionBridge(bridge);
 		addOperation(new RemoveSolutionBridgeOperation(bridge, graphService));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#restart(ch.ntb.swehashisg.hashi.model.GraphPlayField)
+	 */
 	@Override
-	public void restart() {
-		graphService.restart();
+	public void restart(GraphPlayField graphPlayField) {
+		graphService.restart(graphPlayField);
 		undoOperations.clear();
 		redoOperations.clear();
 	}

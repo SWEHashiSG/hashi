@@ -12,12 +12,23 @@ import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.controller.GraphPersistence;
 
+/**
+ * Provides methods for getting, loading and persisting a graphService. There
+ * will be only one graphService allow to be used at once. This class is not
+ * thread safe.
+ *
+ */
 public class GraphServiceFactory {
 
 	private static final Logger logger = LoggerFactory.getLogger(GraphServiceFactory.class);
 
 	private static Neo4jGraph actualGraph;
 
+	/**
+	 * Gets an graphService, with an example graph
+	 * 
+	 * @return the example graphService
+	 */
 	public static GraphService getGraphService() {
 		closePreviousGraph();
 		Neo4jGraph ne = Neo4jGraph.open("./neo4j");
@@ -35,7 +46,13 @@ public class GraphServiceFactory {
 		return new VersionedGraphService(graphService);
 	}
 
-	public static void closeGraphService(GraphService graphDas) {
+	/**
+	 * Closes the graphServices
+	 * 
+	 * @param graphService
+	 *            the graphService to close
+	 */
+	public static void closeGraphService(GraphService graphService) {
 		try {
 			actualGraph.close();
 		} catch (Exception e) {
@@ -70,6 +87,15 @@ public class GraphServiceFactory {
 		}
 	}
 
+	/**
+	 * Generate graphService with a graph of the provided size
+	 * 
+	 * @param sizeX
+	 *            number of rows
+	 * @param sizeY
+	 *            number of columns
+	 * @return the graphService with the generated graph
+	 */
 	public static GraphService getEmptyGraphService(int sizeX, int sizeY) {
 		closePreviousGraph();
 		Neo4jGraph ne = Neo4jGraph.open("./neo4j");
@@ -82,7 +108,16 @@ public class GraphServiceFactory {
 		return new VersionedGraphService(graphService);
 	}
 
-	public static void persistGraphService(GraphService g, GraphPersistence graphPersistence) {
+	/**
+	 * Persist the, with the graphService associated graph, where
+	 * graphPersistence provides the format and place to use.
+	 * 
+	 * @param graphService
+	 *            the graphService to take the graph from
+	 * @param graphPersistence
+	 *            provides the format and place
+	 */
+	public static void persistGraphService(GraphService graphService, GraphPersistence graphPersistence) {
 		try {
 			if (graphPersistence.getGraphFormat() == GraphFormat.XML) {
 				actualGraph.io(IoCore.graphml()).writeGraph(graphPersistence.getPath());
@@ -96,6 +131,14 @@ public class GraphServiceFactory {
 		}
 	}
 
+	/**
+	 * Loads a existing graph, where graphPersistence provides the format and
+	 * place to use.
+	 * 
+	 * @param graphPersistence
+	 *            provides the format and place
+	 * @return a graphService with the loaded graph
+	 */
 	public static GraphService loadGraphService(GraphPersistence graphPersistence) {
 		try {
 			closePreviousGraph();
