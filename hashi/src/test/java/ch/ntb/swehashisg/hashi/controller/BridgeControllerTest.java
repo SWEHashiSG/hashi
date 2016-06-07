@@ -48,6 +48,25 @@ public class BridgeControllerTest {
 	}
 
 	@Test
+	public void testAddToGameFieldVertical() {
+		try {
+			field1 = new GraphField(1, 2, 2);
+			field2 = new GraphField(1, 3, 5);
+			graphBridge = new GraphBridge(field1, field2);
+			bridgeController = new BridgeController(graphBridge, gameField);
+			bridgeController.addToGameField();
+			fail("Dit not throw an Exception");
+		} catch (IllegalArgumentException e) {
+			// Expected Exception if bridge Length is 0
+		}
+		field1 = new GraphField(1, 2, 2);
+		field2 = new GraphField(3, 2, 5);
+		graphBridge = new GraphBridge(field1, field2);
+		bridgeController = new BridgeController(graphBridge, gameField);
+		bridgeController.addToGameField();
+	}
+
+	@Test
 	public void testGetGraphBridge() {
 		assertTrue("Should be the same", bridgeController.getGraphBridge().equals(graphBridge));
 	}
