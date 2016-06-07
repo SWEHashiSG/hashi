@@ -96,7 +96,7 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>${javafx-maven-plugin.version}</version>
 				<configuration>
-					<mainClass>ch.ntb.test.MainApp</mainClass>
+					<mainClass>ch.ntb.swehashisg.hashi.MainHashi</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
