@@ -163,7 +163,7 @@ public class BaseGraphService implements GraphService {
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#undo()
 	 */
 	@Override
-	public void undo() {
+	public void undo(GraphPlayField graphPlayField) {
 		throw new UnsupportedOperationException("undo function is not Implemented in BaseGraphDas");
 	}
 
@@ -179,7 +179,7 @@ public class BaseGraphService implements GraphService {
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#redo()
 	 */
 	@Override
-	public void redo() {
+	public void redo(GraphPlayField graphPlayField) {
 		throw new UnsupportedOperationException("redo function is not Implemented in BaseGraphDas");
 	}
 

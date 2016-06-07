@@ -30,14 +30,14 @@ public class VersionedGraphService implements GraphService {
 	}
 
 	@Override
-	public void undo() {
+	public void undo(GraphPlayField graphPlayField) {
 		if (!canUndo()) {
 			throw new IllegalArgumentException("Nothing to undo!");
 		}
 		logger.debug("undo");
 		GraphServiceOperation graphServiceOperation = undoOperations.pop();
 		redoOperations.push(graphServiceOperation);
-		graphServiceOperation.undo();
+		graphServiceOperation.undo(graphPlayField);
 	}
 
 	@Override
@@ -46,13 +46,13 @@ public class VersionedGraphService implements GraphService {
 	}
 
 	@Override
-	public void redo() {
+	public void redo(GraphPlayField graphPlayField) {
 		if (!canRedo()) {
 			throw new IllegalArgumentException("Nothing to redo!");
 		}
 		GraphServiceOperation graphServiceOperation = redoOperations.pop();
 		undoOperations.push(graphServiceOperation);
-		graphServiceOperation.redo();
+		graphServiceOperation.redo(graphPlayField);
 	}
 
 	private void addOperation(GraphServiceOperation bridgeOperation) {
@@ -88,9 +88,9 @@ public class VersionedGraphService implements GraphService {
 	}
 
 	private static interface GraphServiceOperation {
-		public void undo();
+		public void undo(GraphPlayField graphPlayField);
 
-		public void redo();
+		public void redo(GraphPlayField graphPlayField);
 	}
 
 	private static class AddBridgeOperation implements GraphServiceOperation {
@@ -103,14 +103,22 @@ public class VersionedGraphService implements GraphService {
 		}
 
 		@Override
-		public void undo() {
-			logger.debug("@AddBridgeOperation::undo();------------------------");
-			graphService.removeBridge(graphBridge);
+		public void undo(GraphPlayField graphPlayField) {
+			GraphBridge actualGraphBridge = getActualBridge(graphPlayField);
+			graphService.removeBridge(actualGraphBridge);
 		}
 
 		@Override
-		public void redo() {
-			graphService.addBridge(graphBridge);
+		public void redo(GraphPlayField graphPlayField) {
+			GraphBridge actualGraphBridge = getActualBridge(graphPlayField);
+			graphService.addBridge(actualGraphBridge);
+		}
+
+		private GraphBridge getActualBridge(GraphPlayField graphPlayField) {
+			GraphField actualField1 = graphPlayField.getField(graphBridge.getField1());
+			GraphField actualField2 = graphPlayField.getField(graphBridge.getField2());
+			GraphBridge actualGraphBridge = new GraphBridge(actualField1, actualField2);
+			return actualGraphBridge;
 		}
 	}
 
@@ -123,13 +131,13 @@ public class VersionedGraphService implements GraphService {
 		}
 
 		@Override
-		public void undo() {
-			addBridgeOperation.redo();
+		public void undo(GraphPlayField graphPlayField) {
+			addBridgeOperation.redo(graphPlayField);
 		}
 
 		@Override
-		public void redo() {
-			addBridgeOperation.undo();
+		public void redo(GraphPlayField graphPlayField) {
+			addBridgeOperation.undo(graphPlayField);
 		}
 	}
 
@@ -143,14 +151,24 @@ public class VersionedGraphService implements GraphService {
 		}
 
 		@Override
-		public void undo() {
-			logger.debug("@AddSolutionBridgeOperation::undo();------------------------");
-			graphService.removeSolutionBridge(graphBridge);
+		public void undo(GraphPlayField graphPlayField) {
+			GraphBridge actualGraphBridge = getActualBridge(graphPlayField);
+			
+			graphService.removeSolutionBridge(actualGraphBridge);
 		}
 
 		@Override
-		public void redo() {
-			graphService.addSolutionBridge(graphBridge);
+		public void redo(GraphPlayField graphPlayField) {
+			GraphBridge actualGraphBridge = getActualBridge(graphPlayField);
+
+			graphService.addSolutionBridge(actualGraphBridge);
+		}
+		
+		private GraphBridge getActualBridge(GraphPlayField graphPlayField) {
+			GraphField actualField1 = graphPlayField.getField(graphBridge.getField1());
+			GraphField actualField2 = graphPlayField.getField(graphBridge.getField2());
+			GraphBridge actualGraphBridge = new GraphBridge(actualField1, actualField2);
+			return actualGraphBridge;
 		}
 	}
 
@@ -163,13 +181,13 @@ public class VersionedGraphService implements GraphService {
 		}
 
 		@Override
-		public void undo() {
-			addSolutionBridgeOperation.redo();
+		public void undo(GraphPlayField graphPlayField) {
+			addSolutionBridgeOperation.redo(graphPlayField);
 		}
 
 		@Override
-		public void redo() {
-			addSolutionBridgeOperation.undo();
+		public void redo(GraphPlayField graphPlayField) {
+			addSolutionBridgeOperation.undo(graphPlayField);
 		}
 	}
 

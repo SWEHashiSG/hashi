@@ -431,14 +431,14 @@ public abstract class GameFieldController extends GridPane {
 
 	public void undo() {
 		if (graphService.canUndo()) {
-			graphService.undo();
+			graphService.undo(graphPlayField);
 			initiateUpdate();
 		}
 	}
 
 	public void redo() {
 		if (graphService.canRedo()) {
-			graphService.redo();
+			graphService.redo(graphPlayField);
 			initiateUpdate();
 		}
 	}

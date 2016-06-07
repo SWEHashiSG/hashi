@@ -20,11 +20,11 @@ public interface GraphService {
 
 	void removeSolutionBridge(GraphBridge bridge);
 
-	void undo();
+	void undo(GraphPlayField graphPlayField);
 
 	boolean canUndo();
 
-	void redo();
+	void redo(GraphPlayField graphPlayField);
 
 	boolean canRedo();
 
