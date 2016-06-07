@@ -324,7 +324,7 @@ public class MainWindowController extends AnchorPane {
 	 * 
 	 * @param graphService
 	 */
-	private void updateButtons(boolean canUndo, boolean canRedo) {
+	void updateButtons(boolean canUndo, boolean canRedo) {
 		buttonUndo.setDisable(!canUndo);
 		buttonRedo.setDisable(!canRedo);
 		buttonShowSolution.setDisable(graphService == null);

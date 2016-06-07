@@ -419,6 +419,7 @@ public abstract class GameFieldController extends GridPane {
 			bridge.toggleVisibility();
 		}
 		this.setMouseTransparent(!isMouseTransparent());
+		mainWindowController.updateButtons(!isShowingSolution, !isShowingSolution);
 	}
 
 	/**
