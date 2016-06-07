@@ -14,7 +14,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#getPlayField()
 	 */
 	@Override
@@ -24,7 +24,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * ch.ntb.swehashisg.hashi.graph.GraphService#setBridges(ch.ntb.swehashisg.
 	 * hashi.model.GraphField)
@@ -36,7 +36,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * ch.ntb.swehashisg.hashi.graph.GraphService#isFinished(ch.ntb.swehashisg.
 	 * hashi.model.GraphPlayField)
@@ -54,7 +54,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * ch.ntb.swehashisg.hashi.graph.GraphService#addBridge(ch.ntb.swehashisg.
 	 * hashi.model.GraphBridge)
@@ -66,7 +66,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#addSolutionBridge(ch.ntb.
 	 * swehashisg.hashi.model.GraphBridge)
 	 */
@@ -118,7 +118,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * ch.ntb.swehashisg.hashi.graph.GraphService#removeBridge(ch.ntb.swehashisg
 	 * .hashi.model.GraphBridge)
@@ -130,7 +130,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * ch.ntb.swehashisg.hashi.graph.GraphService#removeSolutionBridge(ch.ntb.
 	 * swehashisg.hashi.model.GraphBridge)
@@ -148,7 +148,11 @@ public class BaseGraphService implements GraphService {
 		if (graphBridge == null) {
 			throw new IllegalArgumentException("No " + bridgeType.getLabel() + " to delete found!");
 		} else {
-			graphDas.removeBridge(graphBridge);
+			if (bridgeType == BridgeType.NORMAL) {
+				graphDas.removeBridge(graphBridge);
+			} else {
+				graphDas.removeSolutionBridge(graphBridge);
+			}
 		}
 	}
 
@@ -181,7 +185,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#undo()
 	 */
 	@Override
@@ -191,7 +195,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#canUndo()
 	 */
 	@Override
@@ -201,7 +205,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#redo()
 	 */
 	@Override
@@ -211,7 +215,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#canRedo()
 	 */
 	@Override
@@ -221,7 +225,7 @@ public class BaseGraphService implements GraphService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#restart()
 	 */
 	@Override
