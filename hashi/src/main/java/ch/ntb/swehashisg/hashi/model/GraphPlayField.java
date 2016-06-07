@@ -7,11 +7,15 @@ public class GraphPlayField {
 	private Set<GraphBridge> bridges;
 	private Set<GraphBridge> solutionBridges;
 	private Set<GraphField> fields;
+	private int sizeX;
+	private int sizeY;
 
-	public GraphPlayField(Set<GraphBridge> bridges, Set<GraphBridge> solutionBridges, Set<GraphField> fields) {
+	public GraphPlayField(Set<GraphBridge> bridges, Set<GraphBridge> solutionBridges, Set<GraphField> fields, int sizeX, int sizeY) {
 		this.bridges = bridges;
 		this.fields = fields;
 		this.solutionBridges = solutionBridges;
+		this.sizeX = sizeX;
+		this.sizeY = sizeY;
 	}
 
 	public Set<GraphBridge> getBridges() {
@@ -24,6 +28,14 @@ public class GraphPlayField {
 
 	public Set<GraphField> getFields() {
 		return fields;
+	}
+	
+	public int getSizeX() {
+		return sizeX;
+	}
+
+	public int getSizeY() {
+		return sizeY;
 	}
 
 }

@@ -8,8 +8,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ntb.swehashisg.hashi.graph.GraphDas;
-import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
+import ch.ntb.swehashisg.hashi.graph.GraphService;
+import ch.ntb.swehashisg.hashi.graph.GraphServiceFactory;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,7 +50,7 @@ public class MainWindowController extends AnchorPane {
 	/**
 	 * Data model of the game
 	 */
-	GraphDas graphDas;
+	GraphService graphService;
 
 	/**
 	 * JavaFX Attributes from the FXML-File. pane where the game field will be
@@ -182,14 +182,14 @@ public class MainWindowController extends AnchorPane {
 	@FXML
 	public void save() {
 		try {
-			if (graphDas == null) {
+			if (graphService == null) {
 				return;
 			}
 			logger.debug("Save Clicked");
 			GraphPersistence graphPersistence = DialogUtilities.selectSaveGraph("Save Game",
 					this.getScene().getWindow());
 			if (graphPersistence != null) {
-				GraphDasFactory.persistGraphDas(graphDas, graphPersistence);
+				GraphServiceFactory.persistGraphService(graphService, graphPersistence);
 			} else {
 				logger.debug("Open File Dialog Closed without a choosen File");
 			}
@@ -210,9 +210,9 @@ public class MainWindowController extends AnchorPane {
 			GraphPersistence graphPersistence = DialogUtilities.selectOpenGraph("Load Game",
 					this.getScene().getWindow());
 			if (graphPersistence != null) {
-				GraphDas newGraphDas = GraphDasFactory.loadGraphDas(graphPersistence);
-				graphDas = newGraphDas;
-				gameField = new GameFieldPlayController(graphDas, this);
+				GraphService newGraphService = GraphServiceFactory.loadGraphService(graphPersistence);
+				graphService = newGraphService;
+				gameField = new GameFieldPlayController(graphService, this);
 				addGameField(gameField);
 				gameField.initiateUpdate();
 			} else {
@@ -232,7 +232,7 @@ public class MainWindowController extends AnchorPane {
 	private void addGameField(GameFieldController gameField) {
 		pane.getChildren().clear();
 		pane.getChildren().add(gameField);
-		updateButtons(graphDas);
+		updateButtons(graphService);
 	}
 
 	/**
@@ -267,8 +267,8 @@ public class MainWindowController extends AnchorPane {
 	 *            vertical size of new game
 	 */
 	private void startEditorMode(int sizeX, int sizeY) {
-		graphDas = GraphDasFactory.getEmptyGraphDas(sizeX, sizeY);
-		GameFieldDesignerController gameField = new GameFieldDesignerController(graphDas, this);
+		graphService = GraphServiceFactory.getEmptyGraphService(sizeX, sizeY);
+		GameFieldDesignerController gameField = new GameFieldDesignerController(graphService, this);
 		addGameField(gameField);
 		gameField.initiateUpdate();
 	}
@@ -281,7 +281,7 @@ public class MainWindowController extends AnchorPane {
 	 *            WindowEvent from stage
 	 */
 	public void closeRequest(WindowEvent event) {
-		if (graphDas == null) {
+		if (graphService == null) {
 			return;
 		}
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -298,10 +298,10 @@ public class MainWindowController extends AnchorPane {
 			event.consume();
 		} else if (result.get() == buttonTypeSave) {
 			save();
-			GraphDasFactory.closeGraphDas(graphDas);
+			GraphServiceFactory.closeGraphService(graphService);
 			Platform.exit();
 		} else if (result.get() == buttonTypeCloseWithoutSave) {
-			GraphDasFactory.closeGraphDas(graphDas);
+			GraphServiceFactory.closeGraphService(graphService);
 			Platform.exit();
 		}
 	}
@@ -310,11 +310,11 @@ public class MainWindowController extends AnchorPane {
 	 * Update all buttons on the main window. Called every time if something has
 	 * changed on the model.
 	 * 
-	 * @param graphDas
+	 * @param graphService
 	 */
-	void updateButtons(GraphDas graphDas) {
-		if (graphDas != null) {
-			updateButtons(graphDas.canUndo(), graphDas.canRedo());
+	void updateButtons(GraphService graphService) {
+		if (graphService != null) {
+			updateButtons(graphService.canUndo(), graphService.canRedo());
 		}
 	}
 
@@ -322,15 +322,15 @@ public class MainWindowController extends AnchorPane {
 	 * Update all buttons on the main window. Called every time if something has
 	 * changed on the model.
 	 * 
-	 * @param graphDas
+	 * @param graphService
 	 */
 	private void updateButtons(boolean canUndo, boolean canRedo) {
 		buttonUndo.setDisable(!canUndo);
 		buttonRedo.setDisable(!canRedo);
-		buttonShowSolution.setDisable(graphDas == null);
-		buttonRestart.setDisable(graphDas == null);
-		buttonSave.setDisable(graphDas == null);
-		buttonCheck.setDisable(graphDas == null);
+		buttonShowSolution.setDisable(graphService == null);
+		buttonRestart.setDisable(graphService == null);
+		buttonSave.setDisable(graphService == null);
+		buttonCheck.setDisable(graphService == null);
 	}
 
 	/**

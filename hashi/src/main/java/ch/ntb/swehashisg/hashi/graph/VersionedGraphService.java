@@ -10,16 +10,16 @@ import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
 
-public class VersionedGraphDas implements GraphDas {
+public class VersionedGraphService implements GraphService {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainWindowController.class);
 
-	private BaseGraphDas graphDas;
-	private Stack<GraphDasOperation> undoOperations;
-	private Stack<GraphDasOperation> redoOperations;
+	private GraphService graphService;
+	private Stack<GraphServiceOperation> undoOperations;
+	private Stack<GraphServiceOperation> redoOperations;
 
-	VersionedGraphDas(BaseGraphDas gd) {
-		this.graphDas = gd;
+	VersionedGraphService(GraphService gd) {
+		this.graphService = gd;
 		undoOperations = new Stack<>();
 		redoOperations = new Stack<>();
 	}
@@ -35,9 +35,9 @@ public class VersionedGraphDas implements GraphDas {
 			throw new IllegalArgumentException("Nothing to undo!");
 		}
 		logger.debug("undo");
-		GraphDasOperation graphDasOperation = undoOperations.pop();
-		redoOperations.push(graphDasOperation);
-		graphDasOperation.undo();
+		GraphServiceOperation graphServiceOperation = undoOperations.pop();
+		redoOperations.push(graphServiceOperation);
+		graphServiceOperation.undo();
 	}
 
 	@Override
@@ -50,75 +50,75 @@ public class VersionedGraphDas implements GraphDas {
 		if (!canRedo()) {
 			throw new IllegalArgumentException("Nothing to redo!");
 		}
-		GraphDasOperation graphDasOperation = redoOperations.pop();
-		undoOperations.push(graphDasOperation);
-		graphDasOperation.redo();
+		GraphServiceOperation graphServiceOperation = redoOperations.pop();
+		undoOperations.push(graphServiceOperation);
+		graphServiceOperation.redo();
 	}
 
-	private void addOperation(GraphDasOperation bridgeOperation) {
+	private void addOperation(GraphServiceOperation bridgeOperation) {
 		undoOperations.push(bridgeOperation);
 	}
 
 	@Override
 	public GraphPlayField getPlayField() {
-		return graphDas.getPlayField();
+		return graphService.getPlayField();
 	}
 
 	@Override
 	public void addBridge(GraphBridge bridge) {
-		graphDas.addBridge(bridge);
-		addOperation(new AddBridgeOperation(bridge, graphDas));
+		graphService.addBridge(bridge);
+		addOperation(new AddBridgeOperation(bridge, graphService));
 		removeNewerOperation();
 	}
 
 	@Override
 	public void removeBridge(GraphBridge bridge) {
-		graphDas.removeBridge(bridge);
-		addOperation(new RemoveBridgeOperation(bridge, graphDas));
+		graphService.removeBridge(bridge);
+		addOperation(new RemoveBridgeOperation(bridge, graphService));
 		removeNewerOperation();
 	}
 
 	@Override
-	public boolean isFinished() {
-		return graphDas.isFinished();
+	public boolean isFinished(GraphPlayField graphPlayField) {
+		return graphService.isFinished(graphPlayField);
 	}
 
 	private void removeNewerOperation() {
 		redoOperations.clear();
 	}
 
-	private static interface GraphDasOperation {
+	private static interface GraphServiceOperation {
 		public void undo();
 
 		public void redo();
 	}
 
-	private static class AddBridgeOperation implements GraphDasOperation {
+	private static class AddBridgeOperation implements GraphServiceOperation {
 		private GraphBridge graphBridge;
-		private GraphDas graphDas;
+		private GraphService graphService;
 
-		public AddBridgeOperation(GraphBridge graphBridge, GraphDas graphDas) {
+		public AddBridgeOperation(GraphBridge graphBridge, GraphService graphService) {
 			this.graphBridge = graphBridge;
-			this.graphDas = graphDas;
+			this.graphService = graphService;
 		}
 
 		@Override
 		public void undo() {
 			logger.debug("@AddBridgeOperation::undo();------------------------");
-			graphDas.removeBridge(graphBridge);
+			graphService.removeBridge(graphBridge);
 		}
 
 		@Override
 		public void redo() {
-			graphDas.addBridge(graphBridge);
+			graphService.addBridge(graphBridge);
 		}
 	}
 
-	private static class RemoveBridgeOperation implements GraphDasOperation {
+	private static class RemoveBridgeOperation implements GraphServiceOperation {
 		private AddBridgeOperation addBridgeOperation;
 
-		public RemoveBridgeOperation(GraphBridge graphBridge, GraphDas graphDas) {
-			this.addBridgeOperation = new AddBridgeOperation(graphBridge, graphDas);
+		public RemoveBridgeOperation(GraphBridge graphBridge, GraphService graphService) {
+			this.addBridgeOperation = new AddBridgeOperation(graphBridge, graphService);
 
 		}
 
@@ -133,32 +133,32 @@ public class VersionedGraphDas implements GraphDas {
 		}
 	}
 
-	private static class AddSolutionBridgeOperation implements GraphDasOperation {
+	private static class AddSolutionBridgeOperation implements GraphServiceOperation {
 		private GraphBridge graphBridge;
-		private GraphDas graphDas;
+		private GraphService graphService;
 
-		public AddSolutionBridgeOperation(GraphBridge graphBridge, GraphDas graphDas) {
+		public AddSolutionBridgeOperation(GraphBridge graphBridge, GraphService graphService) {
 			this.graphBridge = graphBridge;
-			this.graphDas = graphDas;
+			this.graphService = graphService;
 		}
 
 		@Override
 		public void undo() {
 			logger.debug("@AddSolutionBridgeOperation::undo();------------------------");
-			graphDas.removeSolutionBridge(graphBridge);
+			graphService.removeSolutionBridge(graphBridge);
 		}
 
 		@Override
 		public void redo() {
-			graphDas.addSolutionBridge(graphBridge);
+			graphService.addSolutionBridge(graphBridge);
 		}
 	}
 
-	private static class RemoveSolutionBridgeOperation implements GraphDasOperation {
+	private static class RemoveSolutionBridgeOperation implements GraphServiceOperation {
 		private AddSolutionBridgeOperation addSolutionBridgeOperation;
 
-		public RemoveSolutionBridgeOperation(GraphBridge graphBridge, GraphDas graphDas) {
-			this.addSolutionBridgeOperation = new AddSolutionBridgeOperation(graphBridge, graphDas);
+		public RemoveSolutionBridgeOperation(GraphBridge graphBridge, GraphService graphService) {
+			this.addSolutionBridgeOperation = new AddSolutionBridgeOperation(graphBridge, graphService);
 
 		}
 
@@ -174,35 +174,25 @@ public class VersionedGraphDas implements GraphDas {
 	}
 
 	@Override
-	public int getSizeX() {
-		return graphDas.getSizeX();
-	}
-
-	@Override
-	public int getSizeY() {
-		return graphDas.getSizeY();
-	}
-
-	@Override
 	public void setBridges(GraphField field) {
-		graphDas.setBridges(field);
+		graphService.setBridges(field);
 	}
 
 	@Override
 	public void addSolutionBridge(GraphBridge bridge) {
-		graphDas.addSolutionBridge(bridge);
-		addOperation(new AddSolutionBridgeOperation(bridge, graphDas));
+		graphService.addSolutionBridge(bridge);
+		addOperation(new AddSolutionBridgeOperation(bridge, graphService));
 	}
 
 	@Override
 	public void removeSolutionBridge(GraphBridge bridge) {
-		graphDas.removeSolutionBridge(bridge);
-		addOperation(new RemoveSolutionBridgeOperation(bridge, graphDas));
+		graphService.removeSolutionBridge(bridge);
+		addOperation(new RemoveSolutionBridgeOperation(bridge, graphService));
 	}
 
 	@Override
 	public void restart() {
-		graphDas.restart();
+		graphService.restart();
 		undoOperations.clear();
 		redoOperations.clear();
 	}

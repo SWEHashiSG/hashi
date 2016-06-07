@@ -8,7 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ntb.swehashisg.hashi.graph.GraphDas;
+import ch.ntb.swehashisg.hashi.graph.GraphService;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
@@ -43,12 +43,14 @@ public abstract class GameFieldController extends GridPane {
 	/**
 	 * Model of the MVC Pattern where the data is saved
 	 */
-	protected GraphDas graphDas;
+	protected GraphService graphService;
 
 	/**
 	 * A set of GraphFields which are all on the gameField
 	 */
 	protected Set<GraphField> graphFields;
+
+	protected GraphPlayField graphPlayField;
 
 	/**
 	 * List of all FieldController which control the GraphFields
@@ -71,7 +73,7 @@ public abstract class GameFieldController extends GridPane {
 	protected HashMap<GraphBridge, BridgeController> graphBridgeToSolutionBridge;
 
 	/**
-	 * is set during update the GraphDas model and redraw the game field
+	 * is set during update the GraphService model and redraw the game field
 	 */
 	protected boolean isUpdating = false;
 
@@ -85,12 +87,12 @@ public abstract class GameFieldController extends GridPane {
 	 * FXML-file and placed it on the main Window. Sets the size of the game
 	 * field and create all bridges and solution bridges
 	 * 
-	 * @param graphDas
+	 * @param graphService
 	 *            Model of the MVC Pattern where the data is saved
 	 * @param mainWindowController
 	 *            Controller of the window where this game field will be placed
 	 */
-	public GameFieldController(GraphDas graphDas, MainWindowController mainWindowController) {
+	public GameFieldController(GraphService graphService, MainWindowController mainWindowController) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/GameField.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -100,9 +102,8 @@ public abstract class GameFieldController extends GridPane {
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}
-		this.graphDas = graphDas;
+		this.graphService = graphService;
 		this.mainWindowController = mainWindowController;
-		setFieldSize(graphDas.getSizeX(), graphDas.getSizeY());
 	}
 
 	/**
@@ -125,7 +126,7 @@ public abstract class GameFieldController extends GridPane {
 	 * of this class can decide which bridges will be returned;
 	 * 
 	 * @param graphPlayField
-	 *            data model from GraphDas
+	 *            data model from GraphService
 	 * @return bridge choose by the implementation
 	 */
 	protected abstract Set<GraphBridge> getBridges(GraphPlayField graphPlayField);
@@ -162,13 +163,15 @@ public abstract class GameFieldController extends GridPane {
 	/**
 	 * update Method will be called after every change on the game
 	 * 
-	 * @param graphPlayField
+	 * @param newGraphPlayField
 	 *            new data modell from the background system
 	 */
-	protected void update(GraphPlayField graphPlayField) {
-		graphFields = graphPlayField.getFields();
-		createAllSolutions(graphPlayField.getSolutionBridges());
-		createAllBridges(getBridges(graphPlayField));
+	protected void update(GraphPlayField newGraphPlayField) {
+		graphPlayField = newGraphPlayField;
+		graphFields = newGraphPlayField.getFields();
+		setFieldSize(newGraphPlayField.getSizeX(), newGraphPlayField.getSizeY());
+		createAllSolutions(newGraphPlayField.getSolutionBridges());
+		createAllBridges(getBridges(newGraphPlayField));
 		loadGame();
 		isUpdating = false;
 	}
@@ -353,7 +356,7 @@ public abstract class GameFieldController extends GridPane {
 	 */
 	public void initiateUpdate() {
 		logger.debug("-------------Redraw whole gamefield-----------------");
-		UpdateThread updateThread = new UpdateThread(this, graphDas, mainWindowController);
+		UpdateThread updateThread = new UpdateThread(this, graphService, mainWindowController);
 		isUpdating = true;
 		updateThread.run();
 	}
@@ -368,25 +371,25 @@ public abstract class GameFieldController extends GridPane {
 	private static class UpdateThread extends Thread {
 
 		private GameFieldController gameField;
-		private GraphDas graphDas;
+		private GraphService graphService;
 		private MainWindowController mainWindowController;
 
-		public UpdateThread(GameFieldController gameField, GraphDas graphDas,
+		public UpdateThread(GameFieldController gameField, GraphService graphService,
 				MainWindowController mainWindowController) {
 			this.gameField = gameField;
-			this.graphDas = graphDas;
+			this.graphService = graphService;
 			this.mainWindowController = mainWindowController;
 		}
 
 		@Override
 		public void run() {
 			try {
-				GraphPlayField playField = graphDas.getPlayField();
+				GraphPlayField playField = graphService.getPlayField();
 				Platform.runLater(new Runnable() {
 
 					@Override
 					public void run() {
-						mainWindowController.updateButtons(graphDas);
+						mainWindowController.updateButtons(graphService);
 						gameField.update(playField);
 					}
 				});
@@ -427,21 +430,21 @@ public abstract class GameFieldController extends GridPane {
 	}
 
 	public void undo() {
-		if (graphDas.canUndo()) {
-			graphDas.undo();
+		if (graphService.canUndo()) {
+			graphService.undo();
 			initiateUpdate();
 		}
 	}
 
 	public void redo() {
-		if (graphDas.canRedo()) {
-			graphDas.redo();
+		if (graphService.canRedo()) {
+			graphService.redo();
 			initiateUpdate();
 		}
 	}
 
 	public void restart() {
-		graphDas.restart();
+		graphService.restart();
 		initiateUpdate();
 	}
 
@@ -454,10 +457,10 @@ public abstract class GameFieldController extends GridPane {
 	 */
 	public boolean isCorrect() {
 		boolean isCorrect = true;
-		if (graphDas.isFinished()) {
+		if (graphService.isFinished(graphPlayField)) {
 			return isCorrect;
 		} else {
-			for (GraphBridge bridge : graphDas.getPlayField().getBridges()) {
+			for (GraphBridge bridge : graphService.getPlayField().getBridges()) {
 				BridgeController solutionController = graphBridgeToSolutionBridge.get(bridge);
 				if (solutionController == null) {
 					markFaultBridge(graphBridgeToBridge.get(bridge));

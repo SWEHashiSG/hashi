@@ -14,23 +14,7 @@ public interface GraphDas {
 
 	public void removeBridge(GraphBridge bridge);
 
-	public boolean isFinished();
-
-	public int getSizeX();
-
-	public int getSizeY();
-
-	public void undo();
-
-	public boolean canUndo();
-
-	public void redo();
-
-	public boolean canRedo();
-
 	public void addSolutionBridge(GraphBridge bridge);
 
 	public void removeSolutionBridge(GraphBridge bridge);
-
-	public void restart();
 }

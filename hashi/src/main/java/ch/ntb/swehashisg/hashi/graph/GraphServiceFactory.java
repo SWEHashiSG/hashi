@@ -12,13 +12,13 @@ import org.slf4j.LoggerFactory;
 
 import ch.ntb.swehashisg.hashi.controller.GraphPersistence;
 
-public class GraphDasFactory {
+public class GraphServiceFactory {
 
-	private static final Logger logger = LoggerFactory.getLogger(GraphDasFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(GraphServiceFactory.class);
 
 	private static Neo4jGraph actualGraph;
 
-	public static GraphDas getGraphDas() {
+	public static GraphService getGraphService() {
 		closePreviousGraph();
 		Neo4jGraph ne = Neo4jGraph.open("./neo4j");
 		actualGraph = ne;
@@ -30,10 +30,12 @@ public class GraphDasFactory {
 
 		graphDas = GraphInitializer.generateExamplePlay(graphDas);
 
-		return new VersionedGraphDas(graphDas);
+		GraphService graphService = new BaseGraphService(graphDas);
+
+		return new VersionedGraphService(graphService);
 	}
 
-	public static void closeGraphDas(GraphDas graphDas) {
+	public static void closeGraphService(GraphService graphDas) {
 		try {
 			actualGraph.close();
 		} catch (Exception e) {
@@ -68,17 +70,19 @@ public class GraphDasFactory {
 		}
 	}
 
-	public static GraphDas getEmptyGraphDas(int sizeX, int sizeY) {
+	public static GraphService getEmptyGraphService(int sizeX, int sizeY) {
 		closePreviousGraph();
 		Neo4jGraph ne = Neo4jGraph.open("./neo4j");
 		actualGraph = ne;
 		Graph g = ne;
 		g = Utilities.generateBasisPlayGround(g, sizeX, sizeY);
 		BaseGraphDas graphDas = new BaseGraphDas(g);
-		return new VersionedGraphDas(graphDas);
+		GraphService graphService = new BaseGraphService(graphDas);
+
+		return new VersionedGraphService(graphService);
 	}
 
-	public static void persistGraphDas(GraphDas g, GraphPersistence graphPersistence) {
+	public static void persistGraphService(GraphService g, GraphPersistence graphPersistence) {
 		try {
 			if (graphPersistence.getGraphFormat() == GraphFormat.XML) {
 				actualGraph.io(IoCore.graphml()).writeGraph(graphPersistence.getPath());
@@ -92,7 +96,7 @@ public class GraphDasFactory {
 		}
 	}
 
-	public static GraphDas loadGraphDas(GraphPersistence graphPersistence) {
+	public static GraphService loadGraphService(GraphPersistence graphPersistence) {
 		try {
 			closePreviousGraph();
 			Neo4jGraph ne = Neo4jGraph.open("./neo4j");
@@ -106,7 +110,9 @@ public class GraphDasFactory {
 			}
 			Graph g = ne;
 			BaseGraphDas graphDas = new BaseGraphDas(g);
-			return new VersionedGraphDas(graphDas);
+			GraphService graphService = new BaseGraphService(graphDas);
+
+			return new VersionedGraphService(graphService);
 		} catch (Exception ex) {
 			throw new RuntimeException("Couldn't read Graph!", ex);
 		}

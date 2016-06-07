@@ -40,6 +40,11 @@ public class GraphField {
 	private List<GraphBridge> existingBridges;
 
 	/**
+	 * List of solutionBridges connected to this field.
+	 */
+	private List<GraphBridge> existingSolutionBridges;	
+
+	/**
 	 * All neighbors from this field. North, south, east and west
 	 */
 	private GraphField southNeighbor = null;
@@ -70,6 +75,7 @@ public class GraphField {
 		this.bridges = bridges;
 		this.neighbors = neighbors;
 		this.existingBridges = existingBridges;
+		this.existingSolutionBridges = existingSolutionBridges;
 
 		for (GraphField neighbor : this.getNeighbors()) {
 			if (GraphUtil.isEast(this, neighbor)) {
@@ -147,6 +153,10 @@ public class GraphField {
 		return existingBridges;
 	}
 
+	public List<GraphBridge> getExistingSolutionBridges() {
+		return existingSolutionBridges;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

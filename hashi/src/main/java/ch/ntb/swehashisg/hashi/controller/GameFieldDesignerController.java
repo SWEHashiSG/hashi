@@ -8,7 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ntb.swehashisg.hashi.graph.GraphDas;
+import ch.ntb.swehashisg.hashi.graph.GraphService;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 import ch.ntb.swehashisg.hashi.model.GraphPlayField;
@@ -30,13 +30,13 @@ public class GameFieldDesignerController extends GameFieldController {
 	 * Same constructor as super class only with the different, that the grid
 	 * lines are visible.
 	 * 
-	 * @param graphDas
+	 * @param graphService
 	 *            Model of the MVC Pattern where the data is saved
 	 * @param mainWindowController
 	 *            Controller of the window where this game field will be placed
 	 */
-	public GameFieldDesignerController(GraphDas graphDas, MainWindowController mainWindowController) {
-		super(graphDas, mainWindowController);
+	public GameFieldDesignerController(GraphService graphService, MainWindowController mainWindowController) {
+		super(graphService, mainWindowController);
 		setGridLinesVisible(true);
 	}
 
@@ -101,7 +101,7 @@ public class GameFieldDesignerController extends GameFieldController {
 	 */
 	private void setBridges(int x, int y) {
 		int value = showBridgeValueDialog();
-		graphDas.setBridges(new GraphField(x, y, value));
+		graphService.setBridges(new GraphField(x, y, value));
 		logger.debug("Clicked on Game Field in Designer Mode. Add new Field at: x=" + x + " - y=" + y);
 		initiateUpdate();
 	}
@@ -119,7 +119,7 @@ public class GameFieldDesignerController extends GameFieldController {
 	 */
 	@Override
 	protected void addBridge(GraphBridge graphBridge) {
-		graphDas.addSolutionBridge(graphBridge);
+		graphService.addSolutionBridge(graphBridge);
 	}
 
 	/**
@@ -127,6 +127,6 @@ public class GameFieldDesignerController extends GameFieldController {
 	 */
 	@Override
 	protected void removeBridge(GraphBridge graphBridge) {
-		graphDas.removeSolutionBridge(graphBridge);
+		graphService.removeSolutionBridge(graphBridge);
 	}
 }

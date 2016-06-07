@@ -6,7 +6,7 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.ntb.swehashisg.hashi.graph.GraphDasFactory;
+import ch.ntb.swehashisg.hashi.graph.GraphServiceFactory;
 import ch.ntb.swehashisg.hashi.model.GraphBridge;
 import ch.ntb.swehashisg.hashi.model.GraphField;
 
@@ -22,7 +22,7 @@ public class BridgeControllerTest {
 	public void preparations() {
 		field1 = new GraphField(1, 2, 2);
 		field2 = new GraphField(2, 2, 2);
-		gameField = new GameFieldPlayController(GraphDasFactory.getEmptyGraphDas(6, 6), null);
+		gameField = new GameFieldPlayController(GraphServiceFactory.getEmptyGraphService(6, 6), null);
 		graphBridge = new GraphBridge(field1, field2);
 
 		bridgeController = new BridgeController(graphBridge, gameField);

@@ -45,8 +45,11 @@ public class BaseGraphDas implements GraphDas {
 
 		correctWeightingOfBridges();
 
+		int sizeX = getSizeX();
+		int sizeY = getSizeY();
+
 		GraphPlayField graphPlayField = new GraphPlayField(bridgesToWeight.keySet(), solutionBridgesToWeight.keySet(),
-				graphFields);
+				graphFields, sizeX, sizeY);
 		return graphPlayField;
 	}
 
@@ -83,39 +86,12 @@ public class BaseGraphDas implements GraphDas {
 		Vertex node = getVertexForField(field);
 		node.property("bridges", field.getBridges());
 	}
-	
-	@Override
-	public boolean isFinished() {
-		Set<Vertex> vertices = getRelevantVertices();
-		for (Vertex vertex : vertices) {
-			int numberOfBridges = getNumberOfBridges(vertex);
 
-			int neededBridges = vertex.value("bridges");
-			if (neededBridges != numberOfBridges) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	private int getNumberOfBridges(Vertex v) {
-		int numberOfBridges = 0;
-		Iterator<Edge> iterator = v.edges(Direction.BOTH, "bridge");
-		while (iterator.hasNext()) {
-			iterator.next();
-			numberOfBridges++;
-		}
-		return numberOfBridges;
-	}
-
-	@Override
-	public int getSizeX() {
+	private int getSizeX() {
 		return graph.traversal().V().has("name", "test").toList().get(0).value("sizeX");
 	}
 
-	@Override
-	public int getSizeY() {
+	private int getSizeY() {
 		return graph.traversal().V().has("name", "test").toList().get(0).value("sizeY");
 	}
 
@@ -415,34 +391,5 @@ public class BaseGraphDas implements GraphDas {
 
 	private boolean areOrthogonal(GraphField field1, GraphField field2) {
 		return !(field1.getX() != field2.getX() && field1.getY() != field2.getY());
-	}
-
-	@Override
-	public void undo() {
-		throw new UnsupportedOperationException("undo function is not Implemented in BaseGraphDas");
-	}
-
-	@Override
-	public boolean canUndo() {
-		throw new UnsupportedOperationException("canUndo function is not Implemented in BaseGraphDas");
-	}
-
-	@Override
-	public void redo() {
-		throw new UnsupportedOperationException("redo function is not Implemented in BaseGraphDas");
-	}
-
-	@Override
-	public boolean canRedo() {
-		throw new UnsupportedOperationException("canRedo function is not Implemented in BaseGraphDas");
-	}
-
-	@Override
-	public void restart() {
-		for (GraphBridge bridge : getPlayField().getBridges()) {
-			for (int i = 0; i < bridge.getWeighting(); i++) {
-				removeBridge(bridge);
-			}
-		}
 	}
 }
