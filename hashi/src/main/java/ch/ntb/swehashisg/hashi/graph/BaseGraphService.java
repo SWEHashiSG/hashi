@@ -12,7 +12,9 @@ public class BaseGraphService implements GraphService {
 		this.graphDas = graphDas;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#getPlayField()
 	 */
 	@Override
@@ -20,26 +22,29 @@ public class BaseGraphService implements GraphService {
 		return graphDas.getPlayField();
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#setBridges(ch.ntb.swehashisg.hashi.model.GraphField)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ch.ntb.swehashisg.hashi.graph.GraphService#setBridges(ch.ntb.swehashisg.
+	 * hashi.model.GraphField)
 	 */
 	@Override
 	public void setBridges(GraphField field) {
 		graphDas.setBridges(field);
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#isFinished(ch.ntb.swehashisg.hashi.model.GraphPlayField)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ch.ntb.swehashisg.hashi.graph.GraphService#isFinished(ch.ntb.swehashisg.
+	 * hashi.model.GraphPlayField)
 	 */
 	@Override
 	public boolean isFinished(GraphPlayField graphPlayField) {
 		for (GraphField field : graphPlayField.getFields()) {
-
-			int numberOfBridges = 0;
-			for (GraphBridge graphBridge : field.getExistingBridges()) {
-				numberOfBridges += graphBridge.getWeighting();
-			}
-			if (field.getBridges() != numberOfBridges) {
+			if (field.getBridges() != field.getExistingBridges().size()) {
 				return false;
 			}
 		}
@@ -47,16 +52,23 @@ public class BaseGraphService implements GraphService {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#addBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ch.ntb.swehashisg.hashi.graph.GraphService#addBridge(ch.ntb.swehashisg.
+	 * hashi.model.GraphBridge)
 	 */
 	@Override
 	public void addBridge(GraphBridge bridge) {
 		addGenericBridge(BridgeType.NORMAL, bridge);
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#addSolutionBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#addSolutionBridge(ch.ntb.
+	 * swehashisg.hashi.model.GraphBridge)
 	 */
 	@Override
 	public void addSolutionBridge(GraphBridge bridge) {
@@ -104,16 +116,24 @@ public class BaseGraphService implements GraphService {
 		return numberOfBridges;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#removeBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ch.ntb.swehashisg.hashi.graph.GraphService#removeBridge(ch.ntb.swehashisg
+	 * .hashi.model.GraphBridge)
 	 */
 	@Override
 	public void removeBridge(GraphBridge bridge) {
 		removeGenericBridge(BridgeType.NORMAL, bridge);
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#removeSolutionBridge(ch.ntb.swehashisg.hashi.model.GraphBridge)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ch.ntb.swehashisg.hashi.graph.GraphService#removeSolutionBridge(ch.ntb.
+	 * swehashisg.hashi.model.GraphBridge)
 	 */
 	@Override
 	public void removeSolutionBridge(GraphBridge bridge) {
@@ -159,7 +179,9 @@ public class BaseGraphService implements GraphService {
 		return node1.getNeighbors().contains(node2);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#undo()
 	 */
 	@Override
@@ -167,7 +189,9 @@ public class BaseGraphService implements GraphService {
 		throw new UnsupportedOperationException("undo function is not Implemented in BaseGraphDas");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#canUndo()
 	 */
 	@Override
@@ -175,7 +199,9 @@ public class BaseGraphService implements GraphService {
 		throw new UnsupportedOperationException("canUndo function is not Implemented in BaseGraphDas");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#redo()
 	 */
 	@Override
@@ -183,7 +209,9 @@ public class BaseGraphService implements GraphService {
 		throw new UnsupportedOperationException("redo function is not Implemented in BaseGraphDas");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#canRedo()
 	 */
 	@Override
@@ -191,7 +219,9 @@ public class BaseGraphService implements GraphService {
 		throw new UnsupportedOperationException("canRedo function is not Implemented in BaseGraphDas");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ch.ntb.swehashisg.hashi.graph.GraphService#restart()
 	 */
 	@Override
